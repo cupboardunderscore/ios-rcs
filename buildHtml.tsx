@@ -45,6 +45,10 @@ const CarrierSupportTable = () => {
             {carriers?.map(([id, data]) => {
                 let carrname:string = id;
                 let carr:string = carrname.replace("_", ".");
+                if (carr.includes("_") || !carr.includes("."))
+                {
+                    carr = null
+                }
                 let url = data.data.CarrierBookmarks?.at(-1)?.URL || data.data.MyAccountURL || data.data.TetheringURL || carr;
                 return <div class='carrier' data-supports={rcsStatus(data)}>
                     <div class='header'>

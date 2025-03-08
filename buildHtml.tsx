@@ -51,11 +51,11 @@ const CarrierSupportTable = () => {
                 }
                 let carrname:string = data.names[0];
                 let carr2:string = carrname + data.countryCode;
-                if (carr2.includes(" "))
+                if (carrt.includes(" "))
                 {
-                    carr2 = null;
+                    carrt = null;
                 }
-                let url = data.data.CarrierBookmarks?.at(-1)?.URL || data.data.MyAccountURL || data.data.TetheringURL || carr || carr2;
+                let url = data.data.CarrierBookmarks?.at(-1)?.URL || data.data.MyAccountURL || data.data.TetheringURL || carr || carrt;
                 return <div class='carrier' data-supports={rcsStatus(data)}>
                     <div class='header'>
                         

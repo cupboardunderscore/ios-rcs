@@ -39,7 +39,7 @@ const CarrierSupportTable = () => {
         (aCarriers?.filter(([id, data]) => data.data.RCS).length ?? 0) 
     );
     
-    return <div class='countries'>{entries.map(([country, carriers]) => (country !== "🌐 Worldwide" && <>
+    return <div class='countries'>{entries.map(([country, carriers]) => (country !== "🌐-Worldwide" && <>
         <h2>{country}</h2>
         <div class='carriers'>
             {carriers?.map(([id, data]) => {

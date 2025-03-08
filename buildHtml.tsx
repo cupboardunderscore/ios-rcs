@@ -49,7 +49,7 @@ const CarrierSupportTable = () => {
                 {
                     carr = null;
                 }
-                let carrname:string = data.names[0];
+                let carrname:string = data.names[0].toString();
                 let carr2:string = carrname.concat(data.countryCode);
                 if (carr2.includes(" "))
                 {

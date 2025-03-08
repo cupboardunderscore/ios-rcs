@@ -89,7 +89,7 @@ let html = renderToString(<>
                 <p>
                     <a href="https://support.apple.com/en-us/109526" target="_blank">Apple provided</a> a list of what features each carrier supports... but only on their US/CA site.
                     <> </>&bull; <> </>
-                    <a href='https://github.com/foxt/ios-rcs'>GitHub</a>
+                    <a href='https://github.com/cupboardunderscore/ios-rcs'>GitHub</a>
                 </p>
                 <h2>Last updated: {new Date().toDateString()}</h2>
             </header>

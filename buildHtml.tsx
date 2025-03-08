@@ -55,10 +55,10 @@ const CarrierSupportTable = () => {
                 let carr:string = carrid.replace("_", ".");
                 carr = carr.replace(".US", ".com");
                 carr = carr.replace(".us", ".com");
-                carr = carr.replace(".UK", ".co.uk");
                 carr = carr.replace(".uk", ".co.uk");
-                carr = carr.replace(".AU", ".com.au");
+                carr = carr.replace(".UK", ".co.uk");
                 carr = carr.replace(".au", ".com.au");
+                carr = carr.replace(".AU", ".com.au");
                 carr = carr.replace(".Gernamy", ".de");
                 if (carr.includes("_") || !carr.includes("."))
                 {

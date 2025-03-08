@@ -43,7 +43,22 @@ const CarrierSupportTable = () => {
         <h2>{country}</h2>
         <div class='carriers'>
             {carriers?.map(([id, data]) => {
-                let url = data.data.CarrierBookmarks?.at(-1)?.URL || data.data.MyAccountURL || data.data.TetheringURL;
+                let carrid:string = id;
+                let carr:string = carrid.replace("_", ".");
+                carr = carr.replace(".US", ".com");
+                carr = carr.replace(".UK", ".co.uk");
+                carr = carr.replace(".AU", ".com.au"); 
+                if (carr.includes("_") || !carr.includes("."))
+                {
+                    carr = null;
+                }            
+                //let carrname:string = data.names[0];
+                //let carr2:string = carrname + "." + data.countryCode;
+                //if (carr2.includes(" "))
+                //{
+                //    carr2 = null;
+                //}
+                let url = data.data.CarrierBookmarks?.at(-1)?.URL || data.data.MyAccountURL || data.data.TetheringURL || carr;// || carr2;
                 return <div class='carrier' data-supports={rcsStatus(data)}>
                     <div class='header'>
                         

@@ -48,10 +48,10 @@ const CarrierSupportTable = () => {
                 carrid = carrid.replace("O2_Tesco_UK", "Tesco_UK");
                 carrid = carrid.replace("ATT_Dish_MVNO_US", "boostmobile.com");
                 carrid = carrid.replace("Dish_MVNO_US", "boostmobile.com");
-                carrid = carrid.replace("TMobile_MVNO_US", "TMobile_US.com");
+                carrid = carrid.replace("TMobile_MVNO_US", "TMobile_US");
                 carrid = carrid.replace("O2_Sky_uk", "sky.com");
                 carrid = carrid.replace("Vodafone_Lowi_es", "Lowi_es");
-                carrid = carrid.replace("KDDI_JCOM_LTE_only_jp", "jcom.co.jp");
+                carrid = carrid.replace("KDDI_JCOM_LTE_only_jp", "www.jcom.co.jp");
                 let carr:string = carrid.replace("_", ".");
                 carr = carr.replace(".US", ".com");
                 carr = carr.replace(".us", ".com");
@@ -59,7 +59,7 @@ const CarrierSupportTable = () => {
                 carr = carr.replace(".UK", ".co.uk");
                 carr = carr.replace(".au", ".com.au");
                 carr = carr.replace(".AU", ".com.au");
-                carr = carr.replace(".Gernamy", ".de");
+                carr = carr.replace(".Germany", ".de");
                 if (carr.includes("_") || !carr.includes("."))
                 {
                     carr = null;

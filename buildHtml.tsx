@@ -52,6 +52,8 @@ const CarrierSupportTable = () => {
                 carrid = carrid.replace("O2_Sky_uk", "sky.com");
                 carrid = carrid.replace("Vodafone_Lowi_es", "Lowi_es");
                 carrid = carrid.replace("KDDI_JCOM_LTE_only_jp", "www.jcom.co.jp");
+                carrid = carrid.replace("ATT_Puretalk_US", "Puretalk_US");
+                carrid = carrid.replace("Videotron_Fizz_ca", "Fizz_ca");
                 let carr:string = carrid.replace("_", ".");
                 carr = carr.replace(".US", ".com");
                 carr = carr.replace(".us", ".com");

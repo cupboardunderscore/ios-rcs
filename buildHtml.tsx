@@ -40,7 +40,7 @@ const CarrierSupportTable = () => {
     );
     
     return <div class='countries'>{entries.map(([country, carriers]) => (country !== "🌐-Worldwide" && <>
-        <h2>{if (county == "🇦🇽 Finland") {return "🇦🇽 Finland (Åland)";} else {return country;}}</h2>
+        <h2>{{if (county == "🇦🇽 Finland") {return "🇦🇽 Finland (Åland)";} else {return country;}}}</h2>
         <div class='carriers'>
             {carriers?.map(([id, data]) => {
                 let carrid:string = id;

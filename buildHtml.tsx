@@ -14,6 +14,8 @@ let carriers = processed as Record<string, { source: string, version: string, na
 
 let rcsStatus = (data: typeof carriers[string]) => data.data.RCS ? (data.source.includes("DeveloperOS") ? 1 : 2) : 0;
 
+function fix(country: string) {if (country == "🇦🇽 Finland") {return "🇦🇽 Finland (Åland)";} else {return country;}};
+
 const CarrierSupportTable = () => { 
     let sorted = Object.entries(carriers).filter(([_, {version}]) => {
         let [major] = version.split('.').map(Number);
@@ -38,10 +40,9 @@ const CarrierSupportTable = () => {
         (bCarriers?.filter(([id, data]) => data.data.RCS).length ?? 0) -
         (aCarriers?.filter(([id, data]) => data.data.RCS).length ?? 0) 
     );
-    
+
     return <div class='countries'>{entries.map(([country, carriers]) => (country !== "🌐-Worldwide" && <>
-        <h2 *ngIf="county === "🇦🇽 Finland"">{"🇦🇽 Finland (Åland)"}</h2>
-        <h2 *ngIf="!(county === "🇦🇽 Finland")">{country}</h2>
+        <h2>{fix(country)}</h2>
         <div class='carriers'>
             {carriers?.map(([id, data]) => {
                 let carrid:string = id;

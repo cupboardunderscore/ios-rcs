@@ -104,8 +104,3 @@ a {
 .grow {
     flex-grow: 1;
 }
-
-.fixcolor
-{
-    color: var(--grey-900);
-}

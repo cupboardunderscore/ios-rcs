@@ -50,9 +50,9 @@ const CarrierSupportTable = () => {
                 return <div class='carrier' data-supports={rcsStatus(data)}>
                     <div class='header'>
                         
-                        <h3 href={getsite(id)}>
-                            {url && <img width={23} height={23} src={`https://www.google.com/s2/favicons?domain=${encodeURIComponent(url)}&sz=32`} style={'background-color: transparent;'} />}
-                            {data.names[0]}
+                        <h3>
+                            {url && <img width={23} height={23} src={`https://www.google.com/s2/favicons?domain=${encodeURIComponent(url)}&sz=32`} alt={data.names[0]}/>}
+                            <a target={'_blank'} rel={'noopener noreferrer'} href={getsite(id)} style={'color:var(--grey-900); text-decoration:none;'}>{data.names[0]}</a>
                         </h3>
                         <span class='emoji'>{['❌','⏳' ,'✅'][rcsStatus(data)]}</span>
                     </div>

@@ -50,7 +50,7 @@ const CarrierSupportTable = () => {
                 return <div class='carrier' data-supports={rcsStatus(data)}>
                     <div class='header'>
                         
-                        <h3 href={{getsite(id)}}>
+                        <h3 href={getsite(id)}>
                             {url && <img width={23} height={23} src={`https://www.google.com/s2/favicons?domain=${encodeURIComponent(url)}&sz=32`} style={'background-color: transparent;'} />}
                             {data.names[0]}
                         </h3>

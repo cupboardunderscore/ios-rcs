@@ -5,6 +5,7 @@ import renderToString from "preact-render-to-string";
 import { getCountryFlag } from "./countries.ts";
 import processed from "./processed.json";
 import type { CarrierPlist } from "./types/carrier.plist";
+import { getsite } from "./carriers.ts";
 
 // for some reason this is required otherwise bun on CI will throw 'Can't find variable: Fragment'
 import * as preact from "preact";
@@ -45,40 +46,11 @@ const CarrierSupportTable = () => {
         <h2>{fix(country)}</h2>
         <div class='carriers'>
             {carriers?.map(([id, data]) => {
-                let carrid:string = id;
-                carrid = carrid.replace("O2_Giffgaff_UK", "Giffgaff_UK");
-                carrid = carrid.replace("O2_Tesco_UK", "Tesco_UK");
-                carrid = carrid.replace("ATT_Dish_MVNO_US", "boostmobile.com");
-                carrid = carrid.replace("Dish_MVNO_US", "boostmobile.com");
-                carrid = carrid.replace("TMobile_MVNO_US", "TMobile_US");
-                carrid = carrid.replace("O2_Sky_uk", "sky.com");
-                carrid = carrid.replace("Vodafone_Lowi_es", "Lowi_es");
-                carrid = carrid.replace("KDDI_JCOM_LTE_only_jp", "www.jcom.co.jp");
-                carrid = carrid.replace("ATT_Puretalk_US", "Puretalk_US");
-                carrid = carrid.replace("Videotron_Fizz_ca", "Fizz_ca");
-                let carr:string = carrid.replace("_", ".");
-                carr = carr.replace(".US", ".com");
-                carr = carr.replace(".us", ".com");
-                carr = carr.replace(".uk", ".co.uk");
-                carr = carr.replace(".UK", ".co.uk");
-                carr = carr.replace(".au", ".com.au");
-                carr = carr.replace(".AU", ".com.au");
-                carr = carr.replace(".Germany", ".de");
-                if (carr.includes("_") || !carr.includes("."))
-                {
-                    carr = null;
-                }            
-                //let carrname:string = data.names[0];
-                //let carr2:string = carrname + "." + data.countryCode;
-                //if (carr2.includes(" "))
-                //{
-                //    carr2 = null;
-                //}
-                let url = data.data.CarrierBookmarks?.at(-1)?.URL || data.data.MyAccountURL || data.data.TetheringURL || carr;// || carr2;
+                let url = getsite(id) || data.data.CarrierBookmarks?.at(-1)?.URL || data.data.MyAccountURL || data.data.TetheringURL;
                 return <div class='carrier' data-supports={rcsStatus(data)}>
                     <div class='header'>
                         
-                        <h3>
+                        <h3 href={getsite(id)}>
                             {url && <img width={23} height={23} src={`https://www.google.com/s2/favicons?domain=${encodeURIComponent(url)}&sz=32`} style={'background-color: transparent;'} />}
                             {data.names[0]}
                         </h3>

@@ -9,7 +9,7 @@ export function getsite(id: string)
     switch (id)
     {
         case "1and1_de":
-            temp = "https://www.1und1.de/";
+            temp = "https://1und1.de/";
             break;
         case "2degrees_nz":
             temp = "https://www.2degreesmobile.co.nz/help-and-support/mobile/your-phone-or-device";
@@ -24,7 +24,7 @@ export function getsite(id: string)
             temp = "http://www.ais.co.th/iPhone";
             break;
         case "APT_tw":
-            temp = "http://www.aptg.com.tw/";
+            temp = "https://www.aptg.com.tw/my/";
             break;
         case "APUA_ag":
             temp = "http://www.apua.ag/";
@@ -102,7 +102,7 @@ export function getsite(id: string)
             temp = "https://www.bealiv.com/";
             break;
         case "Almadar_ly":
-            temp = "http://www.almadar.ly/";
+            temp = "https://www.almadar.ly/ar/Pages/Home.aspx";
             break;
         case "Altice_LTE_US":
             temp = "https://www.optimum.com/";
@@ -135,13 +135,13 @@ export function getsite(id: string)
             temp = "https://www.digicelgroup.com/bz/en/mobile.html";
             break;
         case "BT_Business_uk":
-            temp = "http://home.bt.com/";
+            temp = "http://bt.com/";
             break;
         case "BT_Consumer_uk":
-            temp = "http://home.bt.com/";
+            temp = "http://bt.com/";
             break;
         case "BT_OnePhone_uk":
-            temp = "http://home.bt.com/";
+            temp = "http://bt.com/";
             break;
         case "Banglalink_bd":
             temp = "https://www.banglalink.net/";
@@ -159,7 +159,7 @@ export function getsite(id: string)
             temp = "https://www.bell.ca/Mobility/Apple";
             break;
         case "BhartiAirtel_bf":
-            temp = "http://www.orange.bf/";
+            temp = "https://www.orange.bf";
             break;
         case "BhartiAirtel_cd":
             temp = "https://www.airtel.cd/";
@@ -255,16 +255,16 @@ export function getsite(id: string)
             temp = "https://www.sunmobile.com.hk/iphone/carriersupport";
             break;
         case "CSL_hk":
-            temp = "http://1010.hkcsl.com/jsp/home/index.jsp";
+            temp = "https://www.1010.com.hk/en/home";
             break;
         case "CTM_mo":
-            temp = "http://iphone.ctm.net/en/index.php";
+            temp = "https://www.ctm.net/en-US/person/index.html";
             break;
         case "CW_bs":
             temp = "https://www.btcbahamas.com/mobile/device-catalog";
             break;
         case "CW_pa":
-            temp = "https://www.masmovilpanama.com/";
+            temp = "https://www.masmovilpanama.com";
             break;
         case "CW_sc":
             temp = "http://www.cwseychelles.com/";
@@ -357,7 +357,7 @@ export function getsite(id: string)
             temp = "http://www.claro.com.ni/";
             break;
         case "Claro_pa":
-            temp = "http://www.claro.com.pa/";
+            temp = "https://miclaro.com.pa/";
             break;
         case "Claro_pe":
             temp = "http://www.claro.com.pe/personas/";
@@ -729,7 +729,7 @@ export function getsite(id: string)
             temp = "https://www.kpn.com/";
             break;
         case "KTF_kr":
-            temp = "http://help.olleh.com/pc/store/PcsAfterServiceApple.jsp";
+            temp = "https://product.kt.com/wDic/index.do?CateCode=6002";
             break;
         case "KnowRoaming":
             temp = "https://www.knowroaming.com/";
@@ -750,7 +750,7 @@ export function getsite(id: string)
             temp = "http://www.laotel.com/";
             break;
         case "Liberty_pr":
-            temp = "https://www.libertypr.com/";
+            temp = "https://www.libertypr.com/es/";
             break;
         case "LotusFlare":
             temp = "http://www.getnomad.app/";
@@ -780,7 +780,7 @@ export function getsite(id: string)
             temp = "https://mtn.com.gh";
             break;
         case "MTN_ng":
-            temp = "https://www.mtnonline.com/";
+            temp = "https://www.mtn.ng";
             break;
         case "MTN_rw":
             temp = "https://www.mtn.co.rw/";
@@ -873,7 +873,7 @@ export function getsite(id: string)
             temp = "https://e-services.orange.be/fr/iphoneproduct";
             break;
         case "Mobitel_lk":
-            temp = "http://www.mobitel.lk/";
+            temp = "https://www.mobitel.lk";
             break;
         case "MonacoTel_mc":
             temp = "https://www.monaco-telecom.mc/";
@@ -900,7 +900,7 @@ export function getsite(id: string)
             temp = "https://natcom.com.ht/";
             break;
         case "Ncell_np":
-            temp = "https://www.ncell.axiata.com/";
+            temp = "https://ncell.com.np";
             break;
         case "NemontWireless_LTE_US":
             temp = "https://www.nemont.com/";
@@ -933,7 +933,7 @@ export function getsite(id: string)
             temp = "http://www.nova.is/";
             break;
         case "O2_1and1_de":
-            temp = "https://www.1und1.de/";
+            temp = "https://1und1.de/";
             break;
         case "O2_Debitel_de":
             temp = "www.md.de";
@@ -1095,13 +1095,13 @@ export function getsite(id: string)
             temp = "http://ee.co.uk/help";
             break;
         case "Orange_vu":
-            temp = "http://www.tvl.net.vu";
+            temp = "https://vodafone.com.vu";
             break;
         case "OtherKnown":
             temp = null;
             break;
         case "PCCW_hk":
-            temp = "http://1010.hkcsl.com/jsp/home/index.jsp";
+            temp = "https://www.1010.com.hk/en/home";
             break;
         case "PNCC_pw":
             temp = "https://www.pnccpalau.com/products-and-services/palaucel";
@@ -1122,10 +1122,10 @@ export function getsite(id: string)
             temp = "https://www.personal.com.ar/";
             break;
         case "PioneerCellular_LTE_US":
-            temp = "www.wirelesspioneer.com";
+            temp = "https://gopioneer.com";
             break;
         case "Pioneer_LTE_US":
-            temp = "www.wirelesspioneer.com";
+            temp = "https://gopioneer.com";
             break;
         case "Play_pl":
             temp = "http://www.play.pl/";
@@ -1143,7 +1143,7 @@ export function getsite(id: string)
             temp = "http://primetel.com.cy/";
             break;
         case "Progresif_bn":
-            temp = "http://www.progresif.com/";
+            temp = "https://www.progresif.com";
             break;
         case "Proximus_be":
             temp = "http://www.proximus.be/en/personal/?";
@@ -1230,7 +1230,7 @@ export function getsite(id: string)
             temp = "https://lum.ca";
             break;
         case "Sasktel_ca":
-            temp = "http://support.sasktel.com/";
+            temp = "https://support.sasktel.com";
             break;
         case "Saunalahti_fi":
             temp = "http://saunalahti.fi/";
@@ -1275,7 +1275,7 @@ export function getsite(id: string)
             temp = "http://www.smart.com.kh/";
             break;
         case "Smart_ph":
-            temp = "http://www.smart.com.ph/";
+            temp = "https://smart.com.ph/corporate";
             break;
         case "Smartfren_id":
             temp = "https://www.smartfren.com";
@@ -1329,10 +1329,10 @@ export function getsite(id: string)
             temp = "https://www.swisscom.ch/en/residential.html";
             break;
         case "TCC_to":
-            temp = "http://www.tcc.to/";
+            temp = "https://www.tcc.to/";
             break;
         case "TDC_dk":
-            temp = "https://tdcgroup.com/";
+            temp = "https://tdcnet.com/mobile-network/";
             break;
         case "TELE_gl":
             temp = "https://www.tusass.gl/en/";
@@ -1425,7 +1425,7 @@ export function getsite(id: string)
             temp = "https://www.taiwanmobile.com/";
             break;
         case "Talkmobile_uk":
-            temp = "http://talkmobile.co.uk/";
+            temp = "https://talkmobile.co.uk";
             break;
         case "Tango":
             temp = "https://tango-networks.com";
@@ -1512,7 +1512,7 @@ export function getsite(id: string)
             temp = "http://mtel.me/";
             break;
         case "TelekomSrbija_rs":
-            temp = "http://www.mts.telekom.rs/index.php/korisnicki-servis.html";
+            temp = "https://mts.rs";
             break;
         case "Telekom_si":
             temp = "https://www.telekom.si/zasebni-uporabniki";
@@ -1533,10 +1533,10 @@ export function getsite(id: string)
             temp = "https://www.yettel.hu/mobiltelefon/apple";
             break;
         case "Telenor_me":
-            temp = "https://www.1.me/webshop/cg/Biznis-korisnici/Mobilni-telefoni/#?tpackage=259&opsystems=all&subtypes=all&purchase=cosmos&brands=Apple&group=all&orderBy=one";
+            temp = "https://1.me";
             break;
         case "Telenor_mm":
-            temp = "https://www.telenor.com.mm/";
+            temp = "https://www.atom.com.mm/en";
             break;
         case "Telenor_no":
             temp = "http://www.telenor.no/";
@@ -1551,7 +1551,7 @@ export function getsite(id: string)
             temp = "http://www.telenor.se/privat/kundservice/index.html";
             break;
         case "Telesur_sr":
-            temp = "https://www.telesur.sr/";
+            temp = "https://www.telesur.sr";
             break;
         case "Telia_az":
             temp = "https://www.azercell.com/en/";
@@ -1635,7 +1635,7 @@ export function getsite(id: string)
             temp = "https://www.tigo.co.tz/";
             break;
         case "TimorTelecom_tl":
-            temp = "https://timortelecom.tl/";
+            temp = "https://timortelecom.tl";
             break;
         case "Transatel":
             temp = "https://www.transatel.com";
@@ -1680,10 +1680,10 @@ export function getsite(id: string)
             temp = "https://www.umniah.com/";
             break;
         case "Unicom_cn":
-            temp = "http://www.chinaunicom.com.cn/";
+            temp = "http://www.chinaunicom.com.cn";
             break;
         case "Unicom_hk":
-            temp = "http://www.chinaunicom.com.hk/";
+            temp = "https://www.chinaunicom.com.hk/en/global/home.php";
             break;
         case "UnionWireless_US":
             temp = "http://www.unionwireless.com/ContactUs.aspx";
@@ -1692,7 +1692,7 @@ export function getsite(id: string)
             temp = "https://unitedwireless.com/support";
             break;
         case "Unitel_ao":
-            temp = "http://www.unitel.ao/";
+            temp = "https://unitel.ao";
             break;
         case "Unitel_la":
             temp = "http://www.unitel.com.la/";
@@ -1794,7 +1794,7 @@ export function getsite(id: string)
             temp = "https://www.vivacom.bg/online/en/apple";
             break;
         case "Vodafone_1and1_de":
-            temp = "https://www.1und1.de/";
+            temp = "https://1und1.de/";
             break;
         case "Vodafone_Ho_it":
             temp = "https://www.ho-mobile.it";
@@ -1854,7 +1854,7 @@ export function getsite(id: string)
             temp = "https://www.vodacom.co.ls/";
             break;
         case "Vodafone_mt":
-            temp = "https://www.epic.com.mt/";
+            temp = "https://www.epic.com.mt";
             break;
         case "Vodafone_mz":
             temp = "http://www.vm.co.mz/";
@@ -1980,7 +1980,7 @@ export function getsite(id: string)
             temp = "http://iwireless.com/";
             break;
         case "iusacell_Unefon_mx":
-            temp = "http://www.unefon.com.mx/";
+            temp = "https://unefon.com.mx";
             break;
         case "iusacell_mx":
             temp = "https://www.att.com.mx/";
@@ -2028,7 +2028,7 @@ export function getsite(id: string)
             temp = "http://movistar.com.co/";
             break;
         case "movistar_cr":
-            temp = "https://libertycr.com/web/centro-de-ayuda/canales-de-atencion";
+            temp = "https://libertycr.com/centro-de-ayuda/canales-de-atencion";
             break;
         case "movistar_ec":
             temp = "http://www.movistar.com.ec/";
@@ -2049,7 +2049,7 @@ export function getsite(id: string)
             temp = "http://www.movistar.com.pe/";
             break;
         case "movistar_sv":
-            temp = "http://www.movistar.com.sv/";
+            temp = "https://movistar.com.sv";
             break;
         case "movistar_uy":
             temp = "http://www.movistar.com.uy/";
@@ -2058,7 +2058,7 @@ export function getsite(id: string)
             temp = "http://www.vivo.com.br/";
             break;
         case "vtr_cl":
-            temp = "http://centrodeayudaonline.vtr.cl/";
+            temp = "https://vtr.com";
             break;
         default:
             temp = null;

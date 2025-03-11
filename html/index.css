@@ -94,7 +94,6 @@ body {
 
 h1,h2,h3,p {
     margin: 0;
-    color: var(--grey-900);
 }
 a {
     color: var(--cyan-500);
@@ -104,4 +103,9 @@ a {
 }
 .grow {
     flex-grow: 1;
+}
+
+.fixcolor
+{
+    color: var(--grey-900);
 }

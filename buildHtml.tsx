@@ -51,8 +51,8 @@ const CarrierSupportTable = () => {
                     <div class='header'>
                         
                         <h3>
-                            {url && <img width={23} height={23} src={`https://www.google.com/s2/favicons?domain=${encodeURIComponent(url)}&sz=32`} alt={data.names[0]} style={'background-color: transparent;'} />}
-                            <a href={getsite(id)}>{data.names[0]}</a>
+                            {url && <img width={23} height={23} src={`https://www.google.com/s2/favicons?domain=${encodeURIComponent(url)}&sz=32`} alt={data.names[0]}/>}
+                            <a href={getsite(id)} style={'color:--grey-900;'}>{data.names[0]}</a>
                         </h3>
                         <span class='emoji'>{['❌','⏳' ,'✅'][rcsStatus(data)]}</span>
                     </div>

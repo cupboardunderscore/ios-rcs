@@ -56,7 +56,7 @@ body {
                     h3 {
                         img {
                             vertical-align: sub;
-                            background: white;
+                            background: transparent;
                             border-radius: 3px;
                             margin-right: 0.25em;
                         }

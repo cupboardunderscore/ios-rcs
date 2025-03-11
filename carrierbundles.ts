@@ -142,7 +142,7 @@ async function doOnline() {
     }
 }
 
-doLocal('18.3.1-CrystalD22D72.D16OS')
+doLocal('18.3.2-CrystalD22D82.D16OS')
 await doOnline();
 doLocal('18.4b3-CrystalESeed22E5222f.D16DeveloperOS')
 

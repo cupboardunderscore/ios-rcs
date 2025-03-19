@@ -648,7 +648,7 @@ export function getsite(id: string)
             temp = "https://www.drei.at/";
             break;
         case "Hutchison_dk":
-            temp = "http://www.dk/Privat/Kundeservice/";
+            temp = "http://www.3.dk/Privat/Kundeservice/";
             break;
         case "Hutchison_hk":
             temp = "http://iphone.three.com.hk/website/eng/home/index.html";

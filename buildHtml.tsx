@@ -94,7 +94,7 @@ let html = renderToString(<>
                     <> </>&bull; <> </>
                     <a href='https://github.com/cupboardunderscore/ios-rcs'>GitHub</a>
                 </p>
-                <h2>Updated with iOS 18.4 beta 4 carrier bundles!</h2>
+                <h2>Updated with iOS 18.4 carrier bundles!</h2>
             </header>
             <CarrierSupportTable />
         </div>

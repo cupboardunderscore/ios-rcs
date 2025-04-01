@@ -24,6 +24,7 @@ jobs:
     - run: bun install
     - run: bun run ./carrierbundles.ts
     - run: bun run ./buildHtml.tsx
+    - run: bun run ./buildHtml-5gsa.tsx
     - run: cp ./processed.json ./html/processed.json
     - uses: actions/upload-pages-artifact@v3
       with:

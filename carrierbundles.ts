@@ -69,7 +69,7 @@ function readBplist<T>(...path: string[]){
 
 let networks: Record<string,any> = {};
 
-function setNetwork(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist) {
+function setNetwork(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist, blob: CarrierPlist.CarrierPlist) {
     let countryCode = id.split("_").pop()! || '';
     let countryName = data.HomeBundleIdentifier?.split('.').pop()!.replace(/([a-z])([A-Z])/g, '$1 $2');
     if (countryCode.length !== 2) countryCode = ReverseCountryCodes[countryName || ""];
@@ -94,8 +94,8 @@ function setNetwork(source: string, id: string, version: string, data: CarrierPl
         )),
         country: CountryCodes[countryCode] || countryName || countryCode, 
         countryCode,
-        data
-        
+        data,
+        blob
     }
 }
 
@@ -109,8 +109,13 @@ function doLocal(dir: string) {
 
         let info = readBplist<CarrierBundleInfo>(path, 'Info.plist');
         let data = readBplist<CarrierPlist.CarrierPlist>(path, 'carrier.plist');
+        let blob = readBplist<CarrierPlist.CarrierPlist>(path, 'overrides\_D63\_D64\_D16\_D17.plist');
+        if (!blob)
+        {
+            blob = data;
+        }
         if (!info || !data) continue;
-        setNetwork(path, info.CFBundleName, info.CFBundleVersion, data)
+        setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob)
     }
 }
 
@@ -136,9 +141,7 @@ async function doOnline() {
             continue;
         }
         let parsed = bplist.parseBuffer(cb)[0] as CarrierPlist.CarrierPlist;
-        setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed);
-
-
+        setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, parsed);
     }
 }
 

@@ -94,6 +94,9 @@ let html = renderToString(<>
                     <> </>&bull; <> </>
                     <a href='https://github.com/cupboardunderscore/ios-rcs'>GitHub</a>
                 </p>
+                <p>
+                    <a href="https://ios-rcs.foxwitch.tech/5gsa">Does My Carrier Support 5G Standalone on iOS Yet?</a>
+                </p>
                 <h2>Updated with iOS 18.4 carrier bundles!</h2>
             </header>
             <CarrierSupportTable />

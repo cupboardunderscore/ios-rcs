@@ -1,4 +1,5 @@
 *.html
+!html/5gsa/index.html
 processed.json
 *.xml
 node_modules/
@@ -6,3 +7,4 @@ node_modules/
 carrier-bundles/*/*/*
 !carrier.plist
 !Info.plist
+!overrides_D63_D64_D16_D17.plist

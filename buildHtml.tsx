@@ -35,14 +35,14 @@ const CarrierSupportTable = () => {
         let bName = bData.names[0] || bId;
         return aName.localeCompare(bName);
     });
-    let grouped = Object.groupBy(sorted, ([id, data]) => (getCountryFlag(data.countryCode || "") || "🌐") + " " + (data.country || "Worldwide"));
+    let grouped = Object.groupBy(sorted, ([id, data]) => (getCountryFlag(data.countryCode || "") || "🌐") + " " + (data.country || "-Worldwide"));
     let entries = Object.entries(grouped);
     entries.sort(([aCountry,aCarriers],[bCountry,bCarriers]) => 
         (bCarriers?.filter(([id, data]) => data.data.RCS).length ?? 0) -
         (aCarriers?.filter(([id, data]) => data.data.RCS).length ?? 0) 
     );
 
-    return <div class='countries'>{entries.map(([country, carriers]) => (country !== "🌐-Worldwide" && <>
+    return <div class='countries'>{entries.map(([country, carriers]) => (country !== "🌐 -Worldwide" && <>
         <h2>{fix(country)}</h2>
         <div class='carriers'>
             {carriers?.map(([id, data]) => {

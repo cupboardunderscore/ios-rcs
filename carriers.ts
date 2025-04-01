@@ -308,6 +308,9 @@ export function getsite(id: string)
         case "Chariton_LTE_US":
             temp = "https://www.cvalley.net";
             break;
+        case "Charter_NR_US":
+            temp = "https://www.spectrum.com/mobile.html";
+            break;
         case "Chat_LTE_US":
             temp = "https://www.chatmobility.com";
             break;
@@ -373,6 +376,9 @@ export function getsite(id: string)
             break;
         case "Claro_uy":
             temp = "http://www.claro.com.uy/";
+            break;
+        case "Comcast_NR_US":
+            temp = "http://www.xfinity.com/mobile";
             break;
         case "Comcel_co":
             temp = "https://www.claro.com.co/personas/";
@@ -719,7 +725,13 @@ export function getsite(id: string)
         case "KDDI_LTE_only_jp":
             temp = "http://www.au.kddi.com/iphone/";
             break;
+        case "KDDI_NR_jp":
+            temp = "http://www.au.kddi.com/iphone/";
+            break;
         case "KDDI_UQ_LTE_only_jp":
+            temp = "https://www.uqwimax.jp/mobile/english/";
+            break;
+        case "KDDI_UQ_NR_jp":
             temp = "https://www.uqwimax.jp/mobile/english/";
             break;
         case "KPN_Telfort_nl":
@@ -2062,6 +2074,7 @@ export function getsite(id: string)
             break;
         default:
             temp = null;
+            console.warn(id + " - not categorized");
             break;
     }
     return temp;

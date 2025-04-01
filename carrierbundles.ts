@@ -109,7 +109,7 @@ function doLocal(dir: string) {
 
         let info = readBplist<CarrierBundleInfo>(path, 'Info.plist');
         let data = readBplist<CarrierPlist.CarrierPlist>(path, 'carrier.plist');
-        let blob = readBplist<CarrierPlist.CarrierPlist>(path, 'overrides\_D63\_D64\_D16\_D17.plist');
+        let blob = readBplist<CarrierPlist.CarrierPlist>(path, 'overrides\_D93\_D94\_D47\_D48.plist');
         if (!blob)
         {
             blob = data;
@@ -145,7 +145,7 @@ async function doOnline() {
     }
 }
 
-doLocal('18.4-CrystalE22E240.D16OS')
+doLocal('18.4-CrystalE22E240.D93OS')
 await doOnline();
 //doLocal('18.4b4-CrystalESeed22E5232a.D16DeveloperOS')
 

@@ -32,6 +32,20 @@ async function getCarrierBundle(url: string) {
 
 }
 
+async function getoverrides(url: string) {
+    let req = await fetch(url);
+    if (!req.ok) throw new Error(`Failed to fetch ${url}: ${req.statusText}`);
+    let data = await req.arrayBuffer();
+    let zip = await JSZip.loadAsync(data);
+    let file = Object.keys(zip.files).find(a => a.match(/^Payload\/[a-zA-Z0-9_]+\.bundle\/overrides\_D93\_D94\_D47\_D48\.plist$/i));
+    if (!file){
+        console.warn("Files in " + url + " are: ", Object.keys(zip.files));
+        //throw new Error(`Carrier.plist not found in ${url}`);
+    }
+    return zip.file(file!)?.async('nodebuffer');
+
+}
+
 // const version = await getOnlineCarrierBundles();
 // debugger;
 
@@ -140,8 +154,14 @@ async function doOnline() {
             console.warn(`Failed to fetch ${latest.BundleURL}`);
             continue;
         }
+        let ov = await getoverrides(latest.BundleURL);
+        if (!ov)
+        {
+            ov = cb;
+        }
         let parsed = bplist.parseBuffer(cb)[0] as CarrierPlist.CarrierPlist;
-        setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, parsed);
+        let passedoutblob = bplist.parseBuffer(ov)[0] as CarrierPlist.CarrierPlist;
+        setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob);
     }
 }
 

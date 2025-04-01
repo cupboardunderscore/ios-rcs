@@ -92,6 +92,7 @@ let html = renderToString(<>
                 <p>
                     <a href='https://github.com/cupboardunderscore/ios-rcs'>GitHub</a>
                 </p>
+                <p><> </>&bull; <> </></p>
                 <p>
                     <a href="https://ios-rcs.foxwitch.tech/">Does My Carrier Support RCS on iOS Yet?</a>
                 </p>

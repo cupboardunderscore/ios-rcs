@@ -83,13 +83,44 @@ function readBplist<T>(...path: string[]){
 
 let networks: Record<string,any> = {};
 
-function setNetwork(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist, blob: CarrierPlist.CarrierPlist) {
+function setNetwork(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist) {
     let countryCode = id.split("_").pop()! || '';
     let countryName = data.HomeBundleIdentifier?.split('.').pop()!.replace(/([a-z])([A-Z])/g, '$1 $2');
     if (countryCode.length !== 2) countryCode = ReverseCountryCodes[countryName || ""];
     if (countryCode) countryCode = countryCode.toUpperCase();
     if (networks[id] && networks[id].data.RCS) return;
     networks[id] = {
+        source, version,
+        names: dedup([
+            data.CarrierName,
+            data.StatusBarImages?.map(a => a.StatusBarCarrierName || a.CarrierName) || [],
+            data.MVNOOverrides?.StatusBarImages?.map(i => i.CarrierName),
+            Object.values(data.MVNOOverrides || {}).map((o: any) => [
+                o?.OverrideConfiguration?.OverrideOperatorName,
+                o?.OverrideConfiguration?.CarrierName,
+                o?.OverrideConfiguration?.StatusBarImages?.map((a: any) => a.StatusBarCarrierName || a.CarrierName),
+            ]),
+            // data.StockSymboli?.map(a => a.name),
+        ].flat(9999).map(n => 
+            // n?.replace(new RegExp(countryCode + "$",'i'), "")
+            n?.replace(new RegExp(countryName + "$",'i'), "")
+            .trim()
+        )),
+        country: CountryCodes[countryCode] || countryName || countryCode, 
+        countryCode,
+        data
+    }
+}
+
+let networksa: Record<string,any> = {};
+
+function setNetworksa(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist, blob: CarrierPlist.CarrierPlist) {
+    let countryCode = id.split("_").pop()! || '';
+    let countryName = data.HomeBundleIdentifier?.split('.').pop()!.replace(/([a-z])([A-Z])/g, '$1 $2');
+    if (countryCode.length !== 2) countryCode = ReverseCountryCodes[countryName || ""];
+    if (countryCode) countryCode = countryCode.toUpperCase();
+    if (networksa[id] && (networksa[id].blob.Show5GStandaloneSwitch || networksa[id].blob.Enable5GStandaloneByDefault || networksa[id].data.Show5GStandaloneSwitch || networksa[id].data.Enable5GStandaloneByDefault)) return;
+    networksa[id] = {
         source, version,
         names: dedup([
             data.CarrierName,
@@ -129,7 +160,8 @@ function doLocal(dir: string) {
             blob = data;
         }
         if (!info || !data) continue;
-        setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob)
+        setNetwork(path, info.CFBundleName, info.CFBundleVersion, data)
+        setNetworksa(path, info.CFBundleName, info.CFBundleVersion, data, blob)
     }
 }
 
@@ -161,7 +193,8 @@ async function doOnline() {
         }
         let parsed = bplist.parseBuffer(cb)[0] as CarrierPlist.CarrierPlist;
         let passedoutblob = bplist.parseBuffer(ov)[0] as CarrierPlist.CarrierPlist;
-        setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob);
+        setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed);
+        setNetworksa(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob);
     }
 }
 
@@ -170,3 +203,4 @@ await doOnline();
 doLocal('18.5b1-CrystalFSeed22F5042g.D93DeveloperOS')
 
 fs.writeFileSync(Path.join(__dirname, 'processed.json'), JSON.stringify(networks, null, 2));
+fs.writeFileSync(Path.join(__dirname, 'processedsa.json'), JSON.stringify(networksa, null, 2));

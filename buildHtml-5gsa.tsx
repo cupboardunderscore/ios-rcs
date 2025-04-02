@@ -3,7 +3,7 @@ import { transform } from "lightningcss";
 import { h } from "preact";
 import renderToString from "preact-render-to-string";
 import { getCountryFlag } from "./countries.ts";
-import processed from "./processed.json";
+import processedsa from "./processedsa.json";
 import type { CarrierPlist } from "./types/carrier.plist";
 import { getsite } from "./carriers.ts";
 
@@ -11,7 +11,7 @@ import { getsite } from "./carriers.ts";
 import * as preact from "preact";
 const { Fragment } = preact;
 
-let carriers = processed as Record<string, { source: string, version: string, names: string[], country?: string, countryCode: string, data: CarrierPlist, blob: CarrierPlist}>;
+let carriers = processedsa as Record<string, { source: string, version: string, names: string[], country?: string, countryCode: string, data: CarrierPlist, blob: CarrierPlist}>;
 
 let rcsStatus = (data: typeof carriers[string]) => (data.blob.Show5GStandaloneSwitch || data.blob.Enable5GStandaloneByDefault || data.data.Show5GStandaloneSwitch || data.data.Enable5GStandaloneByDefault) ? (data.source.includes("DeveloperOS") ? 1 : 2) : 0;
 

@@ -53,6 +53,9 @@ export function getsite(id: string)
         case "ATT_FirstNet_US":
             temp = "https://www.firstnet.com/";
             break;
+        case "ATT_MVNO_US":
+            temp = "http://www.att.com/esupport/index.jsp?product=wireless";
+            break;
         case "ATT_NR_US":
             temp = "http://www.att.com/esupport/index.jsp?product=wireless";
             break;

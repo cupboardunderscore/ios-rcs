@@ -21,6 +21,7 @@ jobs:
     - name: Setup Pages
       uses: actions/configure-pages@v5
     - uses: oven-sh/setup-bun@v2
+    - run: mkdir html/5gsa
     - run: bun install
     - run: bun run ./carrierbundles.ts
     - run: bun run ./buildHtml.tsx

@@ -1,6 +1,6 @@
 *.html
-!html/5gsa/index.html
 processed.json
+processedsa.json
 *.xml
 node_modules/
 .DS_Store
@@ -8,3 +8,5 @@ carrier-bundles/*/*/*
 !carrier.plist
 !Info.plist
 !overrides_D93_D94_D47_D48.plist
+bun.lock
+run.command

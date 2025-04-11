@@ -21,12 +21,15 @@ jobs:
     - name: Setup Pages
       uses: actions/configure-pages@v5
     - uses: oven-sh/setup-bun@v2
+    - run: mkdir html/rbm
     - run: mkdir html/5gsa
+    - run: mkdir html/sat
     - run: bun install
     - run: bun run ./carrierbundles.ts
     - run: bun run ./buildHtml.tsx
+    - run: bun run ./buildHtml-rbm.tsx
     - run: bun run ./buildHtml-5gsa.tsx
-    - run: cp ./processed.json ./html/processed.json
+    - run: bun run ./buildHtml-sat.tsx
     - uses: actions/upload-pages-artifact@v3
       with:
         path: html

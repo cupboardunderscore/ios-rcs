@@ -6,6 +6,7 @@ import { getCountryFlag } from "./countries.ts";
 import processed from "./processed.json";
 import type { CarrierPlist } from "./types/carrier.plist";
 import { getsite } from "./carriers.ts";
+import { manualversion } from "./carrierbundles.ts";
 
 // for some reason this is required otherwise bun on CI will throw 'Can't find variable: Fragment'
 import * as preact from "preact";
@@ -70,7 +71,7 @@ const CarrierSupportTable = () => {
 }
 let html = renderToString(<>
     <head>
-        <title>Does My Carrier Support RCS on iOS Yet?</title>
+        <title>Does my carrier support RCS on iOS yet?</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="A list of carriers that support RCS on iOS" />
         <style dangerouslySetInnerHTML={{__html: transform({
@@ -88,17 +89,23 @@ let html = renderToString(<>
     <body>
         <div class='container'>
             <header>
-                <h1>Does My Carrier Support RCS on iOS Yet?</h1>
+                <h1>Does my carrier support RCS on iOS yet?</h1>
                 <p>
                     <a href="https://support.apple.com/en-us/109526" target="_blank">Apple provided</a> a list of what features each carrier supports... but only on their US/CA site.
                     <> </>&bull; <> </>
                     <a href='https://github.com/cupboardunderscore/ios-rcs'>GitHub</a>
                 </p>
                 <p><> </>&bull; <> </></p>
+                <p>Does my carrier support</p>
                 <p>
-                    <a href="./5gsa/">Does My Carrier Support 5G Standalone on iOS Yet?</a>
+                    <a href="./rbm/">RCS Business Messaging</a>
+                    <> </>&bull; <> </>
+                    <a href="./5gsa/">5G Standalone</a>
+                    <> </>&bull; <> </>
+                    <a href="./sat/">Satellite Features</a>
                 </p>
-                <h2>Updated with iOS 18.5 beta 1 carrier bundles!</h2>
+                <p>on iOS yet?</p>
+                <h2>Updated with iOS {manualversion()} carrier bundles!</h2>
             </header>
             <CarrierSupportTable />
         </div>

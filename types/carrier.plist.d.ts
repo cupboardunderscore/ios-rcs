@@ -26,6 +26,8 @@ export interface CarrierPlist {
     MMS?:                                              TopLevelMMS;
     AllowAttachAPNEditing?:                            boolean;
     TechSettings?:                                     TopLevelTechSettings;
+    SupportsSatellite?:                                boolean;
+    ShowSatelliteSwitch?:                              boolean;
     apns?: {
         password?:                             string;
         username?:                             string;
@@ -2034,9 +2036,12 @@ export interface QualityOfServiceAudio {
 }
 
 export interface RCS {
-    ProvisioningData?:  ProvisioningData;
-    EnableRCSByDefault: boolean;
-    ShowRCSSwitch:      boolean;
+    ProvisioningData?:                  ProvisioningData;
+    EnableRCSByDefault:                 boolean;
+    ShowRCSSwitch:                      boolean;
+    EnableBusinessMessagingByDefault:   boolean;
+    ShowBusinessMessagingSwitch:        boolean;
+
 }
 
 export interface ProvisioningData {

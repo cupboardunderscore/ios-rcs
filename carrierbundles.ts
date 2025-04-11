@@ -82,6 +82,9 @@ function readBplist<T>(...path: string[]){
 }
 
 let networks: Record<string,any> = {};
+let network5gsa: Record<string,any> = {};
+let networksat: Record<string,any> = {};
+let networkrbm: Record<string,any> = {};
 
 function setNetwork(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist) {
     let countryCode = id.split("_").pop()! || '';
@@ -112,15 +115,13 @@ function setNetwork(source: string, id: string, version: string, data: CarrierPl
     }
 }
 
-let networksa: Record<string,any> = {};
-
-function setNetworksa(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist, blob: CarrierPlist.CarrierPlist) {
+function setNetwork5gsa(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist, blob: CarrierPlist.CarrierPlist) {
     let countryCode = id.split("_").pop()! || '';
     let countryName = data.HomeBundleIdentifier?.split('.').pop()!.replace(/([a-z])([A-Z])/g, '$1 $2');
     if (countryCode.length !== 2) countryCode = ReverseCountryCodes[countryName || ""];
     if (countryCode) countryCode = countryCode.toUpperCase();
-    if (networksa[id] && (networksa[id].blob.Show5GStandaloneSwitch || networksa[id].blob.Enable5GStandaloneByDefault || networksa[id].data.Show5GStandaloneSwitch || networksa[id].data.Enable5GStandaloneByDefault)) return;
-    networksa[id] = {
+    if (network5gsa[id] && (network5gsa[id].blob.Show5GStandaloneSwitch || network5gsa[id].blob.Enable5GStandaloneByDefault || network5gsa[id].data.Show5GStandaloneSwitch || network5gsa[id].data.Enable5GStandaloneByDefault)) return;
+    network5gsa[id] = {
         source, version,
         names: dedup([
             data.CarrierName,
@@ -144,6 +145,65 @@ function setNetworksa(source: string, id: string, version: string, data: Carrier
     }
 }
 
+function setNetworksat(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist, blob: CarrierPlist.CarrierPlist) {
+    let countryCode = id.split("_").pop()! || '';
+    let countryName = data.HomeBundleIdentifier?.split('.').pop()!.replace(/([a-z])([A-Z])/g, '$1 $2');
+    if (countryCode.length !== 2) countryCode = ReverseCountryCodes[countryName || ""];
+    if (countryCode) countryCode = countryCode.toUpperCase();
+    if (networksat[id] && (networksat[id].blob.SupportsSatellite || networksat[id].blob.SupportsSatellite)) return;
+    networksat[id] = {
+        source, version,
+        names: dedup([
+            data.CarrierName,
+            data.StatusBarImages?.map(a => a.StatusBarCarrierName || a.CarrierName) || [],
+            data.MVNOOverrides?.StatusBarImages?.map(i => i.CarrierName),
+            Object.values(data.MVNOOverrides || {}).map((o: any) => [
+                o?.OverrideConfiguration?.OverrideOperatorName,
+                o?.OverrideConfiguration?.CarrierName,
+                o?.OverrideConfiguration?.StatusBarImages?.map((a: any) => a.StatusBarCarrierName || a.CarrierName),
+            ]),
+            // data.StockSymboli?.map(a => a.name),
+        ].flat(9999).map(n => 
+            // n?.replace(new RegExp(countryCode + "$",'i'), "")
+            n?.replace(new RegExp(countryName + "$",'i'), "")
+            .trim()
+        )),
+        country: CountryCodes[countryCode] || countryName || countryCode, 
+        countryCode,
+        data,
+        blob
+    }
+}
+
+function setNetworkrbm(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist) {
+    let countryCode = id.split("_").pop()! || '';
+    let countryName = data.HomeBundleIdentifier?.split('.').pop()!.replace(/([a-z])([A-Z])/g, '$1 $2');
+    if (countryCode.length !== 2) countryCode = ReverseCountryCodes[countryName || ""];
+    if (countryCode) countryCode = countryCode.toUpperCase();
+    if (networkrbm[id] && (networkrbm[id].data.RCS?.EnableBusinessMessagingByDefault || networkrbm[id].data.RCS?.ShowBusinessMessagingSwitch)) return;
+    networkrbm[id] = {
+        source, version,
+        names: dedup([
+            data.CarrierName,
+            data.StatusBarImages?.map(a => a.StatusBarCarrierName || a.CarrierName) || [],
+            data.MVNOOverrides?.StatusBarImages?.map(i => i.CarrierName),
+            Object.values(data.MVNOOverrides || {}).map((o: any) => [
+                o?.OverrideConfiguration?.OverrideOperatorName,
+                o?.OverrideConfiguration?.CarrierName,
+                o?.OverrideConfiguration?.StatusBarImages?.map((a: any) => a.StatusBarCarrierName || a.CarrierName),
+            ]),
+            // data.StockSymboli?.map(a => a.name),
+        ].flat(9999).map(n => 
+            // n?.replace(new RegExp(countryCode + "$",'i'), "")
+            n?.replace(new RegExp(countryName + "$",'i'), "")
+            .trim()
+        )),
+        country: CountryCodes[countryCode] || countryName || countryCode, 
+        countryCode,
+        data
+    }
+}
+
 function doLocal(dir: string) {
     dir = Path.join(__dirname, 'carrier-bundles', dir);
     let dirs = fs.readdirSync(dir);
@@ -161,7 +221,9 @@ function doLocal(dir: string) {
         }
         if (!info || !data) continue;
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data)
-        setNetworksa(path, info.CFBundleName, info.CFBundleVersion, data, blob)
+        setNetwork5gsa(path, info.CFBundleName, info.CFBundleVersion, data, blob)
+        setNetworksat(path, info.CFBundleName, info.CFBundleVersion, data, blob)
+        setNetworkrbm(path, info.CFBundleName, info.CFBundleVersion, data)
     }
 }
 
@@ -194,8 +256,15 @@ async function doOnline() {
         let parsed = bplist.parseBuffer(cb)[0] as CarrierPlist.CarrierPlist;
         let passedoutblob = bplist.parseBuffer(ov)[0] as CarrierPlist.CarrierPlist;
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed);
-        setNetworksa(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob);
+        setNetwork5gsa(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob);
+        setNetworksat(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob);
+        setNetworkrbm(latest.BundleURL, carrier, latest.BuildVersion, parsed);
     }
+}
+
+export function manualversion()
+{
+    return "18.5 beta 1";
 }
 
 doLocal('18.4-CrystalE22E240.D93OS')
@@ -203,4 +272,6 @@ await doOnline();
 doLocal('18.5b1-CrystalFSeed22F5042g.D93DeveloperOS')
 
 fs.writeFileSync(Path.join(__dirname, 'processed.json'), JSON.stringify(networks, null, 2));
-fs.writeFileSync(Path.join(__dirname, 'processedsa.json'), JSON.stringify(networksa, null, 2));
+fs.writeFileSync(Path.join(__dirname, 'processed-5gsa.json'), JSON.stringify(network5gsa, null, 2));
+fs.writeFileSync(Path.join(__dirname, 'processed-sat.json'), JSON.stringify(networksat, null, 2));
+fs.writeFileSync(Path.join(__dirname, 'processed-rbm.json'), JSON.stringify(networkrbm, null, 2));

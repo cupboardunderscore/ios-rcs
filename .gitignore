@@ -1,6 +1,8 @@
 *.html
 processed.json
-processedsa.json
+processed-5gsa.json
+processed-rbm.json
+processed-sat.json
 *.xml
 node_modules/
 .DS_Store

@@ -106,6 +106,7 @@ let html = renderToString(<>
                 </p>
                 <p>on iOS yet?</p>
                 <h2>Updated with iOS {manualversion()} carrier bundles!</h2>
+                <h3><a target="_blank" href="https://support.apple.com/en-us/109324">OTA</a> bundles updated on: {new Date().toDateString()}</h3>
             </header>
             <CarrierSupportTable />
         </div>

@@ -267,7 +267,7 @@ export function manualversion()
     return "18.5 beta 2";
 }
 
-doLocal('18.4-CrystalE22E240.D93OS')
+doLocal('18.4.1-CrystalE22E252.D93OS')
 await doOnline();
 doLocal('18.5b2-CrystalFSeed22F5053f.D93DeveloperOS')
 

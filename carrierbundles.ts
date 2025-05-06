@@ -264,12 +264,12 @@ async function doOnline() {
 
 export function manualversion()
 {
-    return "18.5 beta 4";
+    return "18.5 RC";
 }
 
 doLocal('18.4.1-CrystalE22E252.D93OS')
 await doOnline();
-doLocal('18.5b4-CrystalFSeed22F5068a.D93DeveloperOS')
+doLocal('18.5RC-CrystalF22F75.D93DeveloperOS')
 
 fs.writeFileSync(Path.join(__dirname, 'processed.json'), JSON.stringify(networks, null, 2));
 fs.writeFileSync(Path.join(__dirname, 'processed-5gsa.json'), JSON.stringify(network5gsa, null, 2));

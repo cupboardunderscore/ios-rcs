@@ -39,7 +39,7 @@ async function getoverrides(url: string) {
     let zip = await JSZip.loadAsync(data);
     let file = Object.keys(zip.files).find(a => a.match(/^Payload\/[a-zA-Z0-9_]+\.bundle\/overrides\_D93\_D94\_D47\_D48\.plist$/i));
     if (!file){
-        console.warn("Files in " + url + " are: ", Object.keys(zip.files));
+        //console.warn("Files in " + url + " are: ", Object.keys(zip.files));
         //throw new Error(`Carrier.plist not found in ${url}`);
     }
     return zip.file(file!)?.async('nodebuffer');
@@ -75,7 +75,10 @@ function dottedCompare(a: string, b: string) {
 function readBplist<T>(...path: string[]){
     let fullPath = Path.join(...path);
     if (!fs.existsSync(fullPath)) {
-        console.warn(`File not found ${path}`);
+        if (!fullPath.includes("overrides"))
+        {
+            console.warn(`File not found ${path}`);
+        }
         return;
     };
     return bplist.parseFileSync<T>(fullPath)[0];
@@ -271,6 +274,7 @@ doLocal('18.4.1-CrystalE22E252.D93OS')
 await doOnline();
 doLocal('18.5RC-CrystalF22F75.D93DeveloperOS')
 
+fs.writeFileSync(Path.join(__dirname, 'version.txt'), manualversion());
 fs.writeFileSync(Path.join(__dirname, 'processed.json'), JSON.stringify(networks, null, 2));
 fs.writeFileSync(Path.join(__dirname, 'processed-5gsa.json'), JSON.stringify(network5gsa, null, 2));
 fs.writeFileSync(Path.join(__dirname, 'processed-sat.json'), JSON.stringify(networksat, null, 2));

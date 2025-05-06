@@ -6,7 +6,7 @@ import { getCountryFlag } from "./countries.ts";
 import processed from "./processed.json";
 import type { CarrierPlist } from "./types/carrier.plist";
 import { getsite } from "./carriers.ts";
-import { manualversion } from "./carrierbundles.ts";
+import manualversion from "./version.txt";
 
 // for some reason this is required otherwise bun on CI will throw 'Can't find variable: Fragment'
 import * as preact from "preact";
@@ -105,7 +105,7 @@ let html = renderToString(<>
                     <a href="./sat/">Satellite Features</a>
                 </p>
                 <p>on iOS yet?</p>
-                <h2>Updated with iOS {manualversion()} carrier bundles!</h2>
+                <h2>Updated with iOS {manualversion} carrier bundles!</h2>
                 <h3><a target="_blank" href="https://support.apple.com/en-us/109324">OTA</a> bundles updated on: {new Date().toDateString()}</h3>
             </header>
             <CarrierSupportTable />

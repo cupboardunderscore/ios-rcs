@@ -12,3 +12,4 @@ carrier-bundles/*/*/*
 !overrides_D93_D94_D47_D48.plist
 bun.lock
 run.command
+version.txt

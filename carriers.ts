@@ -1130,6 +1130,9 @@ export function getsite(id: string)
         case "Panhandle_US":
             temp = "https://www.ptci.net/about/contact/";
             break;
+        case "Paradise_bm":
+            temp = "https://www.paradisemobile.bm";
+            break;
         case "Pelephone_il":
             temp = "http://www.pelephone.co.il/iphone";
             break;
@@ -1540,6 +1543,9 @@ export function getsite(id: string)
             break;
         case "Telenet_be":
             temp = "https://www2.telenet.be/residential/en";
+            break;
+        case "Telenor_Vimla_se":
+            temp = "https://vimla.se";
             break;
         case "Telenor_dk":
             temp = "https://www.telenor.dk/";
@@ -1996,6 +2002,9 @@ export function getsite(id: string)
             break;
         case "iusacell_Unefon_mx":
             temp = "https://unefon.com.mx";
+            break;
+        case "iusacell_WIM_mx":
+            temp = "https://www.somoswim.com";
             break;
         case "iusacell_mx":
             temp = "https://www.att.com.mx/";

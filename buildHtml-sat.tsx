@@ -47,13 +47,14 @@ const CarrierSupportTable = () => {
         <h2>{fix(country)}</h2>
         <div class='carriers'>
             {carriers?.map(([id, data]) => {
-                let url = getsite(id) || data.data.CarrierBookmarks?.at(-1)?.URL || data.data.MyAccountURL || data.data.TetheringURL;
+                let site = getsite(id);
+                let url = site || data.data.CarrierBookmarks?.at(-1)?.URL || data.data.MyAccountURL || data.data.TetheringURL;
                 return <div class='carrier' data-supports={rcsStatus(data)}>
                     <div class='header'>
                         
                         <h3>
                             {url && <img width={23} height={23} src={`https://www.google.com/s2/favicons?domain=${encodeURIComponent(url)}&sz=32`} alt={data.names[0]}/>}
-                            <a target={'_blank'} rel={'noopener noreferrer'} href={getsite(id)} style={'color:var(--grey-900); text-decoration:none;'}>{data.names[0]}</a>
+                            <a target={'_blank'} rel={'noopener noreferrer'} href={site} style={'color:var(--grey-900); text-decoration:none;'}>{data.names[0]}</a>
                         </h3>
                         <span class='emoji'>{['❌','⏳' ,'✅'][rcsStatus(data)]}</span>
                     </div>

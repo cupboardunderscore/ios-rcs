@@ -3,6 +3,8 @@ processed.json
 processed-5gsa.json
 processed-rbm.json
 processed-sat.json
+processed-vonr.json
+processed-vvmail.json
 *.xml
 node_modules/
 .DS_Store

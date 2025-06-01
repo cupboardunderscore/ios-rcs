@@ -24,12 +24,16 @@ jobs:
     - run: mkdir html/rbm
     - run: mkdir html/5gsa
     - run: mkdir html/sat
+    - run: mkdir html/vvmail
+    - run: mkdir html/vonr
     - run: bun install
     - run: bun run ./carrierbundles.ts
     - run: bun run ./buildHtml.tsx
     - run: bun run ./buildHtml-rbm.tsx
     - run: bun run ./buildHtml-5gsa.tsx
     - run: bun run ./buildHtml-sat.tsx
+    - run: bun run ./buildHtml-vvmail.tsx
+    - run: bun run ./buildHtml-vonr.tsx
     - uses: actions/upload-pages-artifact@v3
       with:
         path: html

@@ -28,6 +28,7 @@ export interface CarrierPlist {
     TechSettings?:                                     TopLevelTechSettings;
     SupportsSatellite?:                                boolean;
     ShowSatelliteSwitch?:                              boolean;
+    SupportsVoNR?:                                     boolean;
     apns?: {
         password?:                             string;
         username?:                             string;

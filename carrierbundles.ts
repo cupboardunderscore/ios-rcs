@@ -88,6 +88,8 @@ let networks: Record<string,any> = {};
 let network5gsa: Record<string,any> = {};
 let networksat: Record<string,any> = {};
 let networkrbm: Record<string,any> = {};
+let networkvonr: Record<string,any> = {};
+let networkvvmail: Record<string,any> = {};
 
 function setNetwork(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist) {
     let countryCode = id.split("_").pop()! || '';
@@ -207,6 +209,65 @@ function setNetworkrbm(source: string, id: string, version: string, data: Carrie
     }
 }
 
+function setNetworkvonr(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist, blob: CarrierPlist.CarrierPlist) {
+    let countryCode = id.split("_").pop()! || '';
+    let countryName = data.HomeBundleIdentifier?.split('.').pop()!.replace(/([a-z])([A-Z])/g, '$1 $2');
+    if (countryCode.length !== 2) countryCode = ReverseCountryCodes[countryName || ""];
+    if (countryCode) countryCode = countryCode.toUpperCase();
+    if (networkvonr[id] && (networkvonr[id].blob.SupportsVoNR || networkvonr[id].blob.SupportsVoNR)) return;
+    networkvonr[id] = {
+        source, version,
+        names: dedup([
+            data.CarrierName,
+            data.StatusBarImages?.map(a => a.StatusBarCarrierName || a.CarrierName) || [],
+            data.MVNOOverrides?.StatusBarImages?.map(i => i.CarrierName),
+            Object.values(data.MVNOOverrides || {}).map((o: any) => [
+                o?.OverrideConfiguration?.OverrideOperatorName,
+                o?.OverrideConfiguration?.CarrierName,
+                o?.OverrideConfiguration?.StatusBarImages?.map((a: any) => a.StatusBarCarrierName || a.CarrierName),
+            ]),
+            // data.StockSymboli?.map(a => a.name),
+        ].flat(9999).map(n => 
+            // n?.replace(new RegExp(countryCode + "$",'i'), "")
+            n?.replace(new RegExp(countryName + "$",'i'), "")
+            .trim()
+        )),
+        country: CountryCodes[countryCode] || countryName || countryCode, 
+        countryCode,
+        data,
+        blob
+    }
+}
+
+function setNetworkvvmail(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist) {
+    let countryCode = id.split("_").pop()! || '';
+    let countryName = data.HomeBundleIdentifier?.split('.').pop()!.replace(/([a-z])([A-Z])/g, '$1 $2');
+    if (countryCode.length !== 2) countryCode = ReverseCountryCodes[countryName || ""];
+    if (countryCode) countryCode = countryCode.toUpperCase();
+    if (networkvvmail[id] && (networkvvmail[id].data.VisualVoicemailServiceName && networkvvmail[id].data.VisualVoicemailServiceName != "none")) return;
+    networkvvmail[id] = {
+        source, version,
+        names: dedup([
+            data.CarrierName,
+            data.StatusBarImages?.map(a => a.StatusBarCarrierName || a.CarrierName) || [],
+            data.MVNOOverrides?.StatusBarImages?.map(i => i.CarrierName),
+            Object.values(data.MVNOOverrides || {}).map((o: any) => [
+                o?.OverrideConfiguration?.OverrideOperatorName,
+                o?.OverrideConfiguration?.CarrierName,
+                o?.OverrideConfiguration?.StatusBarImages?.map((a: any) => a.StatusBarCarrierName || a.CarrierName),
+            ]),
+            // data.StockSymboli?.map(a => a.name),
+        ].flat(9999).map(n => 
+            // n?.replace(new RegExp(countryCode + "$",'i'), "")
+            n?.replace(new RegExp(countryName + "$",'i'), "")
+            .trim()
+        )),
+        country: CountryCodes[countryCode] || countryName || countryCode, 
+        countryCode,
+        data
+    }
+}
+
 function doLocal(dir: string) {
     dir = Path.join(__dirname, 'carrier-bundles', dir);
     let dirs = fs.readdirSync(dir);
@@ -227,6 +288,8 @@ function doLocal(dir: string) {
         setNetwork5gsa(path, info.CFBundleName, info.CFBundleVersion, data, blob)
         setNetworksat(path, info.CFBundleName, info.CFBundleVersion, data, blob)
         setNetworkrbm(path, info.CFBundleName, info.CFBundleVersion, data)
+        setNetworkvonr(path, info.CFBundleName, info.CFBundleVersion, data, blob)
+        setNetworkvvmail(path, info.CFBundleName, info.CFBundleVersion, data)
     }
 }
 
@@ -262,6 +325,8 @@ async function doOnline() {
         setNetwork5gsa(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob);
         setNetworksat(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob);
         setNetworkrbm(latest.BundleURL, carrier, latest.BuildVersion, parsed);
+        setNetworkvonr(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob);
+        setNetworkvvmail(latest.BundleURL, carrier, latest.BuildVersion, parsed);
     }
 }
 
@@ -279,3 +344,5 @@ fs.writeFileSync(Path.join(__dirname, 'processed.json'), JSON.stringify(networks
 fs.writeFileSync(Path.join(__dirname, 'processed-5gsa.json'), JSON.stringify(network5gsa, null, 2));
 fs.writeFileSync(Path.join(__dirname, 'processed-sat.json'), JSON.stringify(networksat, null, 2));
 fs.writeFileSync(Path.join(__dirname, 'processed-rbm.json'), JSON.stringify(networkrbm, null, 2));
+fs.writeFileSync(Path.join(__dirname, 'processed-vonr.json'), JSON.stringify(networkvonr, null, 2));
+fs.writeFileSync(Path.join(__dirname, 'processed-vvmail.json'), JSON.stringify(networkvvmail, null, 2));

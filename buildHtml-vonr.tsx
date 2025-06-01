@@ -3,7 +3,7 @@ import { transform } from "lightningcss";
 import { h } from "preact";
 import renderToString from "preact-render-to-string";
 import { getCountryFlag } from "./countries.ts";
-import processedsa from "./processed-rbm.json";
+import processedvonr from "./processed-vonr.json";
 import type { CarrierPlist } from "./types/carrier.plist";
 import { getsite } from "./carriers.ts";
 import manualversion from "./version.txt";
@@ -12,9 +12,9 @@ import manualversion from "./version.txt";
 import * as preact from "preact";
 const { Fragment } = preact;
 
-let carriers = processedsa as Record<string, { source: string, version: string, names: string[], country?: string, countryCode: string, data: CarrierPlist}>;
+let carriers = processedvonr as Record<string, { source: string, version: string, names: string[], country?: string, countryCode: string, data: CarrierPlist, blob: CarrierPlist}>;
 
-let rcsStatus = (data: typeof carriers[string]) => (data.data.RCS?.EnableBusinessMessagingByDefault || data.data.RCS?.ShowBusinessMessagingSwitch) ? (data.source.includes("DeveloperOS") ? 1 : 2) : 0;
+let rcsStatus = (data: typeof carriers[string]) => (data.blob.SupportsVoNR || data.data.SupportsVoNR) ? (data.source.includes("DeveloperOS") ? 1 : 2) : 0;
 
 function fix(country: string) {if (country == "🇦🇽 Finland") {return "🇦🇽 Finland (Åland)";} else {return country;}};
 
@@ -36,11 +36,12 @@ const CarrierSupportTable = () => {
         let bName = bData.names[0] || bId;
         return aName.localeCompare(bName);
     });
+
     let grouped = Object.groupBy(sorted, ([id, data]) => (getCountryFlag(data.countryCode || "") || "🌐") + " " + (data.country || "-Worldwide"));
     let entries = Object.entries(grouped);
     entries.sort(([aCountry,aCarriers],[bCountry,bCarriers]) => 
-        (bCarriers?.filter(([id, data]) => (data.data.RCS?.EnableBusinessMessagingByDefault || data.data.RCS?.ShowBusinessMessagingSwitch)).length ?? 0) -
-        (aCarriers?.filter(([id, data]) => (data.data.RCS?.EnableBusinessMessagingByDefault || data.data.RCS?.ShowBusinessMessagingSwitch)).length ?? 0) 
+        (bCarriers?.filter(([id, data]) => (data.blob.SupportsVoNR || data.data.SupportsVoNR)).length ?? 0) -
+        (aCarriers?.filter(([id, data]) => (data.blob.SupportsVoNR || data.data.SupportsVoNR)).length ?? 0) 
     );
 
     return <div class='countries'>{entries.map(([country, carriers]) => (country !== "🌐 -Worldwide" && <>
@@ -59,7 +60,7 @@ const CarrierSupportTable = () => {
                         <span class='emoji'>{['❌','⏳' ,'✅'][rcsStatus(data)]}</span>
                     </div>
                     {data.names.length > 1 && <p class='aka'>aka. {data.names.slice(1).join(", ")}</p>}
-                    {(data.data.RCS?.EnableBusinessMessagingByDefault || data.data.RCS?.ShowBusinessMessagingSwitch) && (
+                    {(data.blob.SupportsVoNR || data.data.SupportsVoNR) && (
                         data.source.includes("DeveloperOS") ? "in beta" :
                         data.source.startsWith("https") ? <a target="_blank" href="https://support.apple.com/en-us/109324">delivered OTA</a> : "")}
                     <div class='grow'></div>
@@ -72,9 +73,9 @@ const CarrierSupportTable = () => {
 }
 let html = renderToString(<>
     <head>
-        <title>Does my carrier support RCS Business Messaging on iOS yet?</title>
+        <title>Does my carrier support Voice over NR on iOS yet?</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="A list of carriers that support 5G Standalone on iOS" />
+        <meta name="description" content="A list of carriers that support Voice over NR on iOS" />
         <style dangerouslySetInnerHTML={{__html: transform({
                 filename: "index.css",
                 code: readFileSync("./html/index.css"), 
@@ -90,7 +91,7 @@ let html = renderToString(<>
     <body>
         <div class='container'>
             <header>
-                <h1>Does my carrier support RCS Business Messaging on iOS yet?</h1>
+                <h1>Does my carrier support Voice over NR on iOS yet?</h1>
                 <p>
                     <a href="https://support.apple.com/en-us/109526" target="_blank">Apple provided</a> a list of what features each carrier supports... but only on their US/CA site.
                     <> </>&bull; <> </>
@@ -101,13 +102,13 @@ let html = renderToString(<>
                 <p>
                     <a href="../">RCS</a>
                     <> </>&bull; <> </>
+                    <a href="../rbm/">RCS Business Messaging</a>
+                    <> </>&bull; <> </>
                     <a href="../5gsa/">5G Standalone</a>
                     <> </>&bull; <> </>
                     <a href="../sat/">Satellite Features</a>
                     <> </>&bull; <> </>
                     <a href="../vvmail/">Visual Voicemail</a>
-                    <> </>&bull; <> </>
-                    <a href="../vonr/">Voice over NR</a>
                 </p>
                 <p>on iOS yet?</p>
                 <h2>Updated with iOS {manualversion} carrier bundles!</h2>
@@ -117,4 +118,4 @@ let html = renderToString(<>
         </div>
     </body>
 </>);
-writeFileSync("./html/rbm/index.html", html);
+writeFileSync("./html/vonr/index.html", html);

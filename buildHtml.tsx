@@ -104,6 +104,10 @@ let html = renderToString(<>
                     <a href="./5gsa/">5G Standalone</a>
                     <> </>&bull; <> </>
                     <a href="./sat/">Satellite Features</a>
+                    <> </>&bull; <> </>
+                    <a href="./vvmail/">Visual Voicemail</a>
+                    <> </>&bull; <> </>
+                    <a href="./vonr/">Voice over NR</a>
                 </p>
                 <p>on iOS yet?</p>
                 <h2>Updated with iOS {manualversion} carrier bundles!</h2>

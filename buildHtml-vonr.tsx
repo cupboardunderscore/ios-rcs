@@ -93,12 +93,12 @@ let html = renderToString(<>
             <header>
                 <h1>Does my carrier support Voice over NR on iOS yet?</h1>
                 <p>
-                    <a href="https://support.apple.com/en-us/109526" target="_blank">Apple provided</a> a list of what features each carrier supports... but only on their US/CA site.
+                    <a href="https://support.apple.com/en-us/109526" target="_blank">Apple provided</a> list of what features each carrier supports
                     <> </>&bull; <> </>
                     <a href='https://github.com/cupboardunderscore/ios-rcs'>GitHub</a>
                 </p>
                 <p><> </>&bull; <> </></p>
-                <p>Does my carrier support</p>
+                <p>Does my carrier have</p>
                 <p>
                     <a href="../">RCS</a>
                     <> </>&bull; <> </>
@@ -109,8 +109,12 @@ let html = renderToString(<>
                     <a href="../sat/">Satellite Features</a>
                     <> </>&bull; <> </>
                     <a href="../vvmail/">Visual Voicemail</a>
+                    <> </>&bull; <> </>
+                    <a href="../watch/">Apple Watch</a>
+                    <> </>&bull; <> </>
+                    <a href="../watchsa/">Apple Watch Standalone</a>
                 </p>
-                <p>on iOS yet?</p>
+                <p>support yet?</p>
                 <h2>Updated with iOS {manualversion} carrier bundles!</h2>
                 <h3><a target="_blank" href="https://support.apple.com/en-us/109324">OTA</a> bundles updated on: {new Date().toDateString()}</h3>
             </header>

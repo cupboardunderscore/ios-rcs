@@ -5,6 +5,8 @@ processed-rbm.json
 processed-sat.json
 processed-vonr.json
 processed-vvmail.json
+processed-watch.json
+processed-watchsa.json
 *.xml
 node_modules/
 .DS_Store
@@ -15,3 +17,6 @@ carrier-bundles/*/*/*
 bun.lock
 run.command
 version.txt
+libwatchos.dylib
+libwatchos.so
+libwatchos.dll

@@ -21,11 +21,15 @@ jobs:
     - name: Setup Pages
       uses: actions/configure-pages@v5
     - uses: oven-sh/setup-bun@v2
+    - uses: mlugg/setup-zig@v2
+    - run: zig build-lib watchos.cpp -dynamic -lc -lc++
     - run: mkdir html/rbm
     - run: mkdir html/5gsa
     - run: mkdir html/sat
     - run: mkdir html/vvmail
     - run: mkdir html/vonr
+    - run: mkdir html/watch
+    - run: mkdir html/watchsa
     - run: bun install
     - run: bun run ./carrierbundles.ts
     - run: bun run ./buildHtml.tsx
@@ -34,6 +38,8 @@ jobs:
     - run: bun run ./buildHtml-sat.tsx
     - run: bun run ./buildHtml-vvmail.tsx
     - run: bun run ./buildHtml-vonr.tsx
+    - run: bun run ./buildHtml-watch.tsx
+    - run: bun run ./buildHtml-watchsa.tsx
     - uses: actions/upload-pages-artifact@v3
       with:
         path: html

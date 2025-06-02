@@ -3,18 +3,35 @@ import { transform } from "lightningcss";
 import { h } from "preact";
 import renderToString from "preact-render-to-string";
 import { getCountryFlag } from "./countries.ts";
-import processedvv from "./processed-vvmail.json";
+import processedwa from "./processed-watch.json";
 import type { CarrierPlist } from "./types/carrier.plist";
 import { getsite } from "./carriers.ts";
 import manualversion from "./version.txt";
+
+import { dlopen, FFIType, suffix } from "bun:ffi";
+const path = "libwatchos." + suffix;
+const lib = dlopen(path,
+  {
+    watch:
+    {
+      args: ["cstring", "int"],
+      returns: FFIType.bool,
+    },
+    watchsa:
+    {
+      args: ["cstring", "int"],
+      returns: FFIType.bool,
+    },
+  },
+);
 
 // for some reason this is required otherwise bun on CI will throw 'Can't find variable: Fragment'
 import * as preact from "preact";
 const { Fragment } = preact;
 
-let carriers = processedvv as Record<string, { source: string, version: string, names: string[], country?: string, countryCode: string, data: CarrierPlist }>;
+let carriers = processedwa as Record<string, { source: string, version: string, names: string[], country?: string, countryCode: string, data: CarrierPlist, blob: CarrierPlist}>;
 
-let rcsStatus = (data: typeof carriers[string]) => (data.data.VisualVoicemailServiceName && data.data.VisualVoicemailServiceName != "none") ? (data.source.includes("DeveloperOS") ? 1 : 2) : 0;
+let rcsStatus = (data: typeof carriers[string], id:string) => (lib.symbols.watch(Buffer.from(id, 'utf8'), id.length) || data.data.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || data.data.RemoteCardProvisioningSettings?.MinCompatibileWatchOS || data.blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || data.blob.RemoteCardProvisioningSettings?.MinCompatibileWatchOS) ? (data.source.includes("DeveloperOS") ? 1 : 2) : 0;
 
 function fix(country: string) {if (country == "🇦🇽 Finland") {return "🇦🇽 Finland (Åland)";} else {return country;}};
 
@@ -28,8 +45,8 @@ const CarrierSupportTable = () => {
         let countryCompare = aCountry.localeCompare(bCountry);
         if (countryCompare !== 0) return countryCompare;
         
-        const aRCS = rcsStatus(aData);
-        const bRCS = rcsStatus(bData);
+        const aRCS = rcsStatus(aData, aId);
+        const bRCS = rcsStatus(bData, bId);
         if (aRCS !== bRCS) return bRCS - aRCS;
 
         let aName = aData.names[0] || aId;
@@ -39,8 +56,8 @@ const CarrierSupportTable = () => {
     let grouped = Object.groupBy(sorted, ([id, data]) => (getCountryFlag(data.countryCode || "") || "🌐") + " " + (data.country || "-Worldwide"));
     let entries = Object.entries(grouped);
     entries.sort(([aCountry,aCarriers],[bCountry,bCarriers]) => 
-        (bCarriers?.filter(([id, data]) => (data.data.VisualVoicemailServiceName && data.data.VisualVoicemailServiceName != "none")).length ?? 0) -
-        (aCarriers?.filter(([id, data]) => (data.data.VisualVoicemailServiceName && data.data.VisualVoicemailServiceName != "none")).length ?? 0) 
+        (bCarriers?.filter(([id, data]) => (lib.symbols.watch(Buffer.from(id, 'utf8'), id.length) || data.data.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || data.data.RemoteCardProvisioningSettings?.MinCompatibileWatchOS || data.blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || data.blob.RemoteCardProvisioningSettings?.MinCompatibileWatchOS)).length ?? 0) -
+        (aCarriers?.filter(([id, data]) => (lib.symbols.watch(Buffer.from(id, 'utf8'), id.length) || data.data.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || data.data.RemoteCardProvisioningSettings?.MinCompatibileWatchOS || data.blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || data.blob.RemoteCardProvisioningSettings?.MinCompatibileWatchOS)).length ?? 0) 
     );
 
     return <div class='countries'>{entries.map(([country, carriers]) => (country !== "🌐 -Worldwide" && <>
@@ -49,17 +66,17 @@ const CarrierSupportTable = () => {
             {carriers?.map(([id, data]) => {
                 let site = getsite(id);
                 let url = site || data.data.CarrierBookmarks?.at(-1)?.URL || data.data.MyAccountURL || data.data.TetheringURL;
-                return <div class='carrier' data-supports={rcsStatus(data)}>
+                return <div class='carrier' data-supports={rcsStatus(data, id)}>
                     <div class='header'>
                         
                         <h3>
                             {url && <img width={23} height={23} src={`https://www.google.com/s2/favicons?domain=${encodeURIComponent(url)}&sz=32`} alt={data.names[0]}/>}
                             <a target={'_blank'} rel={'noopener noreferrer'} href={site} style={'color:var(--grey-900); text-decoration:none;'}>{data.names[0]}</a>
                         </h3>
-                        <span class='emoji'>{['❌','⏳' ,'✅'][rcsStatus(data)]}</span>
+                        <span class='emoji'>{['❌','⏳' ,'✅'][rcsStatus(data, id)]}</span>
                     </div>
                     {data.names.length > 1 && <p class='aka'>aka. {data.names.slice(1).join(", ")}</p>}
-                    {(data.data.VisualVoicemailServiceName && data.data.VisualVoicemailServiceName != "none") && (
+                    {(lib.symbols.watch(Buffer.from(id, 'utf8'), id.length) || data.data.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || data.data.RemoteCardProvisioningSettings?.MinCompatibileWatchOS || data.blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || data.blob.RemoteCardProvisioningSettings?.MinCompatibileWatchOS) && (
                         data.source.includes("DeveloperOS") ? "in beta" :
                         data.source.startsWith("https") ? <a target="_blank" href="https://support.apple.com/en-us/109324">delivered OTA</a> : "")}
                     <div class='grow'></div>
@@ -72,9 +89,9 @@ const CarrierSupportTable = () => {
 }
 let html = renderToString(<>
     <head>
-        <title>Does my carrier support Visual Voicemail on iOS yet?</title>
+        <title>Does my carrier support Cellular on watchOS yet?</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="A list of carriers that support Visual Voicemail on iOS" />
+        <meta name="description" content="A list of carriers that support Cellular on watchOS" />
         <style dangerouslySetInnerHTML={{__html: transform({
                 filename: "index.css",
                 code: readFileSync("./html/index.css"), 
@@ -90,9 +107,9 @@ let html = renderToString(<>
     <body>
         <div class='container'>
             <header>
-                <h1>Does my carrier support Visual Voicemail on iOS yet?</h1>
+                <h1>Does my carrier support Cellular on watchOS yet?</h1>
                 <p>
-                    <a href="https://support.apple.com/en-us/109526" target="_blank">Apple provided</a> list of what features each carrier supports
+                    <a href="https://www.apple.com/watch/cellular/" target="_blank">Apple provided</a> list of Apple Watch carrier support
                     <> </>&bull; <> </>
                     <a href='https://github.com/cupboardunderscore/ios-rcs'>GitHub</a>
                 </p>
@@ -107,9 +124,9 @@ let html = renderToString(<>
                     <> </>&bull; <> </>
                     <a href="../sat/">Satellite Features</a>
                     <> </>&bull; <> </>
-                    <a href="../vonr/">Voice over NR</a>
+                    <a href="../vvmail/">Visual Voicemail</a>
                     <> </>&bull; <> </>
-                    <a href="../watch/">Apple Watch</a>
+                    <a href="../vonr/">Voice over NR</a>
                     <> </>&bull; <> </>
                     <a href="../watchsa/">Apple Watch Standalone</a>
                 </p>
@@ -121,4 +138,4 @@ let html = renderToString(<>
         </div>
     </body>
 </>);
-writeFileSync("./html/vvmail/index.html", html);
+writeFileSync("./html/watch/index.html", html);

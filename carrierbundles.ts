@@ -9,6 +9,23 @@ import type { CarrierBundleInfo } from "./types/Info.plist";
 import type CarrierPlist from "./types/carrier.plist.d.ts";
 import type { CarrierBundleSimple, iTunesUpdate } from "./types/versions.d.ts";
 
+import { dlopen, FFIType, suffix } from "bun:ffi";
+const path = "libwatchos." + suffix;
+const lib = dlopen(path,
+  {
+    watch:
+    {
+      args: ["cstring", "int"],
+      returns: FFIType.bool,
+    },
+    watchsa:
+    {
+      args: ["cstring", "int"],
+      returns: FFIType.bool,
+    },
+  },
+);
+
     
 
 
@@ -90,6 +107,8 @@ let networksat: Record<string,any> = {};
 let networkrbm: Record<string,any> = {};
 let networkvonr: Record<string,any> = {};
 let networkvvmail: Record<string,any> = {};
+let networkwatch: Record<string,any> = {};
+let networkwatchsa: Record<string,any> = {};
 
 function setNetwork(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist) {
     let countryCode = id.split("_").pop()! || '';
@@ -268,6 +287,67 @@ function setNetworkvvmail(source: string, id: string, version: string, data: Car
     }
 }
 
+
+function setNetworkwatch(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist, blob: CarrierPlist.CarrierPlist) {
+    let countryCode = id.split("_").pop()! || '';
+    let countryName = data.HomeBundleIdentifier?.split('.').pop()!.replace(/([a-z])([A-Z])/g, '$1 $2');
+    if (countryCode.length !== 2) countryCode = ReverseCountryCodes[countryName || ""];
+    if (countryCode) countryCode = countryCode.toUpperCase();
+    if (networkwatch[id] && (lib.symbols.watch(Buffer.from(id, 'utf8'), id.length) || networkwatch[id].data.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || networkwatch[id].data.RemoteCardProvisioningSettings?.MinCompatibileWatchOS || networkwatch[id].blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || networkwatch[id].blob.RemoteCardProvisioningSettings?.MinCompatibileWatchOS)) return;
+    networkwatch[id] = {
+        source, version,
+        names: dedup([
+            data.CarrierName,
+            data.StatusBarImages?.map(a => a.StatusBarCarrierName || a.CarrierName) || [],
+            data.MVNOOverrides?.StatusBarImages?.map(i => i.CarrierName),
+            Object.values(data.MVNOOverrides || {}).map((o: any) => [
+                o?.OverrideConfiguration?.OverrideOperatorName,
+                o?.OverrideConfiguration?.CarrierName,
+                o?.OverrideConfiguration?.StatusBarImages?.map((a: any) => a.StatusBarCarrierName || a.CarrierName),
+            ]),
+            // data.StockSymboli?.map(a => a.name),
+        ].flat(9999).map(n => 
+            // n?.replace(new RegExp(countryCode + "$",'i'), "")
+            n?.replace(new RegExp(countryName + "$",'i'), "")
+            .trim()
+        )),
+        country: CountryCodes[countryCode] || countryName || countryCode, 
+        countryCode,
+        data,
+        blob
+    }
+}
+
+function setNetworkwatchsa(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist, blob: CarrierPlist.CarrierPlist) {
+    let countryCode = id.split("_").pop()! || '';
+    let countryName = data.HomeBundleIdentifier?.split('.').pop()!.replace(/([a-z])([A-Z])/g, '$1 $2');
+    if (countryCode.length !== 2) countryCode = ReverseCountryCodes[countryName || ""];
+    if (countryCode) countryCode = countryCode.toUpperCase();
+    if (networkwatchsa[id] && (lib.symbols.watchsa(Buffer.from(id, 'utf8'), id.length) || networkwatchsa[id].data.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode || networkwatchsa[id].blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode)) return;
+    networkwatchsa[id] = {
+        source, version,
+        names: dedup([
+            data.CarrierName,
+            data.StatusBarImages?.map(a => a.StatusBarCarrierName || a.CarrierName) || [],
+            data.MVNOOverrides?.StatusBarImages?.map(i => i.CarrierName),
+            Object.values(data.MVNOOverrides || {}).map((o: any) => [
+                o?.OverrideConfiguration?.OverrideOperatorName,
+                o?.OverrideConfiguration?.CarrierName,
+                o?.OverrideConfiguration?.StatusBarImages?.map((a: any) => a.StatusBarCarrierName || a.CarrierName),
+            ]),
+            // data.StockSymboli?.map(a => a.name),
+        ].flat(9999).map(n => 
+            // n?.replace(new RegExp(countryCode + "$",'i'), "")
+            n?.replace(new RegExp(countryName + "$",'i'), "")
+            .trim()
+        )),
+        country: CountryCodes[countryCode] || countryName || countryCode, 
+        countryCode,
+        data,
+        blob
+    }
+}
+
 function doLocal(dir: string) {
     dir = Path.join(__dirname, 'carrier-bundles', dir);
     let dirs = fs.readdirSync(dir);
@@ -290,6 +370,8 @@ function doLocal(dir: string) {
         setNetworkrbm(path, info.CFBundleName, info.CFBundleVersion, data)
         setNetworkvonr(path, info.CFBundleName, info.CFBundleVersion, data, blob)
         setNetworkvvmail(path, info.CFBundleName, info.CFBundleVersion, data)
+        setNetworkwatch(path, info.CFBundleName, info.CFBundleVersion, data, blob)
+        setNetworkwatchsa(path, info.CFBundleName, info.CFBundleVersion, data, blob)
     }
 }
 
@@ -327,6 +409,8 @@ async function doOnline() {
         setNetworkrbm(latest.BundleURL, carrier, latest.BuildVersion, parsed);
         setNetworkvonr(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob);
         setNetworkvvmail(latest.BundleURL, carrier, latest.BuildVersion, parsed);
+        setNetworkwatch(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob);
+        setNetworkwatchsa(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob);
     }
 }
 
@@ -346,3 +430,5 @@ fs.writeFileSync(Path.join(__dirname, 'processed-sat.json'), JSON.stringify(netw
 fs.writeFileSync(Path.join(__dirname, 'processed-rbm.json'), JSON.stringify(networkrbm, null, 2));
 fs.writeFileSync(Path.join(__dirname, 'processed-vonr.json'), JSON.stringify(networkvonr, null, 2));
 fs.writeFileSync(Path.join(__dirname, 'processed-vvmail.json'), JSON.stringify(networkvvmail, null, 2));
+fs.writeFileSync(Path.join(__dirname, 'processed-watch.json'), JSON.stringify(networkwatch, null, 2));
+fs.writeFileSync(Path.join(__dirname, 'processed-watchsa.json'), JSON.stringify(networkwatchsa, null, 2));

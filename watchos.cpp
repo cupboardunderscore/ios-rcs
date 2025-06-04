@@ -7,7 +7,7 @@
 extern "C" bool watch(char* id, int lenght)
 {
     std::string temp = stringify(id, lenght);
-    std::string carr[] = {"ATT_CC_US", "ATT_NR_US", "ATT_US", "BT_Business_uk", "CSL_hk", "CellularSouth_LTE_US", "ChinaTelecom_USIM_cn", "Chunghwa_tw", "KDDI_LTE_only_jp", "PCCW_hk", "RelianceJio_in", "Sunrise_ch", "Swisscom_ch", "TMobile_Germany", "TMobile_US" ,"TaiwanMobile_tw", "Unicom_cn", "Verizon_LTE_US", "Verizon_Response_LTE_US"};
+    std::string carr[] = {"ATT_CC_US", "ATT_NR_US", "ATT_US", "BT_Business_uk", "CSL_hk", "CellularSouth_LTE_US", "ChinaTelecom_USIM_cn", "Chunghwa_tw", "KDDI_LTE_only_jp", "PCCW_hk", "RelianceJio_in", "Sprint_ISIM_LTE_US", "Sunrise_ch", "Swisscom_ch", "TMobile_Germany", "TMobile_US" ,"TaiwanMobile_tw", "Unicom_cn", "Verizon_LTE_US", "Verizon_Response_LTE_US"};
     for (auto i : carr)
     {
         if (temp == i)

@@ -3,6 +3,18 @@
 //a lot of carriers here are no longer active, i tried to give them, their original urls (unless they were bought by a carrier that isn't already on the list), except one which now linked to a gambling site, which i won't promote
 //if any links are broken or wrong, feel free to fix them or tell me c:
 
+import { dlopen, FFIType, suffix } from "bun:ffi";
+const path = "libcarrierdedupe." + suffix;
+const lib = dlopen(path,
+  {
+    carrde:
+    {
+      args: ["cstring", "int"],
+      returns: FFIType.bool,
+    },
+  },
+);
+
 export function getsite(id: string)
 {
     let temp:string;
@@ -278,9 +290,6 @@ export function getsite(id: string)
         case "CarolinaWest_LTE_US":
             temp = "https://www.carolinawest.com/support/";
             break;
-        case "CarrierLab":
-            temp = null;
-            break;
         case "Celcom_Yoodo_my":
             temp = "https://www.yoodo.com.my";
             break;
@@ -415,9 +424,6 @@ export function getsite(id: string)
             break;
         case "DataPro":
             temp = "https://eskimo.travel/";
-            break;
-        case "Default":
-            temp = null;
             break;
         case "DentWireless":
             temp = "https://www.dentwireless.com/esim";
@@ -941,9 +947,6 @@ export function getsite(id: string)
         case "Nextel_mx":
             temp = "https://www.att.com.mx/";
             break;
-        case "NonPublicNetwork":
-            temp = null;
-            break;
         case "Nova_is":
             temp = "http://www.nova.is/";
             break;
@@ -982,12 +985,6 @@ export function getsite(id: string)
             break;
         case "OPT_nc":
             temp = "http://www.opt.nc/";
-            break;
-        case "OQCFactoryMultimode":
-            temp = null;
-            break;
-        case "OQCFactoryUMTS":
-            temp = null;
             break;
         case "Oi_BrT_br":
             temp = "http://www.oi.com.br/";
@@ -1111,9 +1108,6 @@ export function getsite(id: string)
             break;
         case "Orange_vu":
             temp = "https://vodafone.com.vu";
-            break;
-        case "OtherKnown":
-            temp = null;
             break;
         case "PCCW_hk":
             temp = "https://www.1010.com.hk/en/home";
@@ -1721,9 +1715,6 @@ export function getsite(id: string)
         case "Unitel_mn":
             temp = "https://www.unitel.mn/unitel/";
             break;
-        case "Unknown":
-            temp = null;
-            break;
         case "Uros":
             temp = "https://goodspeed.io";
             break;
@@ -2086,7 +2077,10 @@ export function getsite(id: string)
             break;
         default:
             temp = null;
-            console.warn(id + " - not categorized");
+            if (lib.symbols.carrde(Buffer.from(id, 'utf8'), id.length) != true)
+            {
+                console.warn(id + " - not categorized");
+            }
             break;
     }
     return temp;

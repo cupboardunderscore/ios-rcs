@@ -284,6 +284,9 @@ export function getsite(id: string)
         case "CW_sc":
             temp = "http://www.cwseychelles.com/";
             break;
+        case "CW_tt":
+            temp = "https://bmobile.co.tt";
+            break;
         case "CW_wi":
             temp = "https://discoverflow.co/";
             break;
@@ -1766,8 +1769,11 @@ export function getsite(id: string)
         case "Viettel_vn":
             temp = "http://www.vietteltelecom.vn/";
             break;
+        case "VimpelCom_Izi_kg":
+            temp = "https://izi.me/kg/en";
+            break;
         case "VimpelCom_Izi_kz":
-            temp = "https://izi.me/";
+            temp = "https://izi.me/kz/en";
             break;
         case "VimpelCom_am":
             temp = "https://www.telecomarmenia.am/hy/";

@@ -95,7 +95,7 @@ export function build(type: number, carr: string, dir: string, tag: string, titt
             let bName = bData.names[0] || bId;
             return aName.localeCompare(bName);
         });
-        let grouped = Object.groupBy(sorted, ([id, data]) => (getCountryFlag(data.countryCode || "") || "🌐") + " " + (data.country || "-Worldwide"));
+        let grouped = Object.groupBy(sorted, ([id, data]) => (getCountryFlag(data.countryCode || "") || "🌐") + " " + (data.country || "Worldwide"));
         let entries = Object.entries(grouped);
         entries.sort(([aCountry,aCarriers],[bCountry,bCarriers]) => 
             (bCarriers?.filter(([id, data]) => (watchbool(id) || (eval(tag) && vmbool(data)))).length ?? 0) -

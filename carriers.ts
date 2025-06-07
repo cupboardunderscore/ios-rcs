@@ -1199,6 +1199,9 @@ export function getsite(id: string)
         case "RelianceJio_in":
             temp = "https://www.jio.com/";
             break;
+        case "Roamless":
+            temp = "https://roamless.com";
+            break;
         case "Robi_BhartiAirtel_bd":
             temp = "https://www.bd.airtel.com/en/";
             break;
@@ -2011,6 +2014,9 @@ export function getsite(id: string)
             break;
         case "mcel_mz":
             temp = "https://www.tmcel.mz";
+            break;
+        case "Mobi":
+            temp = "https://mobi.com";
             break;
         case "mobilkom_at":
             temp = "https://www.a1.net/";

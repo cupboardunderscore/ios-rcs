@@ -101,6 +101,27 @@ function readBplist<T>(...path: string[]){
     return bplist.parseFileSync<T>(fullPath)[0];
 }
 
+function internal(id: string)
+{
+    switch(id)
+    {
+        case "Unknown":
+            return true;
+        case "CarrierLab":
+            return true;
+        case "Default":
+            return true;
+        case "OQCFactoryMultimode":
+            return true;
+        case "OQCFactoryUMTS":
+            return true;
+        case "NonPublicNetwork":
+            return true;
+        default:
+            return false;
+    }
+}
+
 let networks: Record<string,any> = {};
 let network5gsa: Record<string,any> = {};
 let networksat: Record<string,any> = {};
@@ -364,6 +385,7 @@ function doLocal(dir: string) {
             blob = data;
         }
         if (!info || !data) continue;
+        if (internal(info.CFBundleName)) continue;
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data)
         setNetwork5gsa(path, info.CFBundleName, info.CFBundleVersion, data, blob)
         setNetworksat(path, info.CFBundleName, info.CFBundleVersion, data, blob)
@@ -401,6 +423,7 @@ async function doOnline() {
         {
             ov = cb;
         }
+        if (internal(carrier)) continue;
         let parsed = bplist.parseBuffer(cb)[0] as CarrierPlist.CarrierPlist;
         let passedoutblob = bplist.parseBuffer(ov)[0] as CarrierPlist.CarrierPlist;
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed);

@@ -29,6 +29,7 @@ const RegionalIndicators = {
 
 export const CountryCodes = {
     'AU': 'Australia',
+    'AX': 'Åland',
     'BR': 'Brazil',
     'CN': 'China',
     'CO': 'Colombia',

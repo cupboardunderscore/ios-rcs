@@ -117,7 +117,6 @@ export function build(type: number, carr: string, dir: string, tag: string, titt
     }
     let rcsStatus = (data: typeof carriers[string], id: string) => (watchbool(id) || (eval(tag) && vmbool(data))) ? (data.source.includes("DeveloperOS") ? 1 : 2) : 0;
 
-    function fix(country: string) {if (country == "🇦🇽 Finland") {return "🇦🇽 Finland (Åland)";} else {return country;}};
     let count: number = 0;
 
     const CarrierSupportTable = () => { 
@@ -146,7 +145,7 @@ export function build(type: number, carr: string, dir: string, tag: string, titt
         );
 
         return <div class='countries'>{entries.map(([country, carriers]) => (country !== "🌐 -Worldwide" && <>
-            <h2>{fix(country)}</h2>
+            <h2>{country}</h2>
             <div class='carriers'>
                 {carriers?.map(([id, data]) => {
                     let site = getsite(id);

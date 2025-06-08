@@ -3,6 +3,8 @@ import { transform } from "lightningcss";
 import { h } from "preact";
 import renderToString from "preact-render-to-string";
 import { getCountryFlag } from "./countries.ts";
+import csvParser from "csv-parser";
+import fs from "fs";
 
 import procrcs from "./processed.json";
 import procrbm from "./processed-rbm.json";
@@ -13,13 +15,12 @@ import procvonr from "./processed-vonr.json";
 import procwatch from "./processed-watch.json";
 import procwatchsa from "./processed-watchsa.json";
 
-//ig compailer ignorest the stuff above if i don't "use" it
+//ig compiler ignores the stuff above if i don't "use" it
 let temp;
 temp = procrcs; temp = procrbm; temp = proc5gsa; temp = procsat; temp = procvvmail; temp = procvonr; temp = procwatch; temp = procwatchsa;
 temp = null;
 
 import type { CarrierPlist } from "./types/carrier.plist";
-import { getsite } from "./carriers.ts";
 import manualversion from "./version.txt";
 
 // for some reason this is required otherwise bun on CI will throw 'Can't find variable: Fragment'
@@ -42,6 +43,47 @@ const lib = dlopen(path,
     },
   },
 );
+const path2 = "libcarrierdedupe." + suffix;
+const lib2 = dlopen(path2,
+  {
+    carrde:
+    {
+      args: ["cstring", "int"],
+      returns: FFIType.bool,
+    },
+  },
+);
+
+type RowData = {
+  id: string;
+  link: string;
+};
+let data: RowData[] = [];
+const cc = async (filePath: string) =>
+{
+    const data: RowData[] = [];
+    return new Promise(function(resolve)
+    {
+        fs.createReadStream(filePath)
+        .pipe(csvParser())
+        .on('data', (row: RowData) => {data.push(row);})
+        .on('end', () => {resolve(data)});
+    });
+}
+data = await cc("carriers.csv");
+
+function getsite(id: string)
+{
+    let url: string = data.find((string) => string.id === id)?.link;
+    if (!url)
+    {
+        if (lib2.symbols.carrde(Buffer.from(id, 'utf8'), id.length) != true)
+        {
+            console.warn(id + " - not categorized");
+        }
+    }
+    return url;
+}
 
 export function build(type: number, carr: string, dir: string, tag: string, tittle: string)
 {
@@ -76,6 +118,7 @@ export function build(type: number, carr: string, dir: string, tag: string, titt
     let rcsStatus = (data: typeof carriers[string], id: string) => (watchbool(id) || (eval(tag) && vmbool(data))) ? (data.source.includes("DeveloperOS") ? 1 : 2) : 0;
 
     function fix(country: string) {if (country == "🇦🇽 Finland") {return "🇦🇽 Finland (Åland)";} else {return country;}};
+    let count: number = 0;
 
     const CarrierSupportTable = () => { 
         let sorted = Object.entries(carriers).filter(([_, {version}]) => {
@@ -108,6 +151,7 @@ export function build(type: number, carr: string, dir: string, tag: string, titt
                 {carriers?.map(([id, data]) => {
                     let site = getsite(id);
                     let url = site || data.data.CarrierBookmarks?.at(-1)?.URL || data.data.MyAccountURL || data.data.TetheringURL;
+                    if (rcsStatus(data, id)) count++;
                     return <div class='carrier' data-supports={rcsStatus(data, id)}>
                         <div class='header'>
                             
@@ -235,4 +279,5 @@ export function build(type: number, carr: string, dir: string, tag: string, titt
         </body>
     </>);
     writeFileSync(dir + "index.html", html);
+    console.log(' '.repeat(3 - count.toString().length) + count + " - " + carr.slice(4));
 }

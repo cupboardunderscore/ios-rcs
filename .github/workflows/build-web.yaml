@@ -24,20 +24,11 @@ jobs:
     - uses: mlugg/setup-zig@v2
     - run: zig build-lib watchos.cpp -dynamic -lc -lc++
     - run: zig build-lib carrierdedupe.cpp -dynamic -lc -lc++
-    - run: mkdir html/rbm
-    - run: mkdir html/5gsa
-    - run: mkdir html/sat
-    - run: mkdir html/vvmail
-    - run: mkdir html/vonr
-    - run: mkdir html/watch
-    - run: mkdir html/watchsa
-    - run: touch carr.txt
-    - run: touch version.txt
+    - run: bash prepare.sh
     - run: bun install
     - run: bun run ./carrierbundles.ts
     - run: bun run ./build.ts
-    - run: rm carr.txt
-    - run: rm version.txt
+    - run: bash cleanup.sh
     - uses: actions/upload-pages-artifact@v3
       with:
         path: html

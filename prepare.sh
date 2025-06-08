@@ -1,0 +1,9 @@
+mkdir html/rbm
+mkdir html/5gsa
+mkdir html/sat
+mkdir html/vvmail
+mkdir html/vonr
+mkdir html/watch
+mkdir html/watchsa
+touch carr.txt
+touch version.txt

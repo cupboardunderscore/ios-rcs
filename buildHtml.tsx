@@ -115,7 +115,7 @@ export function build(type: number, carr: string, dir: string, tag: string, titt
             return true;
         }
     }
-    let rcsStatus = (data: typeof carriers[string], id: string) => (watchbool(id) || (eval(tag) && vmbool(data))) ? (data.source.includes("DeveloperOS") ? 1 : 2) : 0;
+    let rcsStatus = (data: typeof carriers[string], id: string) => (watchbool(id) || (eval(tag) && vmbool(data))) ? (data.source.includes("DeveloperOS") ? ((+data.version.slice(0, 4) > 64.1) ? 1 : 2) : data.source.startsWith("https") ? 3 : 4) : 0;
 
     let count: number = 0;
 
@@ -158,11 +158,11 @@ export function build(type: number, carr: string, dir: string, tag: string, titt
                                 {url && <img width={23} height={23} src={`https://www.google.com/s2/favicons?domain=${encodeURIComponent(url)}&sz=32`} alt={data.names[0]}/>}
                                 <a target={'_blank'} rel={'noopener noreferrer'} href={site} style={'color:var(--grey-900); text-decoration:none;'}>{data.names[0]}</a>
                             </h3>
-                            <span class='emoji'>{['❌','⏳' ,'✅'][rcsStatus(data, id)]}</span>
+                            <span class='emoji'>{['❌','⏳','⏳','✅','✅'][rcsStatus(data, id)]}</span>
                         </div>
                         {data.names.length > 1 && <p class='aka'>aka. {data.names.slice(1).join(", ")}</p>}
                         {(watchbool(id) || (eval(tag) && vmbool(data))) && (
-                            data.source.includes("DeveloperOS") ? "in beta" :
+                            data.source.includes("DeveloperOS") ? ((+data.version.slice(0, 4) > 64.1) ? "in beta (26)" : "in beta") :
                             data.source.startsWith("https") ? <a target="_blank" href="https://support.apple.com/en-us/109324">delivered OTA</a> : "")}
                         <div class='grow'></div>
                         <p class='id'>{id} {data.version}</p>

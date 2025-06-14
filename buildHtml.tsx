@@ -65,7 +65,7 @@ const cc = async (filePath: string) =>
     return new Promise(function(resolve)
     {
         fs.createReadStream(filePath)
-        .pipe(csvParser())
+        .pipe(csvParser({separator: ';'}))
         .on('data', (row: RowData) => {data.push(row);})
         .on('end', () => {resolve(data)});
     });
@@ -89,33 +89,7 @@ export function build(type: number, carr: string, dir: string, tag: string, titt
 {
     let carriers = eval(carr) as Record<string, { source: string, version: string, names: string[], country?: string, countryCode: string, data: CarrierPlist, blob: CarrierPlist }>;
 
-    function watchbool(id: string)
-    {
-        if (type == 6)
-        {
-            return lib.symbols.watch(Buffer.from(id, 'utf8'), id.length);
-        }
-        else if (type == 7)
-        {
-            return lib.symbols.watchsa(Buffer.from(id, 'utf8'), id.length);
-        }
-        else
-        {
-            return false;
-        }
-    }
-    function vmbool(data: typeof carriers[string])
-    {
-        if (type == 4)
-        {
-            return (data.data.VisualVoicemailServiceName != "none");
-        }
-        else
-        {
-            return true;
-        }
-    }
-    let rcsStatus = (data: typeof carriers[string], id: string) => (watchbool(id) || (eval(tag) && vmbool(data))) ? (data.source.includes("DeveloperOS") ? ((+data.version.slice(0, 4) > 64.1) ? 1 : 2) : data.source.startsWith("https") ? 3 : 4) : 0;
+    let rcsStatus = (data: typeof carriers[string], id: string) => eval(tag) ? (data.source.includes("DeveloperOS") ? ((+data.version.slice(0, 4) >= 64.5) ? 1 : 2) : data.source.startsWith("https") ? 3 : 4) : 0;
 
     let count: number = 0;
 
@@ -140,8 +114,8 @@ export function build(type: number, carr: string, dir: string, tag: string, titt
         let grouped = Object.groupBy(sorted, ([id, data]) => (getCountryFlag(data.countryCode || "") || "🌐") + " " + (data.country || "Worldwide"));
         let entries = Object.entries(grouped);
         entries.sort(([aCountry,aCarriers],[bCountry,bCarriers]) => 
-            (bCarriers?.filter(([id, data]) => (watchbool(id) || (eval(tag) && vmbool(data)))).length ?? 0) -
-            (aCarriers?.filter(([id, data]) => (watchbool(id) || (eval(tag) && vmbool(data)))).length ?? 0) 
+            (bCarriers?.filter(([id, data]) => eval(tag)).length ?? 0) -
+            (aCarriers?.filter(([id, data]) => eval(tag)).length ?? 0) 
         );
 
         return <div class='countries'>{entries.map(([country, carriers]) => (country !== "🌐 -Worldwide" && <>
@@ -161,8 +135,8 @@ export function build(type: number, carr: string, dir: string, tag: string, titt
                             <span class='emoji'>{['❌','⏳','⏳','✅','✅'][rcsStatus(data, id)]}</span>
                         </div>
                         {data.names.length > 1 && <p class='aka'>aka. {data.names.slice(1).join(", ")}</p>}
-                        {(watchbool(id) || (eval(tag) && vmbool(data))) && (
-                            data.source.includes("DeveloperOS") ? ((+data.version.slice(0, 4) > 64.1) ? "in beta (26)" : "in beta") :
+                        {eval(tag) && (
+                            data.source.includes("DeveloperOS") ? ((+data.version.slice(0, 4) >= 64.5) ? "in beta (26)" : "in beta") :
                             data.source.startsWith("https") ? <a target="_blank" href="https://support.apple.com/en-us/109324">delivered OTA</a> : "")}
                         <div class='grow'></div>
                         <p class='id'>{id} {data.version}</p>
@@ -176,13 +150,6 @@ export function build(type: number, carr: string, dir: string, tag: string, titt
     if (type != 0)
     {
         home = "../"
-    }
-    let supporturl: string = "https://support.apple.com/en-us/109526";
-    let featuretext: string = "what features each carrier supports";
-    if (type == 6 || type == 7)
-    {
-        supporturl = "https://www.apple.com/watch/cellular/";
-        featuretext = "Apple Watch carrier support";
     }
     let linkname: Array<string> = [];
     let linkdir: Array<string> = [];
@@ -248,7 +215,7 @@ export function build(type: number, carr: string, dir: string, tag: string, titt
                 <header>
                     <h1>Does my carrier support {tittle} yet?</h1>
                     <p>
-                        <a href={supporturl} target="_blank">Apple provided</a> list of {featuretext}
+                        <a href={(type == 6 || type == 7) ? "https://www.apple.com/watch/cellular/" : "https://support.apple.com/en-us/109526"} target="_blank">Apple provided</a> list of {(type == 6 || type == 7) ? "Apple Watch carrier support" : "what features each carrier supports"}
                         <> </>&bull; <> </>
                         <a href='https://github.com/cupboardunderscore/ios-rcs'>GitHub</a>
                     </p>

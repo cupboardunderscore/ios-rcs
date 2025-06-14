@@ -12,14 +12,14 @@ build(3, "procsat", "./html/sat/",
     "data.blob.SupportsSatellite || data.blob.ShowSatelliteSwitch",
     "Satellite Features on iOS");
 build(4, "procvvmail", "./html/vvmail/",
-    "data.data.VisualVoicemailServiceName",
+    "data.data.VisualVoicemailServiceName && data.data.VisualVoicemailServiceName != \"none\"",
     "Visual Voicemail on iOS");
 build(5, "procvonr", "./html/vonr/",
     "data.blob.SupportsVoNR || data.data.SupportsVoNR",
     "Voice over NR on iOS");
 build(6, "procwatch", "./html/watch/",
-    "data.data.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || data.data.RemoteCardProvisioningSettings?.MinCompatibileWatchOS || data.blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || data.blob.RemoteCardProvisioningSettings?.MinCompatibileWatchOS",
+    "lib.symbols.watch(Buffer.from(id, \'utf8\'), id.length) || data.data.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || data.data.RemoteCardProvisioningSettings?.MinCompatibileWatchOS || data.blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || data.blob.RemoteCardProvisioningSettings?.MinCompatibileWatchOS",
     "Cellular on watchOS");
 build(7, "procwatchsa", "./html/watchsa/",
-    "data.data.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode || data.blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode",
+    "lib.symbols.watchsa(Buffer.from(id, \'utf8\'), id.length) || data.data.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode || data.blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode",
     "Cellular Standalone on watchOS");

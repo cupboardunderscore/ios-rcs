@@ -35,32 +35,19 @@ async function getOnlineCarrierBundles() {
     return parse as any as iTunesUpdate;
 }
 
-async function getCarrierBundle(url: string) {
+async function getCarrierBundle(url: string, over: boolean) {
     let req = await fetch(url);
     if (!req.ok) throw new Error(`Failed to fetch ${url}: ${req.statusText}`);
     let data = await req.arrayBuffer();
     let zip = await JSZip.loadAsync(data);
-    let file = Object.keys(zip.files).find(a => a.match(/^Payload\/[a-zA-Z0-9_]+\.bundle\/carrier\.plist$/i));
-    if (!file){
+    let file;
+    if (!over) file = Object.keys(zip.files).find(a => a.match(/^Payload\/[a-zA-Z0-9_]+\.bundle\/carrier\.plist$/i));
+    if (over) file = Object.keys(zip.files).find(a => a.match(/^Payload\/[a-zA-Z0-9_]+\.bundle\/overrides\_D93\_D94\_D47\_D48\.plist$/i));
+    if (!file && !over){
         console.warn("Files in " + url + " are: ", Object.keys(zip.files));
         throw new Error(`Carrier.plist not found in ${url}`);
     }
     return zip.file(file!)?.async('nodebuffer');
-
-}
-
-async function getoverrides(url: string) {
-    let req = await fetch(url);
-    if (!req.ok) throw new Error(`Failed to fetch ${url}: ${req.statusText}`);
-    let data = await req.arrayBuffer();
-    let zip = await JSZip.loadAsync(data);
-    let file = Object.keys(zip.files).find(a => a.match(/^Payload\/[a-zA-Z0-9_]+\.bundle\/overrides\_D93\_D94\_D47\_D48\.plist$/i));
-    if (!file){
-        //console.warn("Files in " + url + " are: ", Object.keys(zip.files));
-        //throw new Error(`Carrier.plist not found in ${url}`);
-    }
-    return zip.file(file!)?.async('nodebuffer');
-
 }
 
 // const version = await getOnlineCarrierBundles();
@@ -131,221 +118,13 @@ let networkvvmail: Record<string,any> = {};
 let networkwatch: Record<string,any> = {};
 let networkwatchsa: Record<string,any> = {};
 
-function setNetwork(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist) {
+function setNetwork(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist, blob: CarrierPlist.CarrierPlist, network: string, tag: string) {
     let countryCode = id.split("_").pop()! || '';
     let countryName = data.HomeBundleIdentifier?.split('.').pop()!.replace(/([a-z])([A-Z])/g, '$1 $2');
     if (countryCode.length !== 2) countryCode = ReverseCountryCodes[countryName || ""];
     if (countryCode) countryCode = countryCode.toUpperCase();
-    if (networks[id] && networks[id].data.RCS) return;
-    networks[id] = {
-        source, version,
-        names: dedup([
-            data.CarrierName,
-            data.StatusBarImages?.map(a => a.StatusBarCarrierName || a.CarrierName) || [],
-            data.MVNOOverrides?.StatusBarImages?.map(i => i.CarrierName),
-            Object.values(data.MVNOOverrides || {}).map((o: any) => [
-                o?.OverrideConfiguration?.OverrideOperatorName,
-                o?.OverrideConfiguration?.CarrierName,
-                o?.OverrideConfiguration?.StatusBarImages?.map((a: any) => a.StatusBarCarrierName || a.CarrierName),
-            ]),
-            // data.StockSymboli?.map(a => a.name),
-        ].flat(9999).map(n => 
-            // n?.replace(new RegExp(countryCode + "$",'i'), "")
-            n?.replace(new RegExp(countryName + "$",'i'), "")
-            .trim()
-        )),
-        country: CountryCodes[countryCode] || countryName || countryCode, 
-        countryCode,
-        data
-    }
-}
-
-function setNetwork5gsa(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist, blob: CarrierPlist.CarrierPlist) {
-    let countryCode = id.split("_").pop()! || '';
-    let countryName = data.HomeBundleIdentifier?.split('.').pop()!.replace(/([a-z])([A-Z])/g, '$1 $2');
-    if (countryCode.length !== 2) countryCode = ReverseCountryCodes[countryName || ""];
-    if (countryCode) countryCode = countryCode.toUpperCase();
-    if (network5gsa[id] && (network5gsa[id].blob.Show5GStandaloneSwitch || network5gsa[id].blob.Enable5GStandaloneByDefault || network5gsa[id].data.Show5GStandaloneSwitch || network5gsa[id].data.Enable5GStandaloneByDefault)) return;
-    network5gsa[id] = {
-        source, version,
-        names: dedup([
-            data.CarrierName,
-            data.StatusBarImages?.map(a => a.StatusBarCarrierName || a.CarrierName) || [],
-            data.MVNOOverrides?.StatusBarImages?.map(i => i.CarrierName),
-            Object.values(data.MVNOOverrides || {}).map((o: any) => [
-                o?.OverrideConfiguration?.OverrideOperatorName,
-                o?.OverrideConfiguration?.CarrierName,
-                o?.OverrideConfiguration?.StatusBarImages?.map((a: any) => a.StatusBarCarrierName || a.CarrierName),
-            ]),
-            // data.StockSymboli?.map(a => a.name),
-        ].flat(9999).map(n => 
-            // n?.replace(new RegExp(countryCode + "$",'i'), "")
-            n?.replace(new RegExp(countryName + "$",'i'), "")
-            .trim()
-        )),
-        country: CountryCodes[countryCode] || countryName || countryCode, 
-        countryCode,
-        data,
-        blob
-    }
-}
-
-function setNetworksat(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist, blob: CarrierPlist.CarrierPlist) {
-    let countryCode = id.split("_").pop()! || '';
-    let countryName = data.HomeBundleIdentifier?.split('.').pop()!.replace(/([a-z])([A-Z])/g, '$1 $2');
-    if (countryCode.length !== 2) countryCode = ReverseCountryCodes[countryName || ""];
-    if (countryCode) countryCode = countryCode.toUpperCase();
-    if (networksat[id] && (networksat[id].blob.SupportsSatellite || networksat[id].blob.SupportsSatellite)) return;
-    networksat[id] = {
-        source, version,
-        names: dedup([
-            data.CarrierName,
-            data.StatusBarImages?.map(a => a.StatusBarCarrierName || a.CarrierName) || [],
-            data.MVNOOverrides?.StatusBarImages?.map(i => i.CarrierName),
-            Object.values(data.MVNOOverrides || {}).map((o: any) => [
-                o?.OverrideConfiguration?.OverrideOperatorName,
-                o?.OverrideConfiguration?.CarrierName,
-                o?.OverrideConfiguration?.StatusBarImages?.map((a: any) => a.StatusBarCarrierName || a.CarrierName),
-            ]),
-            // data.StockSymboli?.map(a => a.name),
-        ].flat(9999).map(n => 
-            // n?.replace(new RegExp(countryCode + "$",'i'), "")
-            n?.replace(new RegExp(countryName + "$",'i'), "")
-            .trim()
-        )),
-        country: CountryCodes[countryCode] || countryName || countryCode, 
-        countryCode,
-        data,
-        blob
-    }
-}
-
-function setNetworkrbm(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist) {
-    let countryCode = id.split("_").pop()! || '';
-    let countryName = data.HomeBundleIdentifier?.split('.').pop()!.replace(/([a-z])([A-Z])/g, '$1 $2');
-    if (countryCode.length !== 2) countryCode = ReverseCountryCodes[countryName || ""];
-    if (countryCode) countryCode = countryCode.toUpperCase();
-    if (networkrbm[id] && (networkrbm[id].data.RCS?.EnableBusinessMessagingByDefault || networkrbm[id].data.RCS?.ShowBusinessMessagingSwitch)) return;
-    networkrbm[id] = {
-        source, version,
-        names: dedup([
-            data.CarrierName,
-            data.StatusBarImages?.map(a => a.StatusBarCarrierName || a.CarrierName) || [],
-            data.MVNOOverrides?.StatusBarImages?.map(i => i.CarrierName),
-            Object.values(data.MVNOOverrides || {}).map((o: any) => [
-                o?.OverrideConfiguration?.OverrideOperatorName,
-                o?.OverrideConfiguration?.CarrierName,
-                o?.OverrideConfiguration?.StatusBarImages?.map((a: any) => a.StatusBarCarrierName || a.CarrierName),
-            ]),
-            // data.StockSymboli?.map(a => a.name),
-        ].flat(9999).map(n => 
-            // n?.replace(new RegExp(countryCode + "$",'i'), "")
-            n?.replace(new RegExp(countryName + "$",'i'), "")
-            .trim()
-        )),
-        country: CountryCodes[countryCode] || countryName || countryCode, 
-        countryCode,
-        data
-    }
-}
-
-function setNetworkvonr(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist, blob: CarrierPlist.CarrierPlist) {
-    let countryCode = id.split("_").pop()! || '';
-    let countryName = data.HomeBundleIdentifier?.split('.').pop()!.replace(/([a-z])([A-Z])/g, '$1 $2');
-    if (countryCode.length !== 2) countryCode = ReverseCountryCodes[countryName || ""];
-    if (countryCode) countryCode = countryCode.toUpperCase();
-    if (networkvonr[id] && (networkvonr[id].blob.SupportsVoNR || networkvonr[id].blob.SupportsVoNR)) return;
-    networkvonr[id] = {
-        source, version,
-        names: dedup([
-            data.CarrierName,
-            data.StatusBarImages?.map(a => a.StatusBarCarrierName || a.CarrierName) || [],
-            data.MVNOOverrides?.StatusBarImages?.map(i => i.CarrierName),
-            Object.values(data.MVNOOverrides || {}).map((o: any) => [
-                o?.OverrideConfiguration?.OverrideOperatorName,
-                o?.OverrideConfiguration?.CarrierName,
-                o?.OverrideConfiguration?.StatusBarImages?.map((a: any) => a.StatusBarCarrierName || a.CarrierName),
-            ]),
-            // data.StockSymboli?.map(a => a.name),
-        ].flat(9999).map(n => 
-            // n?.replace(new RegExp(countryCode + "$",'i'), "")
-            n?.replace(new RegExp(countryName + "$",'i'), "")
-            .trim()
-        )),
-        country: CountryCodes[countryCode] || countryName || countryCode, 
-        countryCode,
-        data,
-        blob
-    }
-}
-
-function setNetworkvvmail(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist) {
-    let countryCode = id.split("_").pop()! || '';
-    let countryName = data.HomeBundleIdentifier?.split('.').pop()!.replace(/([a-z])([A-Z])/g, '$1 $2');
-    if (countryCode.length !== 2) countryCode = ReverseCountryCodes[countryName || ""];
-    if (countryCode) countryCode = countryCode.toUpperCase();
-    if (networkvvmail[id] && (networkvvmail[id].data.VisualVoicemailServiceName && networkvvmail[id].data.VisualVoicemailServiceName != "none")) return;
-    networkvvmail[id] = {
-        source, version,
-        names: dedup([
-            data.CarrierName,
-            data.StatusBarImages?.map(a => a.StatusBarCarrierName || a.CarrierName) || [],
-            data.MVNOOverrides?.StatusBarImages?.map(i => i.CarrierName),
-            Object.values(data.MVNOOverrides || {}).map((o: any) => [
-                o?.OverrideConfiguration?.OverrideOperatorName,
-                o?.OverrideConfiguration?.CarrierName,
-                o?.OverrideConfiguration?.StatusBarImages?.map((a: any) => a.StatusBarCarrierName || a.CarrierName),
-            ]),
-            // data.StockSymboli?.map(a => a.name),
-        ].flat(9999).map(n => 
-            // n?.replace(new RegExp(countryCode + "$",'i'), "")
-            n?.replace(new RegExp(countryName + "$",'i'), "")
-            .trim()
-        )),
-        country: CountryCodes[countryCode] || countryName || countryCode, 
-        countryCode,
-        data
-    }
-}
-
-
-function setNetworkwatch(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist, blob: CarrierPlist.CarrierPlist) {
-    let countryCode = id.split("_").pop()! || '';
-    let countryName = data.HomeBundleIdentifier?.split('.').pop()!.replace(/([a-z])([A-Z])/g, '$1 $2');
-    if (countryCode.length !== 2) countryCode = ReverseCountryCodes[countryName || ""];
-    if (countryCode) countryCode = countryCode.toUpperCase();
-    if (networkwatch[id] && (lib.symbols.watch(Buffer.from(id, 'utf8'), id.length) || networkwatch[id].data.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || networkwatch[id].data.RemoteCardProvisioningSettings?.MinCompatibileWatchOS || networkwatch[id].blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || networkwatch[id].blob.RemoteCardProvisioningSettings?.MinCompatibileWatchOS)) return;
-    networkwatch[id] = {
-        source, version,
-        names: dedup([
-            data.CarrierName,
-            data.StatusBarImages?.map(a => a.StatusBarCarrierName || a.CarrierName) || [],
-            data.MVNOOverrides?.StatusBarImages?.map(i => i.CarrierName),
-            Object.values(data.MVNOOverrides || {}).map((o: any) => [
-                o?.OverrideConfiguration?.OverrideOperatorName,
-                o?.OverrideConfiguration?.CarrierName,
-                o?.OverrideConfiguration?.StatusBarImages?.map((a: any) => a.StatusBarCarrierName || a.CarrierName),
-            ]),
-            // data.StockSymboli?.map(a => a.name),
-        ].flat(9999).map(n => 
-            // n?.replace(new RegExp(countryCode + "$",'i'), "")
-            n?.replace(new RegExp(countryName + "$",'i'), "")
-            .trim()
-        )),
-        country: CountryCodes[countryCode] || countryName || countryCode, 
-        countryCode,
-        data,
-        blob
-    }
-}
-
-function setNetworkwatchsa(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist, blob: CarrierPlist.CarrierPlist) {
-    let countryCode = id.split("_").pop()! || '';
-    let countryName = data.HomeBundleIdentifier?.split('.').pop()!.replace(/([a-z])([A-Z])/g, '$1 $2');
-    if (countryCode.length !== 2) countryCode = ReverseCountryCodes[countryName || ""];
-    if (countryCode) countryCode = countryCode.toUpperCase();
-    if (networkwatchsa[id] && (lib.symbols.watchsa(Buffer.from(id, 'utf8'), id.length) || networkwatchsa[id].data.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode || networkwatchsa[id].blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode)) return;
-    networkwatchsa[id] = {
+    if (eval(network)[id] && eval(tag)) return;
+    eval(network)[id] = {
         source, version,
         names: dedup([
             data.CarrierName,
@@ -386,14 +165,14 @@ function doLocal(dir: string) {
         }
         if (!info || !data) continue;
         if (internal(info.CFBundleName)) continue;
-        setNetwork(path, info.CFBundleName, info.CFBundleVersion, data)
-        setNetwork5gsa(path, info.CFBundleName, info.CFBundleVersion, data, blob)
-        setNetworksat(path, info.CFBundleName, info.CFBundleVersion, data, blob)
-        setNetworkrbm(path, info.CFBundleName, info.CFBundleVersion, data)
-        setNetworkvonr(path, info.CFBundleName, info.CFBundleVersion, data, blob)
-        setNetworkvvmail(path, info.CFBundleName, info.CFBundleVersion, data)
-        setNetworkwatch(path, info.CFBundleName, info.CFBundleVersion, data, blob)
-        setNetworkwatchsa(path, info.CFBundleName, info.CFBundleVersion, data, blob)
+        setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networks", "eval(network)[id].data.RCS");
+        setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkrbm", "eval(network)[id].data.RCS?.EnableBusinessMessagingByDefault || eval(network)[id].data.RCS?.ShowBusinessMessagingSwitch");
+        setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "network5gsa", "eval(network)[id].blob.Show5GStandaloneSwitch || eval(network)[id].blob.Enable5GStandaloneByDefault || eval(network)[id].data.Show5GStandaloneSwitch || eval(network)[id].data.Enable5GStandaloneByDefault");
+        setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networksat", "eval(network)[id].blob.SupportsSatellite || eval(network)[id].blob.ShowSatelliteSwitch");
+        setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkvvmail", "eval(network)[id].data.VisualVoicemailServiceName && eval(network)[id].data.VisualVoicemailServiceName != \"none\"");
+        setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkvonr", "eval(network)[id].blob.SupportsVoNR || eval(network)[id].data.SupportsVoNR");
+        setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkwatch", "lib.symbols.watch(Buffer.from(id, \'utf8\'), id.length) || eval(network)[id].data.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || eval(network)[id].data.RemoteCardProvisioningSettings?.MinCompatibileWatchOS || eval(network)[id].blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || eval(network)[id].blob.RemoteCardProvisioningSettings?.MinCompatibileWatchOS");
+        setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkwatchsa", "lib.symbols.watchsa(Buffer.from(id, \'utf8\'), id.length) || eval(network)[id].data.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode || eval(network)[id].blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode");
     }
 }
 
@@ -410,15 +189,15 @@ async function doOnline() {
         if (!latest) continue;
 
         // compare to local version
-        let lastVersion = networks[carrier]?.version ?? "0.0.0";
+        let lastVersion = networks[carrier]?.version ?? "58.5.0";
         if (dottedCompare(latest.BuildVersion, lastVersion) >= 0) continue;
         console.log("Downloading", carrier, latest.BuildVersion, latest.BundleURL);
-        let cb = await getCarrierBundle(latest.BundleURL);
+        let cb = await getCarrierBundle(latest.BundleURL, false);
         if (!cb) {
             console.warn(`Failed to fetch ${latest.BundleURL}`);
             continue;
         }
-        let ov = await getoverrides(latest.BundleURL);
+        let ov = await getCarrierBundle(latest.BundleURL, true);
         if (!ov)
         {
             ov = cb;
@@ -426,14 +205,14 @@ async function doOnline() {
         if (internal(carrier)) continue;
         let parsed = bplist.parseBuffer(cb)[0] as CarrierPlist.CarrierPlist;
         let passedoutblob = bplist.parseBuffer(ov)[0] as CarrierPlist.CarrierPlist;
-        setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed);
-        setNetwork5gsa(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob);
-        setNetworksat(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob);
-        setNetworkrbm(latest.BundleURL, carrier, latest.BuildVersion, parsed);
-        setNetworkvonr(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob);
-        setNetworkvvmail(latest.BundleURL, carrier, latest.BuildVersion, parsed);
-        setNetworkwatch(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob);
-        setNetworkwatchsa(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob);
+        setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networks", "eval(network)[id].data.RCS");
+        setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkrbm", "eval(network)[id].data.RCS?.EnableBusinessMessagingByDefault || eval(network)[id].data.RCS?.ShowBusinessMessagingSwitch");
+        setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "network5gsa", "eval(network)[id].blob.Show5GStandaloneSwitch || eval(network)[id].blob.Enable5GStandaloneByDefault || eval(network)[id].data.Show5GStandaloneSwitch || eval(network)[id].data.Enable5GStandaloneByDefault");
+        setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networksat", "eval(network)[id].blob.SupportsSatellite || eval(network)[id].blob.ShowSatelliteSwitch");
+        setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkvvmail", "eval(network)[id].data.VisualVoicemailServiceName && eval(network)[id].data.VisualVoicemailServiceName != \"none\"");
+        setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkvonr", "eval(network)[id].blob.SupportsVoNR || eval(network)[id].data.SupportsVoNR");
+        setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkwatch", "lib.symbols.watch(Buffer.from(id, \'utf8\'), id.length) || eval(network)[id].data.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || eval(network)[id].data.RemoteCardProvisioningSettings?.MinCompatibileWatchOS || eval(network)[id].blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || eval(network)[id].blob.RemoteCardProvisioningSettings?.MinCompatibileWatchOS");
+        setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkwatchsa", "lib.symbols.watchsa(Buffer.from(id, \'utf8\'), id.length) || eval(network)[id].data.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode || eval(network)[id].blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode");
     }
 }
 

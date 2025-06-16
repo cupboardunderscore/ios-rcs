@@ -136,7 +136,7 @@ export function build(type: number, carr: string, dir: string, tag: string, titt
                         </div>
                         {data.names.length > 1 && <p class='aka'>aka. {data.names.slice(1).join(", ")}</p>}
                         {eval(tag) && (
-                            data.source.includes("DeveloperOS") ? ((+data.version.slice(0, 4) >= 64.5) ? "in beta (26)" : "in beta") :
+                            data.source.includes("DeveloperOS") ? ((+data.version.slice(0, 4) >= 64.5) ? "in beta (iOS 26)" : "in beta") :
                             data.source.startsWith("https") ? <a target="_blank" href="https://support.apple.com/en-us/109324">delivered OTA</a> : "")}
                         <div class='grow'></div>
                         <p class='id'>{id} {data.version}</p>

@@ -11,3 +11,4 @@ bun.lock
 run.command
 libwatchos.*
 libcarrierdedupe.*
+!html/history/*.html

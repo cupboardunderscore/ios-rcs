@@ -218,12 +218,12 @@ async function doOnline() {
 
 export function manualversion()
 {
-    return "18.6 beta 2 and 26.0 beta 3";
+    return "18.6 beta 3 and 26.0 beta 3";
 }
 
 doLocal('18.5-CrystalF22F76.D93OS')
 await doOnline();
-doLocal('18.6b2-CrystalGSeed22G5064d.D93DeveloperOS')
+doLocal('18.6b3-CrystalGSeed22G5073b.D93DeveloperOS')
 doLocal('26.0b3-LuckSeed23A5287g.D93DeveloperOS')
 
 fs.writeFileSync(Path.join(__dirname, 'version.txt'), manualversion());

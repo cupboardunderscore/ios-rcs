@@ -12,3 +12,4 @@ run.command
 libwatchos.*
 libcarrierdedupe.*
 !html/history/*.html
+html/debug.csv

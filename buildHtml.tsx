@@ -245,5 +245,6 @@ export function build(type: number, carr: string, dir: string, tag: string, titt
         </body>
     </>);
     writeFileSync(dir + "index.html", html);
-    console.log(' '.repeat(3 - count.toString().length) + count + " - " + carr.slice(4));
+    fs.promises.appendFile("./html/debug.csv", carr.slice(4) + "," + count + "\n");
+    //console.log(' '.repeat(3 - count.toString().length) + count + " - " + carr.slice(4));
 }

@@ -7,3 +7,4 @@ mkdir html/watch
 mkdir html/watchsa
 touch carr.txt
 touch version.txt
+curl -O https://ios-rcs.foxwitch.tech/debug.csv

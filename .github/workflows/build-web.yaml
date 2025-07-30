@@ -28,6 +28,23 @@ jobs:
     - run: bun install
     - run: bun run ./carrierbundles.ts
     - run: bun run ./build.ts
+    - name: Smart Diff
+      uses: LouisBrunner/diff-action@v2.2.0
+      with:
+        old: debug.csv
+        new: html/debug.csv
+        mode: strict
+        tolerance: same
+      id: differ
+    - name: Send Push Notification
+      if: ${{ steps.differ.passed == true }}
+      uses: techulus/push-github-action@1.2.1
+      env:
+        API_KEY: ${{ secrets.push_apikey }}
+        MESSAGE: ${{ steps.differ.output }}
+        TITLE: carrier difference
+        LINK: https://ios-rcs.foxwitch.tech
+        TIME_SENSITIVE: true
     - run: bash cleanup.sh
     - uses: actions/upload-pages-artifact@v3
       with:

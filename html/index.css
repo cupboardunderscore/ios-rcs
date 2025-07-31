@@ -20,6 +20,22 @@
     --blue-400: light-dark(#2563eb,#60a5fa)
 }
 
+@media screen and (max-device-width: 1024px)
+{
+    :root
+    {
+        --grey-100: light-dark(#f3f4f6, #000000);
+        --grey-200: light-dark(#e5e7eb, #2b2b2b);
+        --grey-300: light-dark(#d1d5db, #454545);
+        --grey-400: light-dark(#9ca3af, #575757);
+        --grey-500: light-dark(#6b7280, #9ca3af);
+        --grey-600: light-dark(#575757, #9ca3af);
+        --grey-700: light-dark(#454545, #d1d5db);
+        --grey-800: light-dark(#2b2b2b, #e5e7eb);
+        --grey-900: light-dark(#1c1c1c, #f3f4f6);
+    }
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, Roboto, "Helvetica Neue", sans-serif;
     margin: 0;

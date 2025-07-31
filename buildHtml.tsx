@@ -119,7 +119,7 @@ export function build(type: number, carr: string, dir: string, tag: string, titt
         );
 
         return <div class='countries'>{entries.map(([country, carriers]) => (country !== "🌐 -Worldwide" && <>
-            <h2>{country}</h2>
+            <h2 id={carriers[0][1].countryCode}>{country}</h2>
             <div class='carriers'>
                 {carriers?.map(([id, data]) => {
                     let site = getsite(id);
@@ -197,7 +197,7 @@ export function build(type: number, carr: string, dir: string, tag: string, titt
         <head>
             <title>Does my carrier support {tittle} yet?</title>
             <meta name="viewport" content="width=device-width, initial-scale=1" />
-            <meta name="description" content={"A list of carriers that support" + tittle} />
+            <meta name="description" content={"A list of carriers that support " + tittle} />
             <style dangerouslySetInnerHTML={{__html: transform({
                     filename: "index.css",
                     code: readFileSync("./html/index.css"), 

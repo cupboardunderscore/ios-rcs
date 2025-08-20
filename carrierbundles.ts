@@ -218,10 +218,10 @@ async function doOnline() {
 
 export function manualversion()
 {
-    return "18.6.1 and 26.0 beta 7";
+    return "18.6.2 and 26.0 beta 7";
 }
 
-doLocal('18.6.1-CrystalG22G90.D93OS')
+doLocal('18.6.2-CrystalG22G100.D93OS')
 await doOnline();
 doLocal('26.0b7-LuckSeed23A5326a.D93DeveloperOS')
 

@@ -454,6 +454,7 @@ export interface TopLevelCarrierEntitlements {
     SendSelfRegistrationUpdate?:                 boolean;
     InvalidateSimForUnknownSubscriber?:          boolean;
     AllowCellularPlanTransferTarget?:            boolean;
+    SupportCrossPlatformSIMTransfer?:            boolean;
 }
 
 export interface Authentication {

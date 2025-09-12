@@ -12,12 +12,13 @@ import proc5gsa from "./processed-5gsa.json";
 import procsat from "./processed-sat.json";
 import procvvmail from "./processed-vvmail.json";
 import procvonr from "./processed-vonr.json";
-import procwatch from "./processed-watch.json";
-import procwatchsa from "./processed-watchsa.json";
+/*import procwatch from "./processed-watch.json";
+import procwatchsa from "./processed-watchsa.json";*/
+import procesimtr from "./processed-esimtr.json";
 
 //ig compiler ignores the stuff above if i don't "use" it
 let temp;
-temp = procrcs; temp = procrbm; temp = proc5gsa; temp = procsat; temp = procvvmail; temp = procvonr; temp = procwatch; temp = procwatchsa;
+temp = procrcs; temp = procrbm; temp = proc5gsa; temp = procsat; temp = procvvmail; temp = procvonr;/* temp = procwatch; temp = procwatchsa;*/ temp = procesimtr;
 temp = null;
 
 import type { CarrierPlist } from "./types/carrier.plist";
@@ -183,7 +184,7 @@ export function build(type: number, carr: string, dir: string, tag: string, titt
         linkname.push("Voice over NR");
         linkdir.push("vonr/");
     }
-    if (type != 6)
+    /*if (type != 6)
     {
         linkname.push("Apple Watch");
         linkdir.push("watch/");
@@ -192,6 +193,11 @@ export function build(type: number, carr: string, dir: string, tag: string, titt
     {
         linkname.push("Apple Watch Standalone");
         linkdir.push("watchsa/");
+    }*/
+    if (type != 8)
+    {
+        linkname.push("Cross-platform (e)sim transfer");
+        linkdir.push("esimtr/");
     }
     let html = renderToString(<>
         <head>
@@ -233,8 +239,6 @@ export function build(type: number, carr: string, dir: string, tag: string, titt
                         <a href={home + linkdir[4]}>{linkname[4]}</a>
                         <> </>&bull; <> </>
                         <a href={home + linkdir[5]}>{linkname[5]}</a>
-                        <> </>&bull; <> </>
-                        <a href={home + linkdir[6]}>{linkname[6]}</a>
                     </p>
                     <p>support yet?</p>
                     <h2>Updated with iOS {manualversion} carrier bundles!</h2>

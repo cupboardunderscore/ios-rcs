@@ -1,7 +1,8 @@
 import { build } from "./buildHtml";
 
 build(0, "procrcs", "./html/",
-    "data.data.RCS", "RCS on iOS");
+    "data.data.RCS",
+    "RCS on iOS");
 build(1, "procrbm", "./html/rbm/",
     "data.data.RCS?.EnableBusinessMessagingByDefault || data.data.RCS?.ShowBusinessMessagingSwitch",
     "RCS Business Messaging on iOS");
@@ -17,9 +18,12 @@ build(4, "procvvmail", "./html/vvmail/",
 build(5, "procvonr", "./html/vonr/",
     "data.blob.SupportsVoNR || data.data.SupportsVoNR",
     "Voice over NR on iOS");
-build(6, "procwatch", "./html/watch/",
+/*build(6, "procwatch", "./html/watch/",
     "lib.symbols.watch(Buffer.from(id, \'utf8\'), id.length) || data.data.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || data.data.RemoteCardProvisioningSettings?.MinCompatibileWatchOS || data.blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || data.blob.RemoteCardProvisioningSettings?.MinCompatibileWatchOS",
     "Cellular on watchOS");
 build(7, "procwatchsa", "./html/watchsa/",
     "lib.symbols.watchsa(Buffer.from(id, \'utf8\'), id.length) || data.data.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode || data.blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode",
-    "Cellular Standalone on watchOS");
+    "Cellular Standalone on watchOS");*/
+build(8, "procesimtr", "./html/esimtr/",
+    "data.data.CarrierEntitlements?.SupportCrossPlatformSIMTransfer",
+    "Cross-platform (e)sim transfer");

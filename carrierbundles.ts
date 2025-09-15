@@ -142,8 +142,8 @@ async function doOnline() {
     }
 }
 
-doLocal('18.5-CrystalF22F76.D93OS')
+doLocal('26.0-Luck23A341.D93OS')
 await doOnline();
-//doLocal('18.5b3-CrystalSeedUpdate22F5053j.D16DeveloperOS')
+//doLocal('')
 
 fs.writeFileSync(Path.join(__dirname, 'processed.json'), JSON.stringify(networks, null, 2));

@@ -124,7 +124,19 @@ function setNetwork(source: string, id: string, version: string, data: CarrierPl
     let countryName = data.HomeBundleIdentifier?.split('.').pop()!.replace(/([a-z])([A-Z])/g, '$1 $2');
     if (countryCode.length !== 2) countryCode = ReverseCountryCodes[countryName || ""];
     if (countryCode) countryCode = countryCode.toUpperCase();
-    if (eval(network)[id] && eval(tag)) return;
+    if (eval(network)[id] && eval(tag))
+    {
+        if (dottedCompare(eval(network)[id].version, version) > 0)
+        {
+            if (source.includes("DeveloperOS"))
+            {
+                eval(network)[id].version = version + " (" + eval(network)[id].version + ")";
+                return;
+            }
+            eval(network)[id].version = version;
+        }
+        return;
+    }
     eval(network)[id] = {
         source, version,
         names: dedup([

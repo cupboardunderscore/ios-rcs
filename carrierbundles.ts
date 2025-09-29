@@ -186,7 +186,7 @@ function doLocal(dir: string) {
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkvonr", "eval(network)[id].blob.SupportsVoNR || eval(network)[id].data.SupportsVoNR");
         /*setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkwatch", "lib.symbols.watch(Buffer.from(id, \'utf8\'), id.length) || eval(network)[id].data.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || eval(network)[id].data.RemoteCardProvisioningSettings?.MinCompatibileWatchOS || eval(network)[id].blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || eval(network)[id].blob.RemoteCardProvisioningSettings?.MinCompatibileWatchOS");
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkwatchsa", "lib.symbols.watchsa(Buffer.from(id, \'utf8\'), id.length) || eval(network)[id].data.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode || eval(network)[id].blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode");*/
-        setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkesimtr", "eval(network)[id].data.CarrierEntitlements?.SupportCrossPlatformSIMTransfer");
+        setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkesimtr", "eval(network)[id].data.CarrierEntitlements?.SupportCrossPlatformSIMTransfer || eval(network)[id].blob.CarrierEntitlements?.SupportCrossPlatformSIMTransfer");
     }
 }
 
@@ -227,16 +227,16 @@ async function doOnline() {
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkvonr", "eval(network)[id].blob.SupportsVoNR || eval(network)[id].data.SupportsVoNR");
         /*setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkwatch", "lib.symbols.watch(Buffer.from(id, \'utf8\'), id.length) || eval(network)[id].data.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || eval(network)[id].data.RemoteCardProvisioningSettings?.MinCompatibileWatchOS || eval(network)[id].blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || eval(network)[id].blob.RemoteCardProvisioningSettings?.MinCompatibileWatchOS");
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkwatchsa", "lib.symbols.watchsa(Buffer.from(id, \'utf8\'), id.length) || eval(network)[id].data.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode || eval(network)[id].blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode");*/
-        setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkesimtr", "eval(network)[id].data.CarrierEntitlements?.SupportCrossPlatformSIMTransfer");
+        setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkesimtr", "eval(network)[id].data.CarrierEntitlements?.SupportCrossPlatformSIMTransfer || eval(network)[id].blob.CarrierEntitlements?.SupportCrossPlatformSIMTransfer");
     }
 }
 
 export function manualversion()
 {
-    return "26.0 and 26.1 beta 1";
+    return "26.0.1 and 26.1 beta 1";
 }
 
-doLocal('26.0-Luck23A341.D93OS')
+doLocal('26.0.1-Luck23A355.D93OS')
 await doOnline();
 doLocal('26.1db1-LuckBSeed23B5044l.D93DeveloperOS')
 

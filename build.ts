@@ -25,5 +25,5 @@ build(7, "procwatchsa", "./html/watchsa/",
     "lib.symbols.watchsa(Buffer.from(id, \'utf8\'), id.length) || data.data.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode || data.blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode",
     "Cellular Standalone on watchOS");*/
 build(8, "procesimtr", "./html/esimtr/",
-    "data.data.CarrierEntitlements?.SupportCrossPlatformSIMTransfer",
+    "data.data.CarrierEntitlements?.SupportCrossPlatformSIMTransfer || data.blob.CarrierEntitlements?.SupportCrossPlatformSIMTransfer",
     "Cross-platform (e)sim transfer");

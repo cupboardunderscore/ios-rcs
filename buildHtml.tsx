@@ -90,7 +90,7 @@ export function build(type: number, carr: string, dir: string, tag: string, titt
 {
     let carriers = eval(carr) as Record<string, { source: string, version: string, names: string[], country?: string, countryCode: string, data: CarrierPlist, blob: CarrierPlist }>;
 
-    let rcsStatus = (data: typeof carriers[string], id: string) => eval(tag) ? (data.source.includes("DeveloperOS") ? ((+data.version.slice(0, 4) >= 64.5) ? 1 : 2) : data.source.startsWith("https") ? 3 : 4) : 0;
+    let rcsStatus = (data: typeof carriers[string], id: string) => eval(tag) ? (data.source.includes("DeveloperOS") ? /*((+data.version.slice(0, 4) >= 64.5) ? 1 : 2)*/ 2 : data.source.startsWith("https") ? 3 : 4) : 0;
 
     let count: number = 0;
 
@@ -137,7 +137,7 @@ export function build(type: number, carr: string, dir: string, tag: string, titt
                         </div>
                         {data.names.length > 1 && <p class='aka'>aka. {data.names.slice(1).join(", ")}</p>}
                         {eval(tag) && (
-                            data.source.includes("DeveloperOS") ? ((+data.version.slice(0, 4) >= 64.5) ? "in beta (iOS 26)" : "in beta") :
+                            data.source.includes("DeveloperOS") ? /*((+data.version.slice(0, 4) >= 64.5) ? "in beta (iOS 26)" : "in beta")*/ "in beta" :
                             data.source.startsWith("https") ? <a target="_blank" href="https://support.apple.com/en-us/109324">delivered OTA</a> : "")}
                         <div class='grow'></div>
                         <p class='id'>{id} {data.version}</p>

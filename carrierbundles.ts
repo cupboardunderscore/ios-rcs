@@ -42,7 +42,7 @@ async function getCarrierBundle(url: string, over: boolean) {
     let zip = await JSZip.loadAsync(data);
     let file;
     if (!over) file = Object.keys(zip.files).find(a => a.match(/^Payload\/[a-zA-Z0-9_]+\.bundle\/carrier\.plist$/i));
-    if (over) file = Object.keys(zip.files).find(a => a.match(/^Payload\/[a-zA-Z0-9_]+\.bundle\/overrides\_D93\_D94\_D47\_D48\.plist$/i));
+    if (over) file = Object.keys(zip.files).find(a => a.match(/^Payload\/[a-zA-Z0-9_]+\.bundle\/overrides\_V53\_V54\_V57\.plist$/i));
     if (!file && !over){
         console.warn("Files in " + url + " are: ", Object.keys(zip.files));
         throw new Error(`Carrier.plist not found in ${url}`);
@@ -171,7 +171,7 @@ function doLocal(dir: string) {
 
         let info = readBplist<CarrierBundleInfo>(path, 'Info.plist');
         let data = readBplist<CarrierPlist.CarrierPlist>(path, 'carrier.plist');
-        let blob = readBplist<CarrierPlist.CarrierPlist>(path, 'overrides\_D93\_D94\_D47\_D48.plist');
+        let blob = readBplist<CarrierPlist.CarrierPlist>(path, 'overrides\_V53\_V54\_V57.plist');
         if (!blob)
         {
             blob = data;
@@ -233,12 +233,12 @@ async function doOnline() {
 
 export function manualversion()
 {
-    return "26.0.1 and 26.1 RC";
+    return "26.1";
 }
 
-doLocal('26.0.1-Luck23A355.D93OS')
+doLocal('26.1-LuckB23B85.V53OS')
 await doOnline();
-doLocal('26.1RC-LuckB23B82.D93DeveloperOS')
+//doLocal('')
 
 fs.writeFileSync(Path.join(__dirname, 'version.txt'), manualversion());
 fs.writeFileSync(Path.join(__dirname, 'processed.json'), JSON.stringify(networks, null, 2));

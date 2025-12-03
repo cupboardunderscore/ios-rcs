@@ -118,6 +118,8 @@ let networkvvmail: Record<string,any> = {};
 /*let networkwatch: Record<string,any> = {};
 let networkwatchsa: Record<string,any> = {};*/
 let networkesimtr: Record<string,any> = {};
+//
+let networkusage: Record<string,any> = {};
 
 function setNetwork(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist, blob: CarrierPlist.CarrierPlist, network: string, tag: string) {
     let countryCode = id.split("_").pop()! || '';
@@ -187,6 +189,8 @@ function doLocal(dir: string) {
         /*setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkwatch", "lib.symbols.watch(Buffer.from(id, \'utf8\'), id.length) || eval(network)[id].data.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || eval(network)[id].data.RemoteCardProvisioningSettings?.MinCompatibileWatchOS || eval(network)[id].blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || eval(network)[id].blob.RemoteCardProvisioningSettings?.MinCompatibileWatchOS");
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkwatchsa", "lib.symbols.watchsa(Buffer.from(id, \'utf8\'), id.length) || eval(network)[id].data.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode || eval(network)[id].blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode");*/
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkesimtr", "eval(network)[id].data.CarrierEntitlements?.SupportCrossPlatformSIMTransfer || eval(network)[id].blob.CarrierEntitlements?.SupportCrossPlatformSIMTransfer");
+        //
+        setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkusage", "eval(network)[id].data.CarrierSpace?.SupportsPlans || eval(network)[id].data.CarrierSpace?.SupportsUsage");
     }
 }
 
@@ -228,17 +232,19 @@ async function doOnline() {
         /*setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkwatch", "lib.symbols.watch(Buffer.from(id, \'utf8\'), id.length) || eval(network)[id].data.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || eval(network)[id].data.RemoteCardProvisioningSettings?.MinCompatibileWatchOS || eval(network)[id].blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || eval(network)[id].blob.RemoteCardProvisioningSettings?.MinCompatibileWatchOS");
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkwatchsa", "lib.symbols.watchsa(Buffer.from(id, \'utf8\'), id.length) || eval(network)[id].data.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode || eval(network)[id].blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode");*/
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkesimtr", "eval(network)[id].data.CarrierEntitlements?.SupportCrossPlatformSIMTransfer || eval(network)[id].blob.CarrierEntitlements?.SupportCrossPlatformSIMTransfer");
+        //
+        setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkusage", "eval(network)[id].data.CarrierSpace?.SupportsPlans || eval(network)[id].data.CarrierSpace?.SupportsUsage");
     }
 }
 
 export function manualversion()
 {
-    return "26.1 and 26.2 beta 3";
+    return "26.1 and 26.2 RC";
 }
 
 doLocal('26.1-LuckB23B85.V53OS')
 await doOnline();
-doLocal('26.2b3-LuckCSeed23C5044b.V53DeveloperOS')
+doLocal('26.2RC-LuckC23C52.V53DeveloperOS')
 
 fs.writeFileSync(Path.join(__dirname, 'version.txt'), manualversion());
 fs.writeFileSync(Path.join(__dirname, 'processed.json'), JSON.stringify(networks, null, 2));
@@ -250,3 +256,5 @@ fs.writeFileSync(Path.join(__dirname, 'processed-vvmail.json'), JSON.stringify(n
 /*fs.writeFileSync(Path.join(__dirname, 'processed-watch.json'), JSON.stringify(networkwatch, null, 2));
 fs.writeFileSync(Path.join(__dirname, 'processed-watchsa.json'), JSON.stringify(networkwatchsa, null, 2));*/
 fs.writeFileSync(Path.join(__dirname, 'processed-esimtr.json'), JSON.stringify(networkesimtr, null, 2));
+//
+fs.writeFileSync(Path.join(__dirname, 'processed-usage.json'), JSON.stringify(networkusage, null, 2));

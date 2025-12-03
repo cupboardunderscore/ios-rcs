@@ -4,6 +4,7 @@ mkdir html/sat
 mkdir html/vvmail
 mkdir html/vonr
 mkdir html/esimtr
+mkdir html/usage
 touch carr.txt
 touch version.txt
 curl -O https://ios-rcs.foxwitch.tech/debug.csv

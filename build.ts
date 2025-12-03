@@ -11,7 +11,7 @@ build(2, "proc5gsa", "./html/5gsa/",
     "5G Standalone on iOS");
 build(3, "procsat", "./html/sat/",
     "data.blob.SupportsSatellite || data.blob.ShowSatelliteSwitch",
-    "Satellite Features on iOS");
+    "Satellite features on iOS");
 build(4, "procvvmail", "./html/vvmail/",
     "data.data.VisualVoicemailServiceName && data.data.VisualVoicemailServiceName != \"none\"",
     "Visual Voicemail on iOS");
@@ -26,4 +26,10 @@ build(7, "procwatchsa", "./html/watchsa/",
     "Cellular Standalone on watchOS");*/
 build(8, "procesimtr", "./html/esimtr/",
     "data.data.CarrierEntitlements?.SupportCrossPlatformSIMTransfer || data.blob.CarrierEntitlements?.SupportCrossPlatformSIMTransfer",
-    "Cross-platform (e)sim transfer");
+    "Cross-platform (e)SIM transfer");
+/*build(9, "", "",
+    "",
+    "esim transfer");*/
+build(10, "procusage", "./html/usage/",
+    "data.data.CarrierSpace?.SupportsPlans || data.data.CarrierSpace?.SupportsUsage",
+    "Cellular plan info on iOS");

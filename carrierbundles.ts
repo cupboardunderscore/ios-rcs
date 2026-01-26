@@ -239,10 +239,10 @@ async function doOnline() {
 
 export function manualversion()
 {
-    return "26.2 and 26.3 beta 2";
+    return "26.2.1 and 26.3 beta 2";
 }
 
-doLocal('26.2-LuckC23C55.V53OS')
+doLocal('26.2.1-LuckC23C71.V53OS')
 await doOnline();
 doLocal('26.3b2-LuckDSeed23D5103d.V53DeveloperOS')
 

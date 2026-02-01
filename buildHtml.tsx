@@ -8,6 +8,7 @@ import fs from "fs";
 
 import procrcs from "./processed.json";
 import procrbm from "./processed-rbm.json";
+//import proce2ee from "./processed-e2ee.json";
 import proc5gsa from "./processed-5gsa.json";
 import procsat from "./processed-sat.json";
 import procvvmail from "./processed-vvmail.json";
@@ -20,7 +21,7 @@ import procusage from "./processed-usage.json";
 
 //ig compiler ignores the stuff above if i don't "use" it
 let temp;
-temp = procrcs; temp = procrbm; temp = proc5gsa; temp = procsat; temp = procvvmail; temp = procvonr;/* temp = procwatch; temp = procwatchsa;*/ temp = procesimtr; /**/ temp = procusage;
+temp = procrcs; temp = procrbm;/* temp = proce2ee;*/ temp = proc5gsa; temp = procsat; temp = procvvmail; temp = procvonr;/* temp = procwatch; temp = procwatchsa;*/ temp = procesimtr; /**/ temp = procusage;
 temp = null;
 
 import type { CarrierPlist } from "./types/carrier.plist";
@@ -88,7 +89,7 @@ function getsite(id: string)
     return url;
 }
 
-export function build(type: number, carr: string, dir: string, tag: string, tittle: string)
+export function build(type: number, carr: string, dir: string, tag: string, ptag: string, tittle: string)
 {
     let carriers = eval(carr) as Record<string, { source: string, version: string, names: string[], country?: string, countryCode: string, data: CarrierPlist, blob: CarrierPlist }>;
 
@@ -97,9 +98,8 @@ export function build(type: number, carr: string, dir: string, tag: string, titt
     let count: number = 0;
 
     const CarrierSupportTable = () => { 
-        let sorted = Object.entries(carriers).filter(([_, {version}]) => {
-            let [major] = version.split('.').map(Number);
-            return major > 49;
+        let sorted = Object.entries(carriers).filter(([_, {data, blob}]) => {
+            return eval(ptag);
         }).sort(([aId, aData], [bId, bData]) => {
             let aCountry = aData.country ?? aData.countryCode ?? "ZZ";
             let bCountry = bData.country ?? bData.countryCode ?? "ZZ";
@@ -166,47 +166,52 @@ export function build(type: number, carr: string, dir: string, tag: string, titt
         linkname.push("RCS Business Messaging");
         linkdir.push("rbm/");
     }
-    if (type != 2)
+    /*if (type != 2)
+    {
+        linkname.push("RCS E2EE");
+        linkdir.push("e2ee/");
+    }*/
+    if (type != 3)
     {
         linkname.push("5G Standalone");
         linkdir.push("5gsa/");
     }
-    if (type != 3)
+    if (type != 4)
     {
         linkname.push("Satellite features");
         linkdir.push("sat/");
     }
-    if (type != 4)
+    if (type != 5)
     {
         linkname.push("Visual Voicemail");
         linkdir.push("vvmail/");
     }
-    if (type != 5)
+    if (type != 6)
     {
         linkname.push("Voice over NR");
         linkdir.push("vonr/");
     }
-    /*if (type != 6)
+    /*if (type != 7)
     {
         linkname.push("Apple Watch");
         linkdir.push("watch/");
     }
-    if (type != 7)
+    if (type != 8)
     {
         linkname.push("Apple Watch Standalone");
         linkdir.push("watchsa/");
     }*/
-    if (type != 8)
+    if (type != 9)
     {
         linkname.push("Cross-platform (e)SIM transfer");
         linkdir.push("esimtr/");
     }
-    /*if (type != 9)
+    /*if (type != 10)
     {
         linkname.push("esim transfer");
         linkdir.push("");
     }*/
-    if (type != 10)
+    if (type != 11)
     {
         linkname.push("Cellular plan info");
         linkdir.push("usage/");
@@ -233,7 +238,7 @@ export function build(type: number, carr: string, dir: string, tag: string, titt
                 <header>
                     <h1>Does my carrier support {tittle} yet?</h1>
                     <p>
-                        <a href={(type == 6 || type == 7) ? "https://www.apple.com/watch/cellular/" : "https://support.apple.com/en-us/109526"} target="_blank">Apple provided</a> list of {(type == 6 || type == 7) ? "Apple Watch carrier support" : "what features each carrier supports"}
+                        <a href={(type == 7 || type == 8) ? "https://www.apple.com/watch/cellular/" : "https://support.apple.com/en-us/109526"} target="_blank">Apple provided</a> list of {(type == 6 || type == 7) ? "Apple Watch carrier support" : "what features each carrier supports"}
                         <> </>&bull; <> </>
                         <a href='https://github.com/cupboardunderscore/ios-rcs'>GitHub</a>
                     </p>
@@ -257,6 +262,8 @@ export function build(type: number, carr: string, dir: string, tag: string, titt
                     <p>support yet?</p>
                     <h2>Updated with iOS {manualversion} carrier bundles!</h2>
                     <h3><a target="_blank" href="https://support.apple.com/en-us/109324">OTA</a> bundles updated on: {new Date().toDateString()}</h3>
+                    <p><> </>&bull; <> </></p>
+                    Notice: URL has been changed to <a href='https://cupboardunderscore.github.io/ios-rcs/'>https://cupboardunderscore.github.io/ios-rcs/</a>
                 </header>
                 <CarrierSupportTable />
             </div>

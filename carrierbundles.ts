@@ -104,17 +104,22 @@ function internal(id: string)
             return true;
         case "NonPublicNetwork":
             return true;
+        case "Bootstrap_ATT_US":
+            return true;
+        case "Bootstrap_Verizon_US":
+            return true;
         default:
             return false;
     }
 }
 
 let networks: Record<string,any> = {};
+let networkrbm: Record<string,any> = {};
+//let networke2ee: Record<string,any> = {};
 let network5gsa: Record<string,any> = {};
 let networksat: Record<string,any> = {};
-let networkrbm: Record<string,any> = {};
-let networkvonr: Record<string,any> = {};
 let networkvvmail: Record<string,any> = {};
+let networkvonr: Record<string,any> = {};
 /*let networkwatch: Record<string,any> = {};
 let networkwatchsa: Record<string,any> = {};*/
 let networkesimtr: Record<string,any> = {};
@@ -182,6 +187,7 @@ function doLocal(dir: string) {
         if (internal(info.CFBundleName)) continue;
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networks", "eval(network)[id].data.RCS");
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkrbm", "eval(network)[id].data.RCS?.EnableBusinessMessagingByDefault || eval(network)[id].data.RCS?.ShowBusinessMessagingSwitch");
+        //setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networke2ee", "eval(network)[id].data.RCS?.SupportsE2EE");
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "network5gsa", "eval(network)[id].blob.Show5GStandaloneSwitch || eval(network)[id].blob.Enable5GStandaloneByDefault || eval(network)[id].data.Show5GStandaloneSwitch || eval(network)[id].data.Enable5GStandaloneByDefault");
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networksat", "eval(network)[id].blob.SupportsSatellite || eval(network)[id].blob.ShowSatelliteSwitch");
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkvvmail", "eval(network)[id].data.VisualVoicemailServiceName && eval(network)[id].data.VisualVoicemailServiceName != \"none\"");
@@ -225,6 +231,7 @@ async function doOnline() {
         let passedoutblob = bplist.parseBuffer(ov)[0] as CarrierPlist.CarrierPlist;
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networks", "eval(network)[id].data.RCS");
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkrbm", "eval(network)[id].data.RCS?.EnableBusinessMessagingByDefault || eval(network)[id].data.RCS?.ShowBusinessMessagingSwitch");
+        //setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networke2ee", "eval(network)[id].data.RCS?.SupportsE2EE");
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "network5gsa", "eval(network)[id].blob.Show5GStandaloneSwitch || eval(network)[id].blob.Enable5GStandaloneByDefault || eval(network)[id].data.Show5GStandaloneSwitch || eval(network)[id].data.Enable5GStandaloneByDefault");
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networksat", "eval(network)[id].blob.SupportsSatellite || eval(network)[id].blob.ShowSatelliteSwitch");
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkvvmail", "eval(network)[id].data.VisualVoicemailServiceName && eval(network)[id].data.VisualVoicemailServiceName != \"none\"");
@@ -248,11 +255,12 @@ doLocal('26.3b3-LuckDSeed23D5114d.V53DeveloperOS')
 
 fs.writeFileSync(Path.join(__dirname, 'version.txt'), manualversion());
 fs.writeFileSync(Path.join(__dirname, 'processed.json'), JSON.stringify(networks, null, 2));
+fs.writeFileSync(Path.join(__dirname, 'processed-rbm.json'), JSON.stringify(networkrbm, null, 2));
+//fs.writeFileSync(Path.join(__dirname, 'processed-e2ee.json'), JSON.stringify(networke2ee, null, 2));
 fs.writeFileSync(Path.join(__dirname, 'processed-5gsa.json'), JSON.stringify(network5gsa, null, 2));
 fs.writeFileSync(Path.join(__dirname, 'processed-sat.json'), JSON.stringify(networksat, null, 2));
-fs.writeFileSync(Path.join(__dirname, 'processed-rbm.json'), JSON.stringify(networkrbm, null, 2));
-fs.writeFileSync(Path.join(__dirname, 'processed-vonr.json'), JSON.stringify(networkvonr, null, 2));
 fs.writeFileSync(Path.join(__dirname, 'processed-vvmail.json'), JSON.stringify(networkvvmail, null, 2));
+fs.writeFileSync(Path.join(__dirname, 'processed-vonr.json'), JSON.stringify(networkvonr, null, 2));
 /*fs.writeFileSync(Path.join(__dirname, 'processed-watch.json'), JSON.stringify(networkwatch, null, 2));
 fs.writeFileSync(Path.join(__dirname, 'processed-watchsa.json'), JSON.stringify(networkwatchsa, null, 2));*/
 fs.writeFileSync(Path.join(__dirname, 'processed-esimtr.json'), JSON.stringify(networkesimtr, null, 2));

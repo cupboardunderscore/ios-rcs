@@ -326,6 +326,8 @@ export interface CarrierPlist {
     AllowsMultiplePDNConnectionsToSameAPN?:            boolean;
     AllowsHighQualityVideoOver3G?:                     boolean;
     DataIndicatorOverrideForNRMmwave?:                 string;
+    EnableTARandomizationByDefault?:                   boolean;
+    ShowTARandomizationSwitch?:                        boolean;
 }
 
 export interface AllowedMultimodeSIMS {
@@ -2043,7 +2045,8 @@ export interface RCS {
     ShowRCSSwitch:                      boolean;
     EnableBusinessMessagingByDefault:   boolean;
     ShowBusinessMessagingSwitch:        boolean;
-
+    RefetchRCSStateIfDisabled:          boolean;
+    SupportsE2EE:                       boolean;
 }
 
 export interface ProvisioningData {

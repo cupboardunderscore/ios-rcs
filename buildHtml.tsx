@@ -18,10 +18,11 @@ import procwatchsa from "./processed-watchsa.json";*/
 import procesimtr from "./processed-esimtr.json";
 //
 import procusage from "./processed-usage.json";
+import procprivacy from "./processed-privacy.json";
 
 //ig compiler ignores the stuff above if i don't "use" it
 let temp;
-temp = procrcs; temp = procrbm;/* temp = proce2ee;*/ temp = proc5gsa; temp = procsat; temp = procvvmail; temp = procvonr;/* temp = procwatch; temp = procwatchsa;*/ temp = procesimtr; /**/ temp = procusage;
+temp = procrcs; temp = procrbm;/* temp = proce2ee;*/ temp = proc5gsa; temp = procsat; temp = procvvmail; temp = procvonr;/* temp = procwatch; temp = procwatchsa;*/ temp = procesimtr; /**/ temp = procusage; temp = procprivacy;
 temp = null;
 
 import type { CarrierPlist } from "./types/carrier.plist";
@@ -216,6 +217,11 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
         linkname.push("Cellular plan info");
         linkdir.push("usage/");
     }
+    if (type != 12)
+    {
+        linkname.push("Limit precise location");
+        linkdir.push("privacy/");
+    }
     let html = renderToString(<>
         <head>
             <title>Does my carrier support {tittle} yet?</title>
@@ -238,7 +244,7 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
                 <header>
                     <h1>Does my carrier support {tittle} yet?</h1>
                     <p>
-                        <a href={(type == 7 || type == 8) ? "https://www.apple.com/watch/cellular/" : "https://support.apple.com/en-us/109526"} target="_blank">Apple provided</a> list of {(type == 6 || type == 7) ? "Apple Watch carrier support" : "what features each carrier supports"}
+                        <a href={(type == 7 || type == 8) ? "https://www.apple.com/watch/cellular/" : (type == 9)? "https://support.apple.com/en-us/123878" : (type == 12)? "https://support.apple.com/en-us/126101" :"https://support.apple.com/en-us/109526"} target="_blank">Apple provided</a> {(type == 6 || type == 7) ? "list of Apple Watch carrier support" : (type == 9 || type == 12)? "support page" : "list of what features each carrier supports"}
                         <> </>&bull; <> </>
                         <a href='https://github.com/cupboardunderscore/ios-rcs'>GitHub</a>
                     </p>
@@ -258,6 +264,8 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
                         <a href={home + linkdir[5]}>{linkname[5]}</a>
                         <> </>&bull; <> </>
                         <a href={home + linkdir[6]}>{linkname[6]}</a>
+                        <> </>&bull; <> </>
+                        <a href={home + linkdir[7]}>{linkname[7]}</a>
                     </p>
                     <p>support yet?</p>
                     <h2>Updated with iOS {manualversion} carrier bundles!</h2>

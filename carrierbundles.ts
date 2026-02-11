@@ -42,7 +42,7 @@ async function getCarrierBundle(url: string, over: boolean) {
     let zip = await JSZip.loadAsync(data);
     let file;
     if (!over) file = Object.keys(zip.files).find(a => a.match(/^Payload\/[a-zA-Z0-9_]+\.bundle\/carrier\.plist$/i));
-    if (over) file = Object.keys(zip.files).find(a => a.match(/^Payload\/[a-zA-Z0-9_]+\.bundle\/overrides\_V53\_V54\_V57\.plist$/i));
+    if (over) file = Object.keys(zip.files).find(a => a.match(/^Payload\/[a-zA-Z0-9_]+\.bundle\/overrides\_V59\.plist$/i));
     if (!file && !over){
         console.warn("Files in " + url + " are: ", Object.keys(zip.files));
         throw new Error(`Carrier.plist not found in ${url}`);
@@ -125,6 +125,7 @@ let networkwatchsa: Record<string,any> = {};*/
 let networkesimtr: Record<string,any> = {};
 //
 let networkusage: Record<string,any> = {};
+let networkprivacy: Record<string,any> = {};
 
 function setNetwork(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist, blob: CarrierPlist.CarrierPlist, network: string, tag: string) {
     let countryCode = id.split("_").pop()! || '';
@@ -178,7 +179,7 @@ function doLocal(dir: string) {
 
         let info = readBplist<CarrierBundleInfo>(path, 'Info.plist');
         let data = readBplist<CarrierPlist.CarrierPlist>(path, 'carrier.plist');
-        let blob = readBplist<CarrierPlist.CarrierPlist>(path, 'overrides\_V53\_V54\_V57.plist');
+        let blob = readBplist<CarrierPlist.CarrierPlist>(path, 'overrides\_V59.plist');
         if (!blob)
         {
             blob = data;
@@ -197,6 +198,7 @@ function doLocal(dir: string) {
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkesimtr", "eval(network)[id].data.CarrierEntitlements?.SupportCrossPlatformSIMTransfer || eval(network)[id].blob.CarrierEntitlements?.SupportCrossPlatformSIMTransfer");
         //
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkusage", "eval(network)[id].data.CarrierSpace?.SupportsPlans || eval(network)[id].data.CarrierSpace?.SupportsUsage");
+        setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkprivacy", "eval(network)[id].blob.EnableTARandomizationByDefault || eval(network)[id].blob.ShowTARandomizationSwitch");
     }
 }
 
@@ -241,17 +243,18 @@ async function doOnline() {
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkesimtr", "eval(network)[id].data.CarrierEntitlements?.SupportCrossPlatformSIMTransfer || eval(network)[id].blob.CarrierEntitlements?.SupportCrossPlatformSIMTransfer");
         //
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkusage", "eval(network)[id].data.CarrierSpace?.SupportsPlans || eval(network)[id].data.CarrierSpace?.SupportsUsage");
+        setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkprivacy", "eval(network)[id].blob.EnableTARandomizationByDefault || eval(network)[id].blob.ShowTARandomizationSwitch");
     }
 }
 
 export function manualversion()
 {
-    return "26.2.1 and 26.3 beta RC";
+    return "26.3";
 }
 
-doLocal('26.2.1-LuckC23C71.V53OS')
+doLocal('26.3-LuckD23D127.V59OS')
 await doOnline();
-doLocal('26.3RC-LuckD23D125.V53DeveloperOS')
+//doLocal('')
 
 fs.writeFileSync(Path.join(__dirname, 'version.txt'), manualversion());
 fs.writeFileSync(Path.join(__dirname, 'processed.json'), JSON.stringify(networks, null, 2));
@@ -266,3 +269,4 @@ fs.writeFileSync(Path.join(__dirname, 'processed-watchsa.json'), JSON.stringify(
 fs.writeFileSync(Path.join(__dirname, 'processed-esimtr.json'), JSON.stringify(networkesimtr, null, 2));
 //
 fs.writeFileSync(Path.join(__dirname, 'processed-usage.json'), JSON.stringify(networkusage, null, 2));
+fs.writeFileSync(Path.join(__dirname, 'processed-privacy.json'), JSON.stringify(networkprivacy, null, 2));

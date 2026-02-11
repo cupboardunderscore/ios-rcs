@@ -45,3 +45,7 @@ build(11, "procusage", "./html/usage/",
     "data.data.CarrierSpace?.SupportsPlans || data.data.CarrierSpace?.SupportsUsage",
     "true",
     "Cellular plan info on iOS");
+build(12, "procprivacy", "./html/privacy/",
+    "data.blob.EnableTARandomizationByDefault || data.blob.ShowTARandomizationSwitch",
+    "true",
+    "Limit precise location on iOS");

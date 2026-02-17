@@ -8,10 +8,10 @@ build(1, "procrbm", "./html/rbm/",
     "data.data.RCS?.EnableBusinessMessagingByDefault || data.data.RCS?.ShowBusinessMessagingSwitch",
     "data.RCS",
     "RCS Business Messaging on iOS");
-/*build(2, "proce2ee", "./html/e2ee/",
-    "data.data.RCS?.SupportsE2EE",
+build(2, "proce2ee", "./html/e2ee/",
+    "data.data.RCS?.SupportsE2EE != false",
     "data.RCS",
-    "RCS E2EE on iOS");*/
+    "RCS E2EE on iOS");
 build(3, "proc5gsa", "./html/5gsa/",
     "data.blob.Show5GStandaloneSwitch || data.blob.Enable5GStandaloneByDefault || data.data.Show5GStandaloneSwitch || data.data.Enable5GStandaloneByDefault",
     "true",

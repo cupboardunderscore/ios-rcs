@@ -8,7 +8,7 @@ import fs from "fs";
 
 import procrcs from "./processed.json";
 import procrbm from "./processed-rbm.json";
-//import proce2ee from "./processed-e2ee.json";
+import proce2ee from "./processed-e2ee.json";
 import proc5gsa from "./processed-5gsa.json";
 import procsat from "./processed-sat.json";
 import procvvmail from "./processed-vvmail.json";
@@ -22,7 +22,7 @@ import procprivacy from "./processed-privacy.json";
 
 //ig compiler ignores the stuff above if i don't "use" it
 let temp;
-temp = procrcs; temp = procrbm;/* temp = proce2ee;*/ temp = proc5gsa; temp = procsat; temp = procvvmail; temp = procvonr;/* temp = procwatch; temp = procwatchsa;*/ temp = procesimtr; /**/ temp = procusage; temp = procprivacy;
+temp = procrcs; temp = procrbm; temp = proce2ee; temp = proc5gsa; temp = procsat; temp = procvvmail; temp = procvonr;/* temp = procwatch; temp = procwatchsa;*/ temp = procesimtr; /**/ temp = procusage; temp = procprivacy;
 temp = null;
 
 import type { CarrierPlist } from "./types/carrier.plist";
@@ -167,11 +167,11 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
         linkname.push("RCS Business Messaging");
         linkdir.push("rbm/");
     }
-    /*if (type != 2)
+    if (type != 2)
     {
         linkname.push("RCS E2EE");
         linkdir.push("e2ee/");
-    }*/
+    }
     if (type != 3)
     {
         linkname.push("5G Standalone");
@@ -266,6 +266,8 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
                         <a href={home + linkdir[6]}>{linkname[6]}</a>
                         <> </>&bull; <> </>
                         <a href={home + linkdir[7]}>{linkname[7]}</a>
+                        <> </>&bull; <> </>
+                        <a href={home + linkdir[8]}>{linkname[8]}</a>
                     </p>
                     <p>support yet?</p>
                     <h2>Updated with iOS {manualversion} carrier bundles!</h2>

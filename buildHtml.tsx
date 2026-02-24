@@ -16,13 +16,13 @@ import procvonr from "./processed-vonr.json";
 /*import procwatch from "./processed-watch.json";
 import procwatchsa from "./processed-watchsa.json";*/
 import procesimtr from "./processed-esimtr.json";
-//
+import proccresimtr from "./processed-cresimtr.json";
 import procusage from "./processed-usage.json";
 import procprivacy from "./processed-privacy.json";
 
 //ig compiler ignores the stuff above if i don't "use" it
 let temp;
-temp = procrcs; temp = procrbm; temp = proce2ee; temp = proc5gsa; temp = procsat; temp = procvvmail; temp = procvonr;/* temp = procwatch; temp = procwatchsa;*/ temp = procesimtr; /**/ temp = procusage; temp = procprivacy;
+temp = procrcs; temp = procrbm; temp = proce2ee; temp = proc5gsa; temp = procsat; temp = procvvmail; temp = procvonr;/* temp = procwatch; temp = procwatchsa;*/ temp = procesimtr; temp = proccresimtr; temp = procusage; temp = procprivacy;
 temp = null;
 
 import type { CarrierPlist } from "./types/carrier.plist";
@@ -204,14 +204,14 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
     }*/
     if (type != 9)
     {
-        linkname.push("Cross-platform (e)SIM transfer");
+        linkname.push("(e)SIM transfer");
         linkdir.push("esimtr/");
     }
-    /*if (type != 10)
+    if (type != 10)
     {
-        linkname.push("esim transfer");
-        linkdir.push("");
-    }*/
+        linkname.push("Cross-platform (e)SIM transfer");
+        linkdir.push("cresimtr/");
+    }
     if (type != 11)
     {
         linkname.push("Cellular plan info");
@@ -244,7 +244,7 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
                 <header>
                     <h1>Does my carrier support {tittle} yet?</h1>
                     <p>
-                        <a href={(type == 7 || type == 8) ? "https://www.apple.com/watch/cellular/" : (type == 9)? "https://support.apple.com/en-us/123878" : (type == 12)? "https://support.apple.com/en-us/126101" :"https://support.apple.com/en-us/109526"} target="_blank">Apple provided</a> {(type == 6 || type == 7) ? "list of Apple Watch carrier support" : (type == 9 || type == 12)? "support page" : "list of what features each carrier supports"}
+                        <a href={(type == 7 || type == 8) ? "https://www.apple.com/watch/cellular/" : (type == 9)? "https://support.apple.com/en-us/101569" : (type == 10)? "https://support.apple.com/en-us/123878" : (type == 12)? "https://support.apple.com/en-us/126101" :"https://support.apple.com/en-us/109526"} target="_blank">Apple provided</a> {(type == 6 || type == 7) ? "list of Apple Watch carrier support" : (type == 9  || type == 10|| type == 12)? "support page" : "list of what features each carrier supports"}
                         <> </>&bull; <> </>
                         <a href='https://github.com/cupboardunderscore/ios-rcs'>GitHub</a>
                     </p>
@@ -266,6 +266,8 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
                         <a href={home + linkdir[6]}>{linkname[6]}</a>
                         <> </>&bull; <> </>
                         <a href={home + linkdir[7]}>{linkname[7]}</a>
+                        <> </>&bull; <> </>
+                        <a href={home + linkdir[8]}>{linkname[8]}</a>
                         <> </>&bull; <> </>
                         <a href={home + linkdir[8]}>{linkname[8]}</a>
                     </p>

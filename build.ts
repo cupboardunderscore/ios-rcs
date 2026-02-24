@@ -35,12 +35,13 @@ build(8, "procwatchsa", "./html/watchsa/",
     "lib.symbols.watchsa(Buffer.from(id, \'utf8\'), id.length) || data.data.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode || data.blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode",
     "Cellular Standalone on watchOS");*/
 build(9, "procesimtr", "./html/esimtr/",
-    "data.data.CarrierEntitlements?.SupportCrossPlatformSIMTransfer || data.blob.CarrierEntitlements?.SupportCrossPlatformSIMTransfer",
+    "data.data.PhoneAccountTransfer || data.blob.PhoneAccountTransfer || data.data.CarrierEntitlements?.SupportPhysicalSIMtoESIMTransfer || data.data.CarrierEntitlements?.SupportsOnDevicePhysicalSIMConvert || data.blob.CarrierEntitlements?.SupportPhysicalSIMtoESIMTransfer || data.blob.CarrierEntitlements?.SupportsOnDevicePhysicalSIMConvert",
     "true",
+    "(e)SIM transfer");
+build(10, "proccresimtr", "./html/cresimtr/",
+    "data.data.CarrierEntitlements?.SupportCrossPlatformSIMTransfer || data.blob.CarrierEntitlements?.SupportCrossPlatformSIMTransfer",
+    "data.PhoneAccountTransfer || blob.PhoneAccountTransfer || data.CarrierEntitlements?.SupportPhysicalSIMtoESIMTransfer || data.CarrierEntitlements?.SupportsOnDevicePhysicalSIMConvert || blob.CarrierEntitlements?.SupportPhysicalSIMtoESIMTransfer || blob.CarrierEntitlements?.SupportsOnDevicePhysicalSIMConvert",
     "Cross-platform (e)SIM transfer");
-/*build(10, "", "",
-    "",
-    "esim transfer");*/
 build(11, "procusage", "./html/usage/",
     "data.data.CarrierSpace?.SupportsPlans || data.data.CarrierSpace?.SupportsUsage",
     "true",

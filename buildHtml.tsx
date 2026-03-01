@@ -269,7 +269,7 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
                         <> </>&bull; <> </>
                         <a href={home + linkdir[8]}>{linkname[8]}</a>
                         <> </>&bull; <> </>
-                        <a href={home + linkdir[8]}>{linkname[8]}</a>
+                        <a href={home + linkdir[9]}>{linkname[9]}</a>
                     </p>
                     <p>support yet?</p>
                     <h2>Updated with iOS {manualversion} carrier bundles!</h2>

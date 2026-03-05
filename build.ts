@@ -43,7 +43,7 @@ build(10, "proccresimtr", "./html/cresimtr/",
     "data.PhoneAccountTransfer || blob.PhoneAccountTransfer || data.CarrierEntitlements?.SupportPhysicalSIMtoESIMTransfer || data.CarrierEntitlements?.SupportsOnDevicePhysicalSIMConvert || blob.CarrierEntitlements?.SupportPhysicalSIMtoESIMTransfer || blob.CarrierEntitlements?.SupportsOnDevicePhysicalSIMConvert",
     "Cross-platform (e)SIM transfer");
 build(11, "procusage", "./html/usage/",
-    "data.data.CarrierSpace?.SupportsPlans || data.data.CarrierSpace?.SupportsUsage",
+    "data.data.CarrierSpace",
     "true",
     "Cellular plan info on iOS");
 build(12, "procprivacy", "./html/privacy/",

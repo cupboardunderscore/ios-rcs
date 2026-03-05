@@ -197,7 +197,7 @@ function doLocal(dir: string) {
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkwatchsa", "lib.symbols.watchsa(Buffer.from(id, \'utf8\'), id.length) || eval(network)[id].data.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode || eval(network)[id].blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode");*/
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkesimtr", "eval(network)[id].data.PhoneAccountTransfer || eval(network)[id].blob.PhoneAccountTransfer || eval(network)[id].data.CarrierEntitlements?.SupportPhysicalSIMtoESIMTransfer || eval(network)[id].data.CarrierEntitlements?.SupportsOnDevicePhysicalSIMConvert || eval(network)[id].blob.CarrierEntitlements?.SupportPhysicalSIMtoESIMTransfer || eval(network)[id].blob.CarrierEntitlements?.SupportsOnDevicePhysicalSIMConvert");
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkcresimtr", "eval(network)[id].data.CarrierEntitlements?.SupportCrossPlatformSIMTransfer || eval(network)[id].blob.CarrierEntitlements?.SupportCrossPlatformSIMTransfer");
-        setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkusage", "eval(network)[id].data.CarrierSpace?.SupportsPlans || eval(network)[id].data.CarrierSpace?.SupportsUsage");
+        setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkusage", "eval(network)[id].data.CarrierSpace");
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkprivacy", "eval(network)[id].blob.EnableTARandomizationByDefault || eval(network)[id].blob.ShowTARandomizationSwitch");
     }
 }
@@ -242,7 +242,7 @@ async function doOnline() {
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkwatchsa", "lib.symbols.watchsa(Buffer.from(id, \'utf8\'), id.length) || eval(network)[id].data.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode || eval(network)[id].blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode");*/
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkesimtr", "eval(network)[id].data.PhoneAccountTransfer || eval(network)[id].blob.PhoneAccountTransfer || eval(network)[id].data.CarrierEntitlements?.SupportPhysicalSIMtoESIMTransfer || eval(network)[id].data.CarrierEntitlements?.SupportsOnDevicePhysicalSIMConvert || eval(network)[id].blob.CarrierEntitlements?.SupportPhysicalSIMtoESIMTransfer || eval(network)[id].blob.CarrierEntitlements?.SupportsOnDevicePhysicalSIMConvert");
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkcresimtr", "eval(network)[id].data.CarrierEntitlements?.SupportCrossPlatformSIMTransfer || eval(network)[id].blob.CarrierEntitlements?.SupportCrossPlatformSIMTransfer");
-        setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkusage", "eval(network)[id].data.CarrierSpace?.SupportsPlans || eval(network)[id].data.CarrierSpace?.SupportsUsage");
+        setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkusage", "eval(network)[id].data.CarrierSpace");
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkprivacy", "eval(network)[id].blob.EnableTARandomizationByDefault || eval(network)[id].blob.ShowTARandomizationSwitch");
     }
 }

@@ -274,8 +274,6 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
                     <p>support yet?</p>
                     <h2>Updated with iOS {manualversion} carrier bundles!</h2>
                     <h3><a target="_blank" href="https://support.apple.com/en-us/109324">OTA</a> bundles updated on: {new Date().toDateString()}</h3>
-                    <p><> </>&bull; <> </></p>
-                    Notice: URL has been changed to <a href='https://cupboardunderscore.github.io/ios-rcs/'>https://cupboardunderscore.github.io/ios-rcs/</a>
                 </header>
                 <CarrierSupportTable />
             </div>

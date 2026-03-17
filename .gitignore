@@ -13,3 +13,5 @@ libwatchos.*
 libcarrierdedupe.*
 !html/history/*.html
 html/debug.csv
+host.py
+templates

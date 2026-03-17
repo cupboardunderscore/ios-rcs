@@ -92,11 +92,41 @@ function getsite(id: string)
 
 export function build(type: number, carr: string, dir: string, tag: string, ptag: string, tittle: string)
 {
+    let sbar: Array<Array<String>> = [];
+    function addelemet(id: string, name: string, cc: number, ccc: number)
+    {
+        sbar.push([id, name, String(cc), String(ccc)]);
+        return;
+    }
+    function readelement()
+    {
+        let b: boolean = false;
+        let temp: string = "<div class=\"sidebar\">";
+        for (let i of sbar)
+        {
+            if (Number(i[2]) == 0 && !b)
+            {
+                temp += "<hr>";
+                b = true;
+            }
+            temp += "<a href=\"#" + i[0] + "\">" + i[1] + " (" + i[2] + "/" + i[3] + ")" + "</a>";
+        }
+        temp += "</div>";
+        return temp;
+    }
+    function resetnumber()
+    {
+        ccount = 0;
+        cccount = 0;
+    }
+
     let carriers = eval(carr) as Record<string, { source: string, version: string, names: string[], country?: string, countryCode: string, data: CarrierPlist, blob: CarrierPlist }>;
 
     let rcsStatus = (data: typeof carriers[string], id: string) => eval(tag) ? (data.source.includes("DeveloperOS") ? /*((+data.version.slice(0, 4) >= 64.5) ? 1 : 2)*/ 2 : data.source.startsWith("https") ? 3 : 4) : 0;
 
     let count: number = 0;
+    let ccount: number = 0;
+    let cccount: number = 0;
 
     const CarrierSupportTable = () => { 
         let sorted = Object.entries(carriers).filter(([_, {data, blob}]) => {
@@ -122,13 +152,18 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
             (aCarriers?.filter(([id, data]) => eval(tag)).length ?? 0) 
         );
 
-        return <div class='countries'>{entries.map(([country, carriers]) => (country !== "🌐 -Worldwide" && <>
-            <h2 id={carriers[0][1].countryCode}>{country}</h2>
+        return <div class='countries'>{entries.map(([country, carriers]) => (country != "🌐 -Worldwide" && <>
+            <h2 id={carriers[0][1].countryCode}>{country}</h2>{resetnumber()}
             <div class='carriers'>
                 {carriers?.map(([id, data]) => {
                     let site = getsite(id);
                     let url = site || data.data.CarrierBookmarks?.at(-1)?.URL || data.data.MyAccountURL || data.data.TetheringURL;
-                    if (rcsStatus(data, id)) count++;
+                    if (rcsStatus(data, id))
+                    {
+                        count++;
+                        ccount++;
+                    }
+                    cccount++;
                     return <div class='carrier' data-supports={rcsStatus(data, id)}>
                         <div class='header'>
                             
@@ -146,7 +181,7 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
                         <p class='id'>{id} {data.version}</p>
                     </div>
                 })}
-            </div>
+            </div>{addelemet(carriers[0][1].countryCode, country, ccount, cccount)}
         </>))}</div>
 
     }
@@ -240,6 +275,31 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
                 }).code.toString() }} />
         </head>
         <body>
+            <div class="topnav">
+                <a class="tle">Does my carrier have</a>
+                <a class={(type == 0)? "active" : ""} href={home}>RCS</a>
+                <a class="tle">&bull; </a>
+                <a class={(type == 1)? "active" : ""} href={home + "rbm/"}>RBM</a>
+                <a class="tle">&bull; </a>
+                <a class={(type == 2)? "active" : ""} href={home + "e2ee/"}>RCS E2EE</a>
+                <a class="tle">&bull; </a>
+                <a class={(type == 3)? "active" : ""} href={home + "5gsa/"}>5G SA</a>
+                <a class="tle">&bull; </a>
+                <a class={(type == 4)? "active" : ""} href={home + "sat/"}>Satellite features</a>
+                <a class="tle">&bull; </a>
+                <a class={(type == 5)? "active" : ""} href={home + "vvmail/"}>Visual Voicemail</a>
+                <a class="tle">&bull; </a>
+                <a class={(type == 6)? "active" : ""} href={home + "vonr/"}>VoNR</a>
+                <a class="tle">&bull; </a>
+                <a class={(type == 9)? "active" : ""} href={home + "esimtr/"}>(e)SIM transfer</a>
+                <a class="tle">&bull; </a>
+                <a class={(type == 10)? "active" : ""} href={home + "cresimtr/"}>Cross-platform (e)SIM transfer</a>
+                <a class="tle">&bull; </a>
+                <a class={(type == 11)? "active" : ""} href={home + "usage/"}>Cellular plan info</a>
+                <a class="tle">&bull; </a>
+                <a class={(type == 12)? "active" : ""} href={home + "privacy/"}>Limit precise location</a>
+                <a class="tle">support yet?</a>
+            </div>
             <div class='container'>
                 <header>
                     <h1>Does my carrier support {tittle} yet?</h1>
@@ -249,29 +309,31 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
                         <a href='https://github.com/cupboardunderscore/ios-rcs'>GitHub</a>
                     </p>
                     <p><> </>&bull; <> </></p>
-                    <p>Does my carrier have</p>
-                    <p>
-                        <a href={home + linkdir[0]}>{linkname[0]}</a>
-                        <> </>&bull; <> </>
-                        <a href={home + linkdir[1]}>{linkname[1]}</a>
-                        <> </>&bull; <> </>
-                        <a href={home + linkdir[2]}>{linkname[2]}</a>
-                        <> </>&bull; <> </>
-                        <a href={home + linkdir[3]}>{linkname[3]}</a>
-                        <> </>&bull; <> </>
-                        <a href={home + linkdir[4]}>{linkname[4]}</a>
-                        <> </>&bull; <> </>
-                        <a href={home + linkdir[5]}>{linkname[5]}</a>
-                        <> </>&bull; <> </>
-                        <a href={home + linkdir[6]}>{linkname[6]}</a>
-                        <> </>&bull; <> </>
-                        <a href={home + linkdir[7]}>{linkname[7]}</a>
-                        <> </>&bull; <> </>
-                        <a href={home + linkdir[8]}>{linkname[8]}</a>
-                        <> </>&bull; <> </>
-                        <a href={home + linkdir[9]}>{linkname[9]}</a>
-                    </p>
-                    <p>support yet?</p>
+                    <div class="regnav">
+                        <p>Does my carrier have</p>
+                        <p>
+                            <a href={home + linkdir[0]}>{linkname[0]}</a>
+                            <> </>&bull; <> </>
+                            <a href={home + linkdir[1]}>{linkname[1]}</a>
+                            <> </>&bull; <> </>
+                            <a href={home + linkdir[2]}>{linkname[2]}</a>
+                            <> </>&bull; <> </>
+                            <a href={home + linkdir[3]}>{linkname[3]}</a>
+                            <> </>&bull; <> </>
+                            <a href={home + linkdir[4]}>{linkname[4]}</a>
+                            <> </>&bull; <> </>
+                            <a href={home + linkdir[5]}>{linkname[5]}</a>
+                            <> </>&bull; <> </>
+                            <a href={home + linkdir[6]}>{linkname[6]}</a>
+                            <> </>&bull; <> </>
+                            <a href={home + linkdir[7]}>{linkname[7]}</a>
+                            <> </>&bull; <> </>
+                            <a href={home + linkdir[8]}>{linkname[8]}</a>
+                            <> </>&bull; <> </>
+                            <a href={home + linkdir[9]}>{linkname[9]}</a>
+                        </p>
+                        <p>support yet?</p>
+                    </div>
                     <h2>Updated with iOS {manualversion} carrier bundles!</h2>
                     <h3><a target="_blank" href="https://support.apple.com/en-us/109324">OTA</a> bundles updated on: {new Date().toDateString()}</h3>
                 </header>
@@ -279,6 +341,7 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
             </div>
         </body>
     </>);
+    html += readelement();
     writeFileSync(dir + "index.html", html);
     fs.promises.appendFile("./html/debug.csv", carr.slice(4) + "," + count + "\n");
     //console.log(' '.repeat(3 - count.toString().length) + count + " - " + carr.slice(4));

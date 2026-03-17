@@ -17,7 +17,7 @@
     --orange-700: light-dark(#b45309, #fed7aa);
     --red-200: light-dark(#fea0a0, #861111);
     --cyan-500: #06b6d4;
-    --blue-400: light-dark(#2563eb,#60a5fa)
+    --blue-400: light-dark(#2563eb, #60a5fa);
 }
 
 @media screen and (max-device-width: 1024px)
@@ -130,4 +130,97 @@ a {
 }
 .grow {
     flex-grow: 1;
+}
+
+.topnav
+{
+    background-color: var(--grey-400);
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.topnav a
+{
+    float: left;
+    color: var(--grey-900);
+    text-align: center;
+    padding: 4px;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.topnav a:hover
+{
+    color: var(--grey-600);
+}
+
+.topnav a.tle
+{
+    font-weight: bold;
+}
+
+.topnav a.tle:hover
+{
+    color: var(--grey-900)
+}
+
+.topnav a.active
+{
+    color: var(--blue-400);
+    font-weight: bold;
+}
+
+.sidebar
+{
+    top: 1rem;
+    margin: 0;
+    margin-top: 25px;
+    padding: 0;
+    position: fixed;
+    overflow: auto;
+    height: calc(100% - 60px);
+    width: calc(50% - 482px);
+    max-width: 300px;
+}
+
+.sidebar a
+{
+    width: fit-content;
+    height: fit-content;
+    text-decoration:none;
+    display: block;
+    color: var(--grey-900);
+    padding: 8px;
+}
+
+.sidebar a:hover
+{
+    color: var(--grey-600);
+}
+
+@media screen and (max-width: 1289px)
+{
+    .topnav
+    {
+        display: none;
+    }
+    .sidebar
+    {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 1290px)
+{
+    .regnav
+    {
+        display: none;
+    }
+    body
+    {
+        margin-top: 1rem;
+    }
 }

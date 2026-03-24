@@ -37,6 +37,8 @@ Antel_uy;http://www.antel.com.uy/
 AppWire_LTE_US;https://www.appalachianwireless.com/our-devices&filter=iphone
 Appalachian_LTE_US;https://www.appalachianwireless.com/our-devices&filter=iphone
 Avantel_co;https://www.wom.co/
+Azerfon_az;https://www.nar.az/en/
+Bakcell_az;https://www.bakcell.com/en
 BASE_be;http://www.base.be/en/customer-service.html
 BICS;https://www.bics.com
 BNE;https://www.bnesim.com/how-to-install-bne-esim-on-your-iphone/
@@ -183,6 +185,7 @@ Elisa_ee;https://www.elisa.ee/
 EntelPCS_cl;http://www.entel.cl/
 Entel_pe;http://www.entel.pe/
 Etisalat_ae;https://www.etisalat.ae/
+Etisalat_af;https://www.etisalat.af/
 Etisalat_bj;https://www.eand.com/
 Etisalat_ci;https://www.moov-africa.ci
 Etisalat_eg;http://www.etisalat.eg/etisalat/portal/home
@@ -357,6 +360,7 @@ Orange_mq;https://caraibe.orange.fr/
 Orange_mu;https://www.myt.mu/mobile/
 Orange_ne;https://www.zamanitelecom.com
 Orange_pl;https://www.orange.pl/view/esim
+Orange_pm;https://www.spmtelecom.com
 Orange_re;http://reunion.orange.fr/
 Orange_ro;http://www.orange.ro/iphone/index.html
 Orange_sk;http://orange.sk/
@@ -417,6 +421,7 @@ Shaw_ca;https://shop.shawmobile.ca/en-CA/devices?brand=Apple
 Shinetown;https://www.airsime.com/
 SilverStar_LTE_US;https://www.silverstar.com
 Siminn_is;https://vefverslun.siminn.is/vorur/apple_iphone
+Simly;https://www.simly.com
 SingTel_sg;https://www.singtel.com/personal/support#
 Sky_ie;https://www.sky.com/ie
 SmarTone_HKBN_hk;https://www.hkbn.net/personal/mobile/en/
@@ -452,6 +457,8 @@ TIM_br;http://www.tim.com.br/
 TMN_pt;https://www.meo.pt/
 TMobile_Boost_US;https://help.boostmobile.com/
 TMobile_CC_US;https://www.consumercellular.com/shopping/choose/device?filters=Apple
+TMobile_Comcast_US;https://business.comcast.com
+TMobile_Charter_US;https://www.spectrum.com/mobile.html
 TMobile_Germany;http://www.t-mobile.de/handy-hilfe/0,23626,26974-_,00.html#/apple
 TMobile_MVNO_US;https://www.t-mobile.com/support/
 TMobile_MetroPCS_US;https://www.metrobyt-mobile.com/cell-phones/brand/apple

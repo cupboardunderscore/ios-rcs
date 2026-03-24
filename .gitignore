@@ -6,7 +6,7 @@ node_modules/
 carrier-bundles/*/*/*
 !carrier.plist
 !Info.plist
-!overrides_V59.plist
+!overrides_V159.plist
 bun.lock
 run.command
 libwatchos.*

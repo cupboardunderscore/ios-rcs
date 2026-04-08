@@ -9,9 +9,7 @@ carrier-bundles/*/*/*
 !overrides_V159.plist
 bun.lock
 run.command
-libwatchos.*
-libcarrierdedupe.*
-!html/history/*.html
+lib*
 html/debug.csv
 host.py
 templates

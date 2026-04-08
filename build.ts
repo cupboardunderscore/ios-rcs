@@ -28,12 +28,6 @@ build(6, "procvonr", "./html/vonr/",
     "data.blob.SupportsVoNR || data.data.SupportsVoNR",
     "blob.Show5GStandaloneSwitch || blob.Enable5GStandaloneByDefault || data.Show5GStandaloneSwitch || data.Enable5GStandaloneByDefault",
     "Voice over NR on iOS");
-/*build(7, "procwatch", "./html/watch/",
-    "lib.symbols.watch(Buffer.from(id, \'utf8\'), id.length) || data.data.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || data.data.RemoteCardProvisioningSettings?.MinCompatibileWatchOS || data.blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || data.blob.RemoteCardProvisioningSettings?.MinCompatibileWatchOS",
-    "Cellular on watchOS");
-build(8, "procwatchsa", "./html/watchsa/",
-    "lib.symbols.watchsa(Buffer.from(id, \'utf8\'), id.length) || data.data.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode || data.blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode",
-    "Cellular Standalone on watchOS");*/
 build(9, "procesimtr", "./html/esimtr/",
     "data.data.PhoneAccountTransfer || data.blob.PhoneAccountTransfer || data.data.CarrierEntitlements?.SupportPhysicalSIMtoESIMTransfer || data.data.CarrierEntitlements?.SupportsOnDevicePhysicalSIMConvert || data.blob.CarrierEntitlements?.SupportPhysicalSIMtoESIMTransfer || data.blob.CarrierEntitlements?.SupportsOnDevicePhysicalSIMConvert",
     "true",

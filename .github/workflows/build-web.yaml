@@ -22,7 +22,6 @@ jobs:
       uses: actions/configure-pages@v5
     - uses: oven-sh/setup-bun@v2
     - uses: mlugg/setup-zig@v2
-    - run: zig build-lib watchos.cpp -dynamic -lc -lc++
     - run: zig build-lib carrierdedupe.cpp -dynamic -lc -lc++
     - run: bash prepare.sh
     - run: bun install

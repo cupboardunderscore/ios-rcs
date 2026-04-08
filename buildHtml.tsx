@@ -13,8 +13,6 @@ import proc5gsa from "./processed-5gsa.json";
 import procsat from "./processed-sat.json";
 import procvvmail from "./processed-vvmail.json";
 import procvonr from "./processed-vonr.json";
-/*import procwatch from "./processed-watch.json";
-import procwatchsa from "./processed-watchsa.json";*/
 import procesimtr from "./processed-esimtr.json";
 import proccresimtr from "./processed-cresimtr.json";
 import procusage from "./processed-usage.json";
@@ -22,7 +20,7 @@ import procprivacy from "./processed-privacy.json";
 
 //ig compiler ignores the stuff above if i don't "use" it
 let temp;
-temp = procrcs; temp = procrbm; temp = proce2ee; temp = proc5gsa; temp = procsat; temp = procvvmail; temp = procvonr;/* temp = procwatch; temp = procwatchsa;*/ temp = procesimtr; temp = proccresimtr; temp = procusage; temp = procprivacy;
+temp = procrcs; temp = procrbm; temp = proce2ee; temp = proc5gsa; temp = procsat; temp = procvvmail; temp = procvonr; temp = procesimtr; temp = proccresimtr; temp = procusage; temp = procprivacy;
 temp = null;
 
 import type { CarrierPlist } from "./types/carrier.plist";
@@ -33,23 +31,8 @@ import * as preact from "preact";
 const { Fragment } = preact;
 
 import { dlopen, FFIType, suffix } from "bun:ffi";
-const path = "libwatchos." + suffix;
+const path = "libcarrierdedupe." + suffix;
 const lib = dlopen(path,
-  {
-    watch:
-    {
-      args: ["cstring", "int"],
-      returns: FFIType.bool,
-    },
-    watchsa:
-    {
-      args: ["cstring", "int"],
-      returns: FFIType.bool,
-    },
-  },
-);
-const path2 = "libcarrierdedupe." + suffix;
-const lib2 = dlopen(path2,
   {
     carrde:
     {
@@ -82,7 +65,7 @@ function getsite(id: string)
     let url: string = data.find((string) => string.id === id)?.link;
     if (!url)
     {
-        if (lib2.symbols.carrde(Buffer.from(id, 'utf8'), id.length) != true)
+        if (lib.symbols.carrde(Buffer.from(id, 'utf8'), id.length) != true)
         {
             console.warn(id + " - not categorized");
         }
@@ -227,16 +210,6 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
         linkname.push("Voice over NR");
         linkdir.push("vonr/");
     }
-    /*if (type != 7)
-    {
-        linkname.push("Apple Watch");
-        linkdir.push("watch/");
-    }
-    if (type != 8)
-    {
-        linkname.push("Apple Watch Standalone");
-        linkdir.push("watchsa/");
-    }*/
     if (type != 9)
     {
         linkname.push("(e)SIM transfer");
@@ -304,7 +277,7 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
                 <header>
                     <h1>Does my carrier support {tittle} yet?</h1>
                     <p>
-                        <a href={(type == 7 || type == 8) ? "https://www.apple.com/watch/cellular/" : (type == 9)? "https://support.apple.com/en-us/101569" : (type == 10)? "https://support.apple.com/en-us/123878" : (type == 12)? "https://support.apple.com/en-us/126101" :"https://support.apple.com/en-us/109526"} target="_blank">Apple provided</a> {(type == 6 || type == 7) ? "list of Apple Watch carrier support" : (type == 9  || type == 10|| type == 12)? "support page" : "list of what features each carrier supports"}
+                        <a href={(type == 9)? "https://support.apple.com/en-us/101569" : (type == 10)? "https://support.apple.com/en-us/123878" : (type == 12)? "https://support.apple.com/en-us/126101" :"https://support.apple.com/en-us/109526"} target="_blank">Apple provided</a> {(type == 9  || type == 10|| type == 12)? "support page" : "list of what features each carrier supports"}
                         <> </>&bull; <> </>
                         <a href='https://github.com/cupboardunderscore/ios-rcs'>GitHub</a>
                     </p>
@@ -344,5 +317,4 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
     html += readelement();
     writeFileSync(dir + "index.html", html);
     fs.promises.appendFile("./html/debug.csv", carr.slice(4) + "," + count + "\n");
-    //console.log(' '.repeat(3 - count.toString().length) + count + " - " + carr.slice(4));
 }

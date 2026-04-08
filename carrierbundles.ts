@@ -9,23 +9,6 @@ import type { CarrierBundleInfo } from "./types/Info.plist";
 import type CarrierPlist from "./types/carrier.plist.d.ts";
 import type { CarrierBundleSimple, iTunesUpdate } from "./types/versions.d.ts";
 
-import { dlopen, FFIType, suffix } from "bun:ffi";
-const path = "libwatchos." + suffix;
-const lib = dlopen(path,
-  {
-    watch:
-    {
-      args: ["cstring", "int"],
-      returns: FFIType.bool,
-    },
-    watchsa:
-    {
-      args: ["cstring", "int"],
-      returns: FFIType.bool,
-    },
-  },
-);
-
     
 
 
@@ -120,8 +103,6 @@ let network5gsa: Record<string,any> = {};
 let networksat: Record<string,any> = {};
 let networkvvmail: Record<string,any> = {};
 let networkvonr: Record<string,any> = {};
-/*let networkwatch: Record<string,any> = {};
-let networkwatchsa: Record<string,any> = {};*/
 let networkesimtr: Record<string,any> = {};
 let networkcresimtr: Record<string,any> = {};
 let networkusage: Record<string,any> = {};
@@ -193,8 +174,6 @@ function doLocal(dir: string) {
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networksat", "eval(network)[id].blob.SupportsSatellite || eval(network)[id].blob.ShowSatelliteSwitch");
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkvvmail", "eval(network)[id].data.VisualVoicemailServiceName && eval(network)[id].data.VisualVoicemailServiceName != \"none\"");
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkvonr", "eval(network)[id].blob.SupportsVoNR || eval(network)[id].data.SupportsVoNR");
-        /*setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkwatch", "lib.symbols.watch(Buffer.from(id, \'utf8\'), id.length) || eval(network)[id].data.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || eval(network)[id].data.RemoteCardProvisioningSettings?.MinCompatibileWatchOS || eval(network)[id].blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || eval(network)[id].blob.RemoteCardProvisioningSettings?.MinCompatibileWatchOS");
-        setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkwatchsa", "lib.symbols.watchsa(Buffer.from(id, \'utf8\'), id.length) || eval(network)[id].data.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode || eval(network)[id].blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode");*/
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkesimtr", "eval(network)[id].data.PhoneAccountTransfer || eval(network)[id].blob.PhoneAccountTransfer || eval(network)[id].data.CarrierEntitlements?.SupportPhysicalSIMtoESIMTransfer || eval(network)[id].data.CarrierEntitlements?.SupportsOnDevicePhysicalSIMConvert || eval(network)[id].blob.CarrierEntitlements?.SupportPhysicalSIMtoESIMTransfer || eval(network)[id].blob.CarrierEntitlements?.SupportsOnDevicePhysicalSIMConvert");
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkcresimtr", "eval(network)[id].data.CarrierEntitlements?.SupportCrossPlatformSIMTransfer || eval(network)[id].blob.CarrierEntitlements?.SupportCrossPlatformSIMTransfer");
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkusage", "eval(network)[id].data.CarrierSpace");
@@ -238,8 +217,6 @@ async function doOnline() {
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networksat", "eval(network)[id].blob.SupportsSatellite || eval(network)[id].blob.ShowSatelliteSwitch");
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkvvmail", "eval(network)[id].data.VisualVoicemailServiceName && eval(network)[id].data.VisualVoicemailServiceName != \"none\"");
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkvonr", "eval(network)[id].blob.SupportsVoNR || eval(network)[id].data.SupportsVoNR");
-        /*setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkwatch", "lib.symbols.watch(Buffer.from(id, \'utf8\'), id.length) || eval(network)[id].data.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || eval(network)[id].data.RemoteCardProvisioningSettings?.MinCompatibileWatchOS || eval(network)[id].blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOS || eval(network)[id].blob.RemoteCardProvisioningSettings?.MinCompatibileWatchOS");
-        setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkwatchsa", "lib.symbols.watchsa(Buffer.from(id, \'utf8\'), id.length) || eval(network)[id].data.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode || eval(network)[id].blob.RemoteCardProvisioningSettings?.MinCompatibleWatchOSForStandaloneMode");*/
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkesimtr", "eval(network)[id].data.PhoneAccountTransfer || eval(network)[id].blob.PhoneAccountTransfer || eval(network)[id].data.CarrierEntitlements?.SupportPhysicalSIMtoESIMTransfer || eval(network)[id].data.CarrierEntitlements?.SupportsOnDevicePhysicalSIMConvert || eval(network)[id].blob.CarrierEntitlements?.SupportPhysicalSIMtoESIMTransfer || eval(network)[id].blob.CarrierEntitlements?.SupportsOnDevicePhysicalSIMConvert");
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkcresimtr", "eval(network)[id].data.CarrierEntitlements?.SupportCrossPlatformSIMTransfer || eval(network)[id].blob.CarrierEntitlements?.SupportCrossPlatformSIMTransfer");
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkusage", "eval(network)[id].data.CarrierSpace");
@@ -264,8 +241,6 @@ fs.writeFileSync(Path.join(__dirname, 'processed-5gsa.json'), JSON.stringify(net
 fs.writeFileSync(Path.join(__dirname, 'processed-sat.json'), JSON.stringify(networksat, null, 2));
 fs.writeFileSync(Path.join(__dirname, 'processed-vvmail.json'), JSON.stringify(networkvvmail, null, 2));
 fs.writeFileSync(Path.join(__dirname, 'processed-vonr.json'), JSON.stringify(networkvonr, null, 2));
-/*fs.writeFileSync(Path.join(__dirname, 'processed-watch.json'), JSON.stringify(networkwatch, null, 2));
-fs.writeFileSync(Path.join(__dirname, 'processed-watchsa.json'), JSON.stringify(networkwatchsa, null, 2));*/
 fs.writeFileSync(Path.join(__dirname, 'processed-esimtr.json'), JSON.stringify(networkesimtr, null, 2));
 fs.writeFileSync(Path.join(__dirname, 'processed-cresimtr.json'), JSON.stringify(networkcresimtr, null, 2));
 fs.writeFileSync(Path.join(__dirname, 'processed-usage.json'), JSON.stringify(networkusage, null, 2));

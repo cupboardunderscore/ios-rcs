@@ -226,12 +226,12 @@ async function doOnline() {
 
 export function manualversion()
 {
-    return "26.4 and 26.5 RC";
+    return "26.5";
 }
 
-doLocal('26.4-LuckE23E246.V159OS')
+doLocal('26.5-LuckF23F77.V159OS')
 await doOnline();
-doLocal('26.5RC-LuckF23F75.V159DeveloperOS')
+//doLocal('')
 
 fs.writeFileSync(Path.join(__dirname, 'version.txt'), manualversion());
 fs.writeFileSync(Path.join(__dirname, 'processed.json'), JSON.stringify(networks, null, 2));

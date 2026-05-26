@@ -98,20 +98,10 @@ body {
                         radial-gradient(circle at top right, #b45309 0%, var(--grey-400) 100%);
                     background-origin: border-box;
                     background-clip: padding-box, border-box;
-                    &[data-supports="3"] {
+                    &:not([data-supports="1"]) {
                         background-image: 
                             radial-gradient(circle at top right, var(--green-200) 0%, var(--grey-200) 100%),
                             radial-gradient(circle at top right, #166534 0%, var(--grey-400) 100%);
-                    }
-                    &[data-supports="4"] {
-                        background-image: 
-                            radial-gradient(circle at top right, var(--green-200) 0%, var(--grey-200) 100%),
-                            radial-gradient(circle at top right, #166534 0%, var(--grey-400) 100%);
-                    }
-                    &[data-supports="1"] {
-                        background-image: 
-                            radial-gradient(circle at top right, var(--red-200) 0%, var(--grey-200) 100%),
-                            radial-gradient(circle at top right, #861111 0%, var(--grey-400) 100%);
                     }
                 }
             }

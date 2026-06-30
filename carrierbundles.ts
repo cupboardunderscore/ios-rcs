@@ -111,7 +111,7 @@ let networkprivacy: Record<string,any> = {};
 function setNetwork(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist, blob: CarrierPlist.CarrierPlist, network: string, tag: string) {
     let countryCode = id.split("_").pop()! || '';
     let countryName = data.HomeBundleIdentifier?.split('.').pop()!.replace(/([a-z])([A-Z])/g, '$1 $2');
-    if (countryCode.length !== 2) countryCode = ReverseCountryCodes[countryName || ""];
+    if (countryCode.length !== 2) countryCode = ReverseCountryCodes[countryName || ""] || "wi";
     if (countryCode) countryCode = countryCode.toUpperCase();
     if (eval(network)[id] && eval(tag))
     {

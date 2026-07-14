@@ -107,6 +107,9 @@ let networkesimtr: Record<string,any> = {};
 let networkcresimtr: Record<string,any> = {};
 let networkusage: Record<string,any> = {};
 let networkprivacy: Record<string,any> = {};
+let countries: Record<string,string> = {};
+let countriesE2EE: Record<string,number> = {};
+let countriesPRIVACY: Record<string,number> = {};
 
 function setNetwork(source: string, id: string, version: string, data: CarrierPlist.CarrierPlist, blob: CarrierPlist.CarrierPlist, network: string, tag: string) {
     let countryCode = id.split("_").pop()! || '';
@@ -179,10 +182,88 @@ function doLocal(dir: string) {
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkusage", "eval(network)[id].data.CarrierSpace");
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkprivacy", "eval(network)[id].blob.EnableTARandomizationByDefault || eval(network)[id].blob.ShowTARandomizationSwitch");
     }
+    let dir2 = Path.join(dir, "country");
+    let dirs2 = fs.readdirSync(dir2);
+    for (let d of dirs2) {
+        let path = Path.join(dir2, d);
+        let stat = fs.lstatSync(path);
+        if (!stat.isDirectory() || stat.isSymbolicLink()) continue;
+
+        let info = readBplist<CarrierBundleInfo>(path, 'Info.plist');
+        let data = readBplist<CarrierPlist.CarrierPlist>(path, 'carrier.plist');
+        let blob = readBplist<CarrierPlist.CarrierPlist>(path, 'overrides\_V159.plist');
+        if (!blob)
+        {
+            blob = data;
+        }
+        if (!info || !data) continue;
+        if (internal(info.CFBundleName)) continue;
+        let type = 3;
+        if (dir2.includes("DeveloperOS"))
+        {
+            type = 1;
+        }
+        for (var i of data.ISOAlpha2CountryCode)
+        {
+            if (i == "gb")
+            {
+                i = "uk"
+            }
+            if (data?.RCS?.SupportsE2EE == false && !countriesE2EE[i])
+            {
+                countriesE2EE[i] = type;
+            }
+            if ((data?.ShowTARandomizationSwitch || blob?.ShowTARandomizationSwitch) && !countriesPRIVACY[i])
+            {
+                countriesPRIVACY[i] = type;
+            }
+        }
+        countries[info.CFBundleName] = info.CFBundleVersion;
+    }
 }
 
 async function doOnline() {
     let ocb = await getOnlineCarrierBundles();
+    let count: Record<string,any> = {};
+    for (var [country,tags] of Object.entries(ocb.CountryBundles.iPhone.Bundles))
+    {
+        count[country.split('_')[0]] = tags;
+    }
+    for (var [country,tags] of Object.entries(count))
+    {
+        let lastVersion = countries[country] ?? "58.5.0";
+        if (dottedCompare(tags.BundleVersion, lastVersion) >= 0) continue;
+        console.log("Downloading", country, tags.BundleVersion, tags.BundleURL);
+        let cb = await getCarrierBundle(tags.BundleURL, false);
+        if (!cb) {
+            console.warn(`Failed to fetch ${tags.BundleURL}`);
+            continue;
+        }
+        let ov = await getCarrierBundle(tags.BundleURL, true);
+        if (!ov)
+        {
+            ov = cb;
+        }
+        let parsed = bplist.parseBuffer(cb)[0] as CarrierPlist.CarrierPlist;
+        let passedoutblob = bplist.parseBuffer(ov)[0] as CarrierPlist.CarrierPlist;
+        for (var i of parsed.ISOAlpha2CountryCode)
+        {
+            if (i == "gb")
+            {
+                i = "uk"
+            }
+            if (parsed?.RCS?.SupportsE2EE == false && !countriesE2EE[i])
+            {
+                countriesE2EE[i] = 2;
+            }
+            if ((parsed?.ShowTARandomizationSwitch || passedoutblob?.ShowTARandomizationSwitch) && !countriesPRIVACY[i])
+            {
+                countriesPRIVACY[i] = 2;
+            }
+        }
+        countries[country] = tags.BundleVersion;
+    }
+
     for (var [carrier,OsVersions] of Object.entries(ocb.MobileDeviceCarrierBundlesByProductVersion)) {
         // find latest version
         let vers: CarrierBundleSimple[] = [];
@@ -245,3 +326,6 @@ fs.writeFileSync(Path.join(__dirname, 'processed-esimtr.json'), JSON.stringify(n
 fs.writeFileSync(Path.join(__dirname, 'processed-cresimtr.json'), JSON.stringify(networkcresimtr, null, 2));
 fs.writeFileSync(Path.join(__dirname, 'processed-usage.json'), JSON.stringify(networkusage, null, 2));
 fs.writeFileSync(Path.join(__dirname, 'processed-privacy.json'), JSON.stringify(networkprivacy, null, 2));
+
+fs.writeFileSync(Path.join(__dirname, 'processed-counte.json'), JSON.stringify(countriesE2EE, null, 2));
+fs.writeFileSync(Path.join(__dirname, 'processed-countp.json'), JSON.stringify(countriesPRIVACY, null, 2));

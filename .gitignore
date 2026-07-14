@@ -4,6 +4,8 @@ processed*.json
 node_modules/
 .DS_Store
 carrier-bundles/*/*/*
+!carrier-bundles/*/country/*
+carrier-bundles/*/country/*/*/*
 !carrier.plist
 !Info.plist
 !overrides_V159.plist

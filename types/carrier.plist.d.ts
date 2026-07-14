@@ -328,6 +328,7 @@ export interface CarrierPlist {
     DataIndicatorOverrideForNRMmwave?:                 string;
     EnableTARandomizationByDefault?:                   boolean;
     ShowTARandomizationSwitch?:                        boolean;
+    ISOAlpha2CountryCode?:                             string[];
 }
 
 export interface AllowedMultimodeSIMS {

@@ -17,10 +17,13 @@ import procesimtr from "./processed-esimtr.json";
 import proccresimtr from "./processed-cresimtr.json";
 import procusage from "./processed-usage.json";
 import procprivacy from "./processed-privacy.json";
+import countrye from "./processed-counte.json";
+import countryp from "./processed-countp.json";
 
 //ig compiler ignores the stuff above if i don't "use" it
 let temp;
 temp = procrcs; temp = procrbm; temp = proce2ee; temp = proc5gsa; temp = procsat; temp = procvvmail; temp = procvonr; temp = procesimtr; temp = proccresimtr; temp = procusage; temp = procprivacy;
+temp = countrye; temp = countryp;
 temp = null;
 
 import type { CarrierPlist } from "./types/carrier.plist";
@@ -73,6 +76,24 @@ function getsite(id: string)
     return url;
 }
 
+function get12(data, def = 0)
+{
+    if (eval("countryp." + data.countryCode.toLocaleLowerCase()))
+    {
+        return eval("countryp." + data.countryCode.toLocaleLowerCase());
+    }
+    return def;
+}
+
+function get2(data, def = 10)
+{
+    if (eval("countrye." + data.countryCode.toLocaleLowerCase()))
+    {
+        return 0;
+    }
+    return def;
+}
+
 export function build(type: number, carr: string, dir: string, tag: string, ptag: string, tittle: string)
 {
     let sbar: Array<Array<String>> = [];
@@ -105,7 +126,7 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
 
     let carriers = eval(carr) as Record<string, { source: string, version: string, names: string[], country?: string, countryCode: string, data: CarrierPlist, blob: CarrierPlist }>;
 
-    let rcsStatus = (data: typeof carriers[string], id: string) => eval(tag) ? ((data.source.includes("DeveloperOS") || type == 2) ? 1 : data.source.startsWith("https") ? 2 : 3) : 0;
+    let rcsStatus = (data: typeof carriers[string], id: string) => eval(tag) ? (type == 2 && !get2(data))? (get2(data)) : ((data.source.includes("DeveloperOS") || type == 2) ? 1 : data.source.startsWith("https") ? 2 : 3) : (type == 12)? (get12(data)) : 0;
 
     let count: number = 0;
     let ccount: number = 0;
@@ -131,8 +152,8 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
         let grouped = Object.groupBy(sorted, ([id, data]) => (getCountryFlag(data.countryCode || "") || "🌐") + " " + (data.country || "Worldwide"));
         let entries = Object.entries(grouped);
         entries.sort(([aCountry,aCarriers],[bCountry,bCarriers]) => 
-            (bCarriers?.filter(([id, data]) => eval(tag)).length ?? 0) -
-            (aCarriers?.filter(([id, data]) => eval(tag)).length ?? 0) 
+            (bCarriers?.filter(([id, data]) => ((type == 12)? (get12(data, eval(tag))) : (type == 2)? (get2(data, eval(tag))) : eval(tag))).length ?? 0) -
+            (aCarriers?.filter(([id, data]) => ((type == 12)? (get12(data, eval(tag))) : (type == 2)? (get2(data, eval(tag))) : eval(tag))).length ?? 0) 
         );
 
         return <div class='countries'>{entries.map(([country, carriers]) => (country != "🌐 -Worldwide" && <>
@@ -141,25 +162,24 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
                 {carriers?.map(([id, data]) => {
                     let site = getsite(id);
                     let url = site || data.data.CarrierBookmarks?.at(-1)?.URL || data.data.MyAccountURL || data.data.TetheringURL;
-                    if (rcsStatus(data, id))
+                    let rcs = rcsStatus(data, id);
+                    if (rcs)
                     {
                         count++;
                         ccount++;
                     }
                     cccount++;
-                    return <div class='carrier' data-supports={rcsStatus(data, id)}>
+                    return <div class='carrier' data-supports={rcs}>
                         <div class='header'>
                             
                             <h3>
                                 {url && <img width={23} height={23} src={`https://www.google.com/s2/favicons?domain=${encodeURIComponent(url)}&sz=32`} alt={data.names[0]}/>}
                                 <a target={'_blank'} rel={'noopener noreferrer'} href={site} style={'color:var(--grey-900); text-decoration:none;'}>{data.names[0]}</a>
                             </h3>
-                            <span class='emoji'>{['❌','⏳','✅','✅'][rcsStatus(data, id)]}</span>
+                            <span class='emoji'>{['❌','⏳','✅','✅'][rcs]}</span>
                         </div>
                         {data.names.length > 1 && <p class='aka'>aka. {data.names.slice(1).join(", ")}</p>}
-                        {eval(tag) && (
-                            (data.source.includes("DeveloperOS") || type == 2) ? "in beta" :
-                            data.source.startsWith("https") ? <a target="_blank" href="https://support.apple.com/en-us/109324">delivered OTA</a> : "")}
+                        {(rcs == 1)? "in beta" : (rcs == 2)? <a target="_blank" href="https://support.apple.com/en-us/109324">delivered OTA</a> : ""}
                         <div class='grow'></div>
                         <p class='id'>{id} {data.version}</p>
                     </div>

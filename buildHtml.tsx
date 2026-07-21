@@ -160,7 +160,7 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
             <h2 id={carriers[0][1].countryCode}>{country}</h2>{resetnumber()}
             <div class='carriers'>
                 {carriers?.map(([id, data]) => {
-                    let site = getsite(id);
+                    let site = data.data.customURL || getsite(id);
                     let url = site || data.data.CarrierBookmarks?.at(-1)?.URL || data.data.MyAccountURL || data.data.TetheringURL;
                     let rcs = rcsStatus(data, id);
                     if (rcs)

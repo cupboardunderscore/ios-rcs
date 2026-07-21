@@ -2,12 +2,35 @@ import bplist from "bplist-parser";
 import fs from 'fs';
 import Path from 'path';
 import plist from "plist";
+import csvParser from "csv-parser";
 
 import JSZip from "jszip";
 import { CountryCodes, ReverseCountryCodes } from "./countries.ts";
 import type { CarrierBundleInfo } from "./types/Info.plist";
 import type CarrierPlist from "./types/carrier.plist.d.ts";
 import type { CarrierBundleSimple, iTunesUpdate } from "./types/versions.d.ts";
+
+
+type RowData = {
+  PLMN: string;
+  countycode: string;
+  carriername: string;
+  url: string;
+  bundlename: string;
+};
+let mcclist: RowData[] = [];
+const cc = async (filePath: string) =>
+{
+    const mcclist: RowData[] = [];
+    return new Promise(function(resolve)
+    {
+        fs.createReadStream(filePath)
+        .pipe(csvParser({separator: ';'}))
+        .on('data', (row: RowData) => {mcclist.push(row);})
+        .on('end', () => {resolve(mcclist)});
+    });
+}
+mcclist = await cc("othercarriers.csv");
 
     
 
@@ -153,6 +176,30 @@ function setNetwork(source: string, id: string, version: string, data: CarrierPl
     }
 }
 
+function otherbundles(info: CarrierBundleInfo, path: string)
+{
+let NSX = readBplist<void>(path, 'gsma_1.plist');
+    let lookup = readBplist<void>(path, 'region_lookup_1.plist');
+    Object.entries(lookup?.MappingTable).forEach(([key, value]) => {
+        let data = eval("NSX?.[\"" + value + "\"]?.OverrideConfiguration");
+        data.HomeBundleIdentifier = CountryCodes[mcclist.find((string) => string.PLMN === key)?.countycode || ""];
+        data.CarrierName = mcclist.find((string) => string.PLMN === key)?.carriername || key;
+        data.customURL = mcclist.find((string) => string.PLMN === key)?.url;
+        let tempname = mcclist.find((string) => string.PLMN === key)?.bundlename || key;
+        setNetwork(path, tempname, info.CFBundleVersion, data, data, "networks", "eval(network)[id].data.RCS");
+        setNetwork(path, tempname, info.CFBundleVersion, data, data, "networkrbm", "eval(network)[id].data.RCS?.EnableBusinessMessagingByDefault || eval(network)[id].data.RCS?.ShowBusinessMessagingSwitch");
+        setNetwork(path, tempname, info.CFBundleVersion, data, data, "networke2ee", "eval(network)[id].data.RCS?.SupportsE2EE == false");
+        setNetwork(path, tempname, info.CFBundleVersion, data, data, "network5gsa", "eval(network)[id].data.Show5GStandaloneSwitch || eval(network)[id].data.Enable5GStandaloneByDefault");
+        setNetwork(path, tempname, info.CFBundleVersion, data, data, "networksat", "eval(network)[id].data.SupportsSatellite || eval(network)[id].data.ShowSatelliteSwitch");
+        setNetwork(path, tempname, info.CFBundleVersion, data, data, "networkvvmail", "eval(network)[id].data.VisualVoicemailServiceName && eval(network)[id].data.VisualVoicemailServiceName != \"none\"");
+        setNetwork(path, tempname, info.CFBundleVersion, data, data, "networkvonr", "eval(network)[id].data.SupportsVoNR");
+        setNetwork(path, tempname, info.CFBundleVersion, data, data, "networkesimtr", "eval(network)[id].data.PhoneAccountTransfer || eval(network)[id].data.CarrierEntitlements?.SupportPhysicalSIMtoESIMTransfer || eval(network)[id].data.CarrierEntitlements?.SupportsOnDevicePhysicalSIMConvert");
+        setNetwork(path, tempname, info.CFBundleVersion, data, data, "networkcresimtr", "eval(network)[id].data.CarrierEntitlements?.SupportCrossPlatformSIMTransfer");
+        setNetwork(path, tempname, info.CFBundleVersion, data, data, "networkusage", "eval(network)[id].data.CarrierSpace");
+        setNetwork(path, tempname, info.CFBundleVersion, data, data, "networkprivacy", "eval(network)[id].data.EnableTARandomizationByDefault || eval(network)[id].data.ShowTARandomizationSwitch");
+    });
+}
+
 function doLocal(dir: string) {
     dir = Path.join(__dirname, 'carrier-bundles', dir);
     let dirs = fs.readdirSync(dir);
@@ -164,6 +211,10 @@ function doLocal(dir: string) {
         let info = readBplist<CarrierBundleInfo>(path, 'Info.plist');
         let data = readBplist<CarrierPlist.CarrierPlist>(path, 'carrier.plist');
         let blob = readBplist<CarrierPlist.CarrierPlist>(path, 'overrides\_V159.plist');
+        if (info?.CFBundleName == "OtherKnown")
+        {
+            otherbundles(info, path);
+        }
         if (!blob)
         {
             blob = data;

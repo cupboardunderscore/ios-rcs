@@ -9,6 +9,8 @@ carrier-bundles/*/country/*/*/*
 !carrier.plist
 !Info.plist
 !overrides_V159.plist
+!region_lookup_1.plist
+!gsma_1.plist
 bun.lock
 run.command
 lib*

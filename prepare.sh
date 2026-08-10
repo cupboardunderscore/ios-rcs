@@ -1,6 +1,7 @@
 mkdir html/rbm
 mkdir html/e2ee
 mkdir html/5gsa
+mkdir html/5gplus
 mkdir html/sat
 mkdir html/vvmail
 mkdir html/vonr

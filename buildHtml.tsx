@@ -10,6 +10,7 @@ import procrcs from "./processed.json";
 import procrbm from "./processed-rbm.json";
 import proce2ee from "./processed-e2ee.json";
 import proc5gsa from "./processed-5gsa.json";
+import proc5gplus from "./processed-5gplus.json";
 import procsat from "./processed-sat.json";
 import procvvmail from "./processed-vvmail.json";
 import procvonr from "./processed-vonr.json";
@@ -22,7 +23,7 @@ import countryp from "./processed-countp.json";
 
 //ig compiler ignores the stuff above if i don't "use" it
 let temp;
-temp = procrcs; temp = procrbm; temp = proce2ee; temp = proc5gsa; temp = procsat; temp = procvvmail; temp = procvonr; temp = procesimtr; temp = proccresimtr; temp = procusage; temp = procprivacy;
+temp = procrcs; temp = procrbm; temp = proce2ee; temp = proc5gsa; temp = proc5gplus; temp = procsat; temp = procvvmail; temp = procvonr; temp = procesimtr; temp = proccresimtr; temp = procusage; temp = procprivacy;
 temp = countrye; temp = countryp;
 temp = null;
 
@@ -176,7 +177,7 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
                                 {url && <img width={23} height={23} src={`https://www.google.com/s2/favicons?domain=${encodeURIComponent(url)}&sz=32`} alt={data.names[0]}/>}
                                 <a target={'_blank'} rel={'noopener noreferrer'} href={site} style={'color:var(--grey-900); text-decoration:none;'}>{data.names[0]}</a>
                             </h3>
-                            <span class='emoji'>{['❌','⏳','✅','✅'][rcs]}</span>
+                            {(type == 4)? (eval(tag) == "NRPlus")? "5G+": (eval(tag) == "NRUWB")? <div style="display: flex;"><a style="color:var(--grey-900);">5G</a><a style="color:var(--grey-900); text-orientation: upright; writing-mode: vertical-rl; font-size: 7; font-weight: bold;">UW</a></div>: (eval(tag) == "NRUC")? <div style="display: flex;"><a style="color:var(--grey-900);">5G</a><a style="color:var(--grey-900); text-orientation: upright; writing-mode: vertical-rl; font-size: 7; font-weight: bold;">UC</a></div>: (eval(tag) == "NRCA")? <div style="display: flex;"><a style="color:var(--grey-900);">5G</a><a style="color:var(--grey-900); font-size: 12; font-weight: bold; margin-top: 3;">A</a></div>: <span class='emoji'>❌</span>: <span class='emoji'>{['❌','⏳','✅','✅'][rcs]}</span>}
                         </div>
                         {data.names.length > 1 && <p class='aka'>aka. {data.names.slice(1).join(", ")}</p>}
                         {(rcs == 1)? "in beta" : (rcs == 2)? <a target="_blank" href="https://support.apple.com/en-us/109324">delivered OTA</a> : ""}
@@ -217,15 +218,20 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
     }
     if (type != 4)
     {
+        linkname.push("5G+");
+        linkdir.push("5gplus/");
+    }
+    if (type != 5)
+    {
         linkname.push("Satellite features");
         linkdir.push("sat/");
     }
-    if (type != 5)
+    if (type != 6)
     {
         linkname.push("Visual Voicemail");
         linkdir.push("vvmail/");
     }
-    if (type != 6)
+    if (type != 7)
     {
         linkname.push("Voice over NR");
         linkdir.push("vonr/");
@@ -278,11 +284,13 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
                 <a class="tle">&bull; </a>
                 <a class={(type == 3)? "active" : ""} href={home + "5gsa/"}>5G SA</a>
                 <a class="tle">&bull; </a>
-                <a class={(type == 4)? "active" : ""} href={home + "sat/"}>Satellite features</a>
+                <a class={(type == 4)? "active" : ""} href={home + "5gplus/"}>5G+</a>
                 <a class="tle">&bull; </a>
-                <a class={(type == 5)? "active" : ""} href={home + "vvmail/"}>Visual Voicemail</a>
+                <a class={(type == 5)? "active" : ""} href={home + "sat/"}>Satellite features</a>
                 <a class="tle">&bull; </a>
-                <a class={(type == 6)? "active" : ""} href={home + "vonr/"}>VoNR</a>
+                <a class={(type == 6)? "active" : ""} href={home + "vvmail/"}>Visual Voicemail</a>
+                <a class="tle">&bull; </a>
+                <a class={(type == 7)? "active" : ""} href={home + "vonr/"}>VoNR</a>
                 <a class="tle">&bull; </a>
                 <a class={(type == 9)? "active" : ""} href={home + "esimtr/"}>(e)SIM transfer</a>
                 <a class="tle">&bull; </a>
@@ -324,6 +332,8 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
                             <a href={home + linkdir[8]}>{linkname[8]}</a>
                             <> </>&bull; <> </>
                             <a href={home + linkdir[9]}>{linkname[9]}</a>
+                            <> </>&bull; <> </>
+                            <a href={home + linkdir[10]}>{linkname[10]}</a>
                         </p>
                         <p>support yet?</p>
                     </div>

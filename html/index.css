@@ -191,7 +191,7 @@ a {
     color: var(--grey-600);
 }
 
-@media screen and (max-width: 1289px)
+@media screen and (max-width: 1344px)
 {
     .topnav
     {
@@ -203,7 +203,7 @@ a {
     }
 }
 
-@media screen and (min-width: 1290px)
+@media screen and (min-width: 1345px)
 {
     .regnav
     {

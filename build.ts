@@ -16,15 +16,20 @@ build(3, "proc5gsa", "./html/5gsa/",
     "data.blob.Show5GStandaloneSwitch || data.blob.Enable5GStandaloneByDefault || data.data.Show5GStandaloneSwitch || data.data.Enable5GStandaloneByDefault",
     "true",
     "5G Standalone on iOS");
-build(4, "procsat", "./html/sat/",
+build(4, "proc5gplus", "./html/5gplus/",
+    "data.blob.DataIndicatorOverrideForNRMmwave || data.data.DataIndicatorOverrideForNRMmwave",
+    "true",
+    "5G+/UW/UC/A on iOS"
+);
+build(5, "procsat", "./html/sat/",
     "data.blob.SupportsSatellite || data.blob.ShowSatelliteSwitch",
     "true",
     "Satellite features on iOS");
-build(5, "procvvmail", "./html/vvmail/",
+build(6, "procvvmail", "./html/vvmail/",
     "data.data.VisualVoicemailServiceName && data.data.VisualVoicemailServiceName != \"none\"",
     "true",
     "Visual Voicemail on iOS");
-build(6, "procvonr", "./html/vonr/",
+build(7, "procvonr", "./html/vonr/",
     "data.blob.SupportsVoNR || data.data.SupportsVoNR",
     "blob.Show5GStandaloneSwitch || blob.Enable5GStandaloneByDefault || data.Show5GStandaloneSwitch || data.Enable5GStandaloneByDefault",
     "Voice over NR on iOS");

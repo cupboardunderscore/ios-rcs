@@ -40,10 +40,10 @@ PLMN;countycode;carriername;url;bundlename
 23217;AT;spusu;https://www.spusu.at;;
 23220;AT;m:tel;https://mtel.at;;
 23229;AT;aicall;https://www.aicall.at;;
-23405;GB;Spitfire;https://www.spitfire.co.uk;;
-23427;GB;Teleena;https://www.tatacommunications.com;;
-23440;GB;spusu;https://www.spusu.co.uk;;
-23487;GB;Lebara;https://www.lebara.co.uk/;;
+23405;UK;Spitfire;https://www.spitfire.co.uk;;
+23427;UK;Teleena;https://www.tatacommunications.com;;
+23440;UK;spusu;https://www.spusu.co.uk;;
+23487;UK;Lebara;https://www.lebara.co.uk/;;
 23812;DK;Lycamobile;https://www.lycamobile.dk/;;
 24012;SE;Lycamobile;https://www.lycamobile.se/;;
 24209;NO;Com4;https://www.com4.no/;;
@@ -145,7 +145,7 @@ PLMN;countycode;carriername;url;bundlename
 313460_GID1-7911;US;Popcorn;https://www.popcorn.space;314970;
 311500_GID1-6624;US;Mobi;http://mobi.com;Mobi;
 52002_GID1-02;TH;;;;
-23418_GID1-6764;GB;;;;
+23418_GID1-6764;UK;;;;
 302480_GID1-01;CA;SSi Canada;https://www.ssicanada.com/;;
 310040_GID1-6624;US;Mobi;http://mobi.com;Mobi;
 27201_GID1-0A;IE;An Post;https://www.anpost.com/Mobile;27201_GID1-0A_GID2-FF;

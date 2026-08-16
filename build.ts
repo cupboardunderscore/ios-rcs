@@ -19,8 +19,7 @@ build(3, "proc5gsa", "./html/5gsa/",
 build(4, "proc5gplus", "./html/5gplus/",
     "data.blob.DataIndicatorOverrideForNRMmwave || data.data.DataIndicatorOverrideForNRMmwave",
     "true",
-    "5G+/UW/UC/A on iOS"
-);
+    "5G+/UW/UC/A on iOS");
 build(5, "procsat", "./html/sat/",
     "data.blob.SupportsSatellite || data.blob.ShowSatelliteSwitch",
     "true",

@@ -175,7 +175,7 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
                             
                             <h3>
                                 {url && <img width={23} height={23} src={`https://www.google.com/s2/favicons?domain=${encodeURIComponent(url)}&sz=32`} alt={data.names[0]}/>}
-                                <a target={'_blank'} rel={'noopener noreferrer'} href={site} style={'color:var(--grey-900); text-decoration:none;'}>{data.names[0]}</a>
+                                <a target={'_blank'} rel={'noopener noreferrer'} href={site} style={'color:var(--grey-900); text-decoration:none; word-break:break-word;'}>{data.names[0]}</a>
                             </h3>
                             {(type == 4)? (eval(tag) == "NRPlus")? "5G+": (eval(tag) == "NRUWB")? <div style="display: flex;"><a style="color:var(--grey-900);">5G</a><a style="color:var(--grey-900); text-orientation: upright; writing-mode: vertical-rl; font-size: 7; font-weight: bold;">UW</a></div>: (eval(tag) == "NRUC")? <div style="display: flex;"><a style="color:var(--grey-900);">5G</a><a style="color:var(--grey-900); text-orientation: upright; writing-mode: vertical-rl; font-size: 7; font-weight: bold;">UC</a></div>: (eval(tag) == "NRCA")? <div style="display: flex;"><a style="color:var(--grey-900);">5G</a><a style="color:var(--grey-900); font-size: 12; font-weight: bold; margin-top: 3;">A</a></div>: <span class='emoji'>❌</span>: <span class='emoji'>{['❌','⏳','✅','✅'][rcs]}</span>}
                         </div>

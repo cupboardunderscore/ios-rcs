@@ -9,6 +9,7 @@ mkdir html/esimtr
 mkdir html/cresimtr
 mkdir html/usage
 mkdir html/privacy
+mkdir html/handoff
 touch carr.txt
 touch version.txt
 curl -O https://cupboardunderscore.github.io/ios-rcs/debug.csv

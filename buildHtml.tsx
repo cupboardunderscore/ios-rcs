@@ -18,12 +18,13 @@ import procesimtr from "./processed-esimtr.json";
 import proccresimtr from "./processed-cresimtr.json";
 import procusage from "./processed-usage.json";
 import procprivacy from "./processed-privacy.json";
+import prochandoff from "./processed-handoff.json"
 import countrye from "./processed-counte.json";
 import countryp from "./processed-countp.json";
 
 //ig compiler ignores the stuff above if i don't "use" it
 let temp;
-temp = procrcs; temp = procrbm; temp = proce2ee; temp = proc5gsa; temp = proc5gplus; temp = procsat; temp = procvvmail; temp = procvonr; temp = procesimtr; temp = proccresimtr; temp = procusage; temp = procprivacy;
+temp = procrcs; temp = procrbm; temp = proce2ee; temp = proc5gsa; temp = proc5gplus; temp = procsat; temp = procvvmail; temp = procvonr; temp = procesimtr; temp = proccresimtr; temp = procusage; temp = procprivacy; temp = prochandoff;
 temp = countrye; temp = countryp;
 temp = null;
 
@@ -256,6 +257,11 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
         linkname.push("Limit precise location");
         linkdir.push("privacy/");
     }
+    if (type != 13)
+    {
+        linkname.push("iPhone Handoff");
+        linkdir.push("handoff/");
+    }
     let html = renderToString(<>
         <head>
             <title>Does my carrier support {tittle} yet?</title>
@@ -299,6 +305,8 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
                 <a class={(type == 11)? "active" : ""} href={home + "usage/"}>Cellular plan info</a>
                 <a class="tle">&bull; </a>
                 <a class={(type == 12)? "active" : ""} href={home + "privacy/"}>Limit precise location</a>
+                <a class="tle">&bull; </a>
+                <a class={(type == 13)? "active" : ""} href={home + "handoff/"}>iPhone Handoff</a>
                 <a class="tle">support yet?</a>
             </div>
             <div class='container'>
@@ -334,6 +342,8 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
                             <a href={home + linkdir[9]}>{linkname[9]}</a>
                             <> </>&bull; <> </>
                             <a href={home + linkdir[10]}>{linkname[10]}</a>
+                            <> </>&bull; <> </>
+                            <a href={home + linkdir[11]}>{linkname[11]}</a>
                         </p>
                         <p>support yet?</p>
                     </div>

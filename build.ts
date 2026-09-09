@@ -48,3 +48,7 @@ build(12, "procprivacy", "./html/privacy/",
     "data.blob.EnableTARandomizationByDefault || data.blob.ShowTARandomizationSwitch",
     "true",
     "Limit precise location on iOS");
+build(13, "prochandoff", "./html/handoff/",
+    "data.data.CarrierEntitlements?.SupportsQuickSwitchSetActiveIccid || data.data.QuickSwitch || data.blob.CarrierEntitlements?.SupportsQuickSwitchSetActiveIccid || data.blob.QuickSwitch",
+    "true",
+    "iPhone Handoff on iOS");

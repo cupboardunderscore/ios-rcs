@@ -329,6 +329,7 @@ export interface CarrierPlist {
     EnableTARandomizationByDefault?:                   boolean;
     ShowTARandomizationSwitch?:                        boolean;
     ISOAlpha2CountryCode?:                             string[];
+    PhoneAccountTransfer?:                             PhoneAccountTransfer;
 }
 
 export interface AllowedMultimodeSIMS {
@@ -350,6 +351,17 @@ export interface ConfigOverrideConfiguration {
 export interface Signature {
     type: string;
     data: number[];
+}
+
+export interface PhoneAccountTransfer
+{
+    AllowSupplementaryServicesOnSecondaryDevice: boolean;
+    GSSMonitorModeBackOffTimes:                  number[];
+    PendingReleaseMonitorModeBackOffTimes:       number[];
+    SMSForkingMechanism:                         number;
+    SecondaryAccountReturnsAllDevices:           boolean;
+    UseDSForPendingRelease:                      boolean;
+    WatchHandling:                               number;
 }
 
 export interface TopLevelAttachAPN {
@@ -458,6 +470,7 @@ export interface TopLevelCarrierEntitlements {
     InvalidateSimForUnknownSubscriber?:          boolean;
     AllowCellularPlanTransferTarget?:            boolean;
     SupportCrossPlatformSIMTransfer?:            boolean;
+    SupportsQuickSwitchSetActiveIccid?:          boolean;
 }
 
 export interface Authentication {

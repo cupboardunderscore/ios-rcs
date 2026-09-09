@@ -131,6 +131,7 @@ let networkesimtr: Record<string,any> = {};
 let networkcresimtr: Record<string,any> = {};
 let networkusage: Record<string,any> = {};
 let networkprivacy: Record<string,any> = {};
+let networkhandoff: Record<string,any> = {};
 let countries: Record<string,string> = {};
 let countriesE2EE: Record<string,number> = {};
 let countriesPRIVACY: Record<string,number> = {};
@@ -199,6 +200,7 @@ let NSX = readBplist<void>(path, 'gsma_1.plist');
         setNetwork(path, tempname, info.CFBundleVersion, data, data, "networkcresimtr", "eval(network)[id].data.CarrierEntitlements?.SupportCrossPlatformSIMTransfer");
         setNetwork(path, tempname, info.CFBundleVersion, data, data, "networkusage", "eval(network)[id].data.CarrierSpace");
         setNetwork(path, tempname, info.CFBundleVersion, data, data, "networkprivacy", "eval(network)[id].data.EnableTARandomizationByDefault || eval(network)[id].data.ShowTARandomizationSwitch");
+        setNetwork(path, tempname, info.CFBundleVersion, data, data, "networkhandoff", "eval(network)[id].data.CarrierEntitlements?.SupportsQuickSwitchSetActiveIccid || eval(network)[id].data.QuickSwitch || eval(network)[id].blob.CarrierEntitlements?.SupportsQuickSwitchSetActiveIccid");
     });
 }
 
@@ -235,6 +237,7 @@ function doLocal(dir: string) {
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkcresimtr", "eval(network)[id].data.CarrierEntitlements?.SupportCrossPlatformSIMTransfer || eval(network)[id].blob.CarrierEntitlements?.SupportCrossPlatformSIMTransfer");
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkusage", "eval(network)[id].data.CarrierSpace");
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkprivacy", "eval(network)[id].blob.EnableTARandomizationByDefault || eval(network)[id].blob.ShowTARandomizationSwitch");
+        setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkhandoff", "eval(network)[id].data.CarrierEntitlements?.SupportsQuickSwitchSetActiveIccid || eval(network)[id].data.QuickSwitch || eval(network)[id].blob.CarrierEntitlements?.SupportsQuickSwitchSetActiveIccid || eval(network)[id].blob.QuickSwitch");
     }
     let dir2 = Path.join(dir, "country");
     let dirs2 = fs.readdirSync(dir2);
@@ -357,17 +360,18 @@ async function doOnline() {
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkcresimtr", "eval(network)[id].data.CarrierEntitlements?.SupportCrossPlatformSIMTransfer || eval(network)[id].blob.CarrierEntitlements?.SupportCrossPlatformSIMTransfer");
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkusage", "eval(network)[id].data.CarrierSpace");
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkprivacy", "eval(network)[id].blob.EnableTARandomizationByDefault || eval(network)[id].blob.ShowTARandomizationSwitch");
+        setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkhandoff", "eval(network)[id].data.CarrierEntitlements?.SupportsQuickSwitchSetActiveIccid || eval(network)[id].data.QuickSwitch || eval(network)[id].blob.CarrierEntitlements?.SupportsQuickSwitchSetActiveIccid || eval(network)[id].blob.QuickSwitch");
     }
 }
 
 export function manualversion()
 {
-    return "26.5 and 27.0 beta 8";
+    return "26.5 and 27.0 RC";
 }
 
 doLocal('26.5-LuckF23F77.V159OS')
 await doOnline();
-doLocal('27.0b8-RaveSeed24A5430a.V159DeveloperOS')
+doLocal('27.0RC-Rave24A435.V159DeveloperOS')
 
 fs.writeFileSync(Path.join(__dirname, 'version.txt'), manualversion());
 fs.writeFileSync(Path.join(__dirname, 'processed.json'), JSON.stringify(networks, null, 2));
@@ -382,6 +386,7 @@ fs.writeFileSync(Path.join(__dirname, 'processed-esimtr.json'), JSON.stringify(n
 fs.writeFileSync(Path.join(__dirname, 'processed-cresimtr.json'), JSON.stringify(networkcresimtr, null, 2));
 fs.writeFileSync(Path.join(__dirname, 'processed-usage.json'), JSON.stringify(networkusage, null, 2));
 fs.writeFileSync(Path.join(__dirname, 'processed-privacy.json'), JSON.stringify(networkprivacy, null, 2));
+fs.writeFileSync(Path.join(__dirname, 'processed-handoff.json'), JSON.stringify(networkhandoff, null, 2));
 
 fs.writeFileSync(Path.join(__dirname, 'processed-counte.json'), JSON.stringify(countriesE2EE, null, 2));
 fs.writeFileSync(Path.join(__dirname, 'processed-countp.json'), JSON.stringify(countriesPRIVACY, null, 2));

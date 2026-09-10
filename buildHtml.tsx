@@ -313,7 +313,7 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
                 <header>
                     <h1>Does my carrier support {tittle} yet?</h1>
                     <p>
-                        <a href={(type == 9)? "https://support.apple.com/en-us/101569" : (type == 10)? "https://support.apple.com/en-us/123878" : (type == 12)? "https://support.apple.com/en-us/126101" :"https://support.apple.com/en-us/109526"} target="_blank">Apple provided</a> {(type == 9  || type == 10|| type == 12)? "support page" : "list of what features each carrier supports"}
+                        <a href={(type == 9)? "https://support.apple.com/en-us/101569" : (type == 10)? "https://support.apple.com/en-us/123878" : (type == 12)? "https://support.apple.com/en-us/126101" : (type == 13)? "https://support.apple.com/en-us/127274" : "https://support.apple.com/en-us/109526"} target="_blank">Apple provided</a> {(type == 9  || type == 10|| type == 12 || type == 13)? "support page" : "list of what features each carrier supports"}
                         <> </>&bull; <> </>
                         <a href='https://github.com/cupboardunderscore/ios-rcs'>GitHub</a>
                     </p>

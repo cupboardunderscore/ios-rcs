@@ -143,14 +143,23 @@ function setNetwork(source: string, id: string, version: string, data: CarrierPl
     if (countryCode) countryCode = countryCode.toUpperCase();
     if (eval(network)[id] && eval(tag))
     {
-        if (dottedCompare(eval(network)[id].version, version) > 0)
+        if (dottedCompare(eval(network)[id].version, version) > 0 && !eval(network)[id].version.includes(version))
         {
             if (source.includes("DeveloperOS"))
             {
+                if (!eval(tag.replaceAll("eval(network)[id].", "")))
+                {
+                    eval(network)[id].version = version + "~~ (" + eval(network)[id].version + ")";
+                    return;
+                }
                 eval(network)[id].version = version + " (" + eval(network)[id].version + ")";
                 return;
             }
             eval(network)[id].version = version;
+        }
+        else if (dottedCompare(eval(network)[id].version, version) > 0 && eval(tag.replaceAll("eval(network)[id].", "")))
+        {
+            eval(network)[id].version = eval(network)[id].version.replace("~~", "")
         }
         return;
     }
@@ -190,7 +199,7 @@ let NSX = readBplist<void>(path, 'gsma_1.plist');
         let tempname = mcclist.find((string) => string.PLMN === key)?.bundlename || key;
         setNetwork(path, tempname, info.CFBundleVersion, data, data, "networks", "eval(network)[id].data.RCS");
         setNetwork(path, tempname, info.CFBundleVersion, data, data, "networkrbm", "eval(network)[id].data.RCS?.EnableBusinessMessagingByDefault || eval(network)[id].data.RCS?.ShowBusinessMessagingSwitch");
-        setNetwork(path, tempname, info.CFBundleVersion, data, data, "networke2ee", "eval(network)[id].data.RCS?.SupportsE2EE == false");
+        setNetwork(path, tempname, info.CFBundleVersion, data, data, "networke2ee", "eval(network)[id].data.RCS && eval(network)[id].data.RCS?.SupportsE2EE != false");
         setNetwork(path, tempname, info.CFBundleVersion, data, data, "network5gsa", "eval(network)[id].data.Show5GStandaloneSwitch || eval(network)[id].data.Enable5GStandaloneByDefault");
         setNetwork(path, tempname, info.CFBundleVersion, data, data, "network5gplus", "eval(network)[id].data.DataIndicatorOverrideForNRMmwave");
         setNetwork(path, tempname, info.CFBundleVersion, data, data, "networksat", "eval(network)[id].data.SupportsSatellite || eval(network)[id].data.ShowSatelliteSwitch");
@@ -227,7 +236,7 @@ function doLocal(dir: string) {
         if (internal(info.CFBundleName)) continue;
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networks", "eval(network)[id].data.RCS");
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networkrbm", "eval(network)[id].data.RCS?.EnableBusinessMessagingByDefault || eval(network)[id].data.RCS?.ShowBusinessMessagingSwitch");
-        setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networke2ee", "eval(network)[id].data.RCS?.SupportsE2EE == false");
+        setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networke2ee", "eval(network)[id].data.RCS && eval(network)[id].data.RCS?.SupportsE2EE != false");
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "network5gsa", "eval(network)[id].blob.Show5GStandaloneSwitch || eval(network)[id].blob.Enable5GStandaloneByDefault || eval(network)[id].data.Show5GStandaloneSwitch || eval(network)[id].data.Enable5GStandaloneByDefault");
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "network5gplus", "eval(network)[id].blob.DataIndicatorOverrideForNRMmwave || eval(network)[id].data.DataIndicatorOverrideForNRMmwave");
         setNetwork(path, info.CFBundleName, info.CFBundleVersion, data, blob, "networksat", "eval(network)[id].blob.SupportsSatellite || eval(network)[id].blob.ShowSatelliteSwitch");
@@ -255,10 +264,10 @@ function doLocal(dir: string) {
         }
         if (!info || !data) continue;
         if (internal(info.CFBundleName)) continue;
-        let type = 3;
+        let type = 4;
         if (dir2.includes("DeveloperOS"))
         {
-            type = 1;
+            type = 2;
         }
         for (var i of data.ISOAlpha2CountryCode)
         {
@@ -350,7 +359,7 @@ async function doOnline() {
         let passedoutblob = bplist.parseBuffer(ov)[0] as CarrierPlist.CarrierPlist;
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networks", "eval(network)[id].data.RCS");
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networkrbm", "eval(network)[id].data.RCS?.EnableBusinessMessagingByDefault || eval(network)[id].data.RCS?.ShowBusinessMessagingSwitch");
-        setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networke2ee", "eval(network)[id].data.RCS?.SupportsE2EE == false");
+        setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networke2ee", "eval(network)[id].data.RCS && eval(network)[id].data.RCS?.SupportsE2EE != false");
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "network5gsa", "eval(network)[id].blob.Show5GStandaloneSwitch || eval(network)[id].blob.Enable5GStandaloneByDefault || eval(network)[id].data.Show5GStandaloneSwitch || eval(network)[id].data.Enable5GStandaloneByDefault");
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "network5gplus", "eval(network)[id].blob.DataIndicatorOverrideForNRMmwave || eval(network)[id].data.DataIndicatorOverrideForNRMmwave");
         setNetwork(latest.BundleURL, carrier, latest.BuildVersion, parsed, passedoutblob, "networksat", "eval(network)[id].blob.SupportsSatellite || eval(network)[id].blob.ShowSatelliteSwitch");

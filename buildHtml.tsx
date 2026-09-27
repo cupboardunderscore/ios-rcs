@@ -128,7 +128,7 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
 
     let carriers = eval(carr) as Record<string, { source: string, version: string, names: string[], country?: string, countryCode: string, data: CarrierPlist, blob: CarrierPlist }>;
 
-    let rcsStatus = (data: typeof carriers[string], id: string) => eval(tag) ? (type == 2 && !get2(data))? (get2(data)) : ((data.source.includes("DeveloperOS") || type == 2) ? 1 : data.source.startsWith("https") ? 2 : 3) : (type == 12)? (get12(data)) : 0;
+    let rcsStatus = (data: typeof carriers[string], id: string) => eval(tag) ? (type == 2 && !get2(data))? (get2(data)) : (data.version.includes("~~") ? 1 : (data.source.includes("DeveloperOS")) ? 2 : data.source.startsWith("https") ? 3 : 4) : (type == 12)? (get12(data)) : 0;
 
     let count: number = 0;
     let ccount: number = 0;
@@ -178,12 +178,12 @@ export function build(type: number, carr: string, dir: string, tag: string, ptag
                                 {url && <img width={23} height={23} src={`https://www.google.com/s2/favicons?domain=${encodeURIComponent(url)}&sz=32`} alt={data.names[0]}/>}
                                 <a target={'_blank'} rel={'noopener noreferrer'} href={site} style={'color:var(--grey-900); text-decoration:none; word-break:break-word;'}>{data.names[0]}</a>
                             </h3>
-                            {(type == 4)? (eval(tag) == "NRPlus")? "5G+": (eval(tag) == "NRUWB")? <div style="display: flex;"><a style="color:var(--grey-900);">5G</a><a style="color:var(--grey-900); text-orientation: upright; writing-mode: vertical-rl; font-size: 7; font-weight: bold;">UW</a></div>: (eval(tag) == "NRUC")? <div style="display: flex;"><a style="color:var(--grey-900);">5G</a><a style="color:var(--grey-900); text-orientation: upright; writing-mode: vertical-rl; font-size: 7; font-weight: bold;">UC</a></div>: (eval(tag) == "NRCA")? <div style="display: flex;"><a style="color:var(--grey-900);">5G</a><a style="color:var(--grey-900); font-size: 12; font-weight: bold; margin-top: 3;">A</a></div>: <span class='emoji'>❌</span>: <span class='emoji'>{['❌','⏳','✅','✅'][rcs]}</span>}
+                            {(type == 4)? (eval(tag) == "NRPlus")? "5G+": (eval(tag) == "NRUWB")? <div style="display: flex;"><a style="color:var(--grey-900);">5G</a><a style="color:var(--grey-900); text-orientation: upright; writing-mode: vertical-rl; font-size: 7; font-weight: bold;">UW</a></div>: (eval(tag) == "NRUC")? <div style="display: flex;"><a style="color:var(--grey-900);">5G</a><a style="color:var(--grey-900); text-orientation: upright; writing-mode: vertical-rl; font-size: 7; font-weight: bold;">UC</a></div>: (eval(tag) == "NRCA")? <div style="display: flex;"><a style="color:var(--grey-900);">5G</a><a style="color:var(--grey-900); font-size: 12; font-weight: bold; margin-top: 3;">A</a></div>: <span class='emoji'>❌</span>: <span class='emoji'>{['❌','⭕️','⏳','✅','✅'][rcs]}</span>}
                         </div>
                         {data.names.length > 1 && <p class='aka'>aka. {data.names.slice(1).join(", ")}</p>}
-                        {(rcs == 1)? "in beta" : (rcs == 2)? <a target="_blank" href="https://support.apple.com/en-us/109324">delivered OTA</a> : ""}
+                        {(rcs == 1)? "removed in beta" : (rcs == 2)? "in beta" : (rcs == 3)? <a target="_blank" href="https://support.apple.com/en-us/109324">delivered OTA</a> : ""}
                         <div class='grow'></div>
-                        <p class='id'>{id} {data.version}</p>
+                        <p class='id'>{id} {(data.version.includes("~~")? <><s>{data.version.split("~~")[0]}</s> {data.version.split("~~")[1]}</> : data.version)}</p>
                     </div>
                 })}
             </div>{addelemet(carriers[0][1].countryCode, country, ccount, cccount)}

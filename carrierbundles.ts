@@ -48,7 +48,7 @@ async function getCarrierBundle(url: string, over: boolean) {
     let zip = await JSZip.loadAsync(data);
     let file;
     if (!over) file = Object.keys(zip.files).find(a => a.match(/^Payload\/[a-zA-Z0-9_]+\.bundle\/carrier\.plist$/i));
-    if (over) file = Object.keys(zip.files).find(a => a.match(/^Payload\/[a-zA-Z0-9_]+\.bundle\/overrides\_V159\.plist$/i));
+    if (over) file = Object.keys(zip.files).find(a => a.match(/^Payload\/[a-zA-Z0-9_]+\.bundle\/overrides\_V63\_V64s\_V68\.plist$/i));
     if (!file && !over){
         console.warn("Files in " + url + " are: ", Object.keys(zip.files));
         throw new Error(`Carrier.plist not found in ${url}`);
@@ -113,6 +113,20 @@ function internal(id: string)
         case "Bootstrap_ATT_US":
             return true;
         case "Bootstrap_Verizon_US":
+            return true;
+        case "BootstrapCAM_ATT_US":
+            return true;
+        case "BootstrapCOM_ATT_US":
+            return true;
+        case "BootstrapCAM_Telstra_au":
+            return true;
+        case "BootstrapCOM_Telstra_au":
+            return true;
+        case "BootstrapCAM_Orange_France":
+            return true;
+        case "BootstrapCOM_Orange_France":
+            return true;
+        case "DefaultBCAM":
             return true;
         default:
             return false;
@@ -223,7 +237,7 @@ function doLocal(dir: string) {
 
         let info = readBplist<CarrierBundleInfo>(path, 'Info.plist');
         let data = readBplist<CarrierPlist.CarrierPlist>(path, 'carrier.plist');
-        let blob = readBplist<CarrierPlist.CarrierPlist>(path, 'overrides\_V159.plist');
+        let blob = readBplist<CarrierPlist.CarrierPlist>(path, 'overrides\_V63\_V64s\_V68.plist');
         if (info?.CFBundleName == "OtherKnown")
         {
             otherbundles(info, path);
@@ -257,7 +271,7 @@ function doLocal(dir: string) {
 
         let info = readBplist<CarrierBundleInfo>(path, 'Info.plist');
         let data = readBplist<CarrierPlist.CarrierPlist>(path, 'carrier.plist');
-        let blob = readBplist<CarrierPlist.CarrierPlist>(path, 'overrides\_V159.plist');
+        let blob = readBplist<CarrierPlist.CarrierPlist>(path, 'overrides\_V63\_V64s\_V68.plist');
         if (!blob)
         {
             blob = data;
@@ -375,12 +389,12 @@ async function doOnline() {
 
 export function manualversion()
 {
-    return "27.0 and 27.2 RC";
+    return "27.2";
 }
 
-doLocal('27.0-Rave24A437.V159OS')
+doLocal('27.2-RaveB24B119.V63V64OS')
 await doOnline();
-doLocal('27.2RC-RaveB24B115.V159DeveloperOS')
+//doLocal('')
 
 fs.writeFileSync(Path.join(__dirname, 'version.txt'), manualversion());
 fs.writeFileSync(Path.join(__dirname, 'processed.json'), JSON.stringify(networks, null, 2));

@@ -70,7 +70,7 @@ PLMN;countycode;carriername;url;bundlename
 42006;SA;Lebara Mobile;https://lebara.sa;;
 42521;IL;Xphone;https://xphone.co.il;;
 42526;IL;Annatel;https://www.annatel.co.il;;
-42833;MN;ONDO;https://ondo.mn;;
+42833;MN;ONDO;https://ondo.mn;ONDO_mn;
 45707;LA;Best;https://besttelecom.la/;;
 47004;BD;Teletalk;https://www.teletalk.com.bd/;;
 50588;AU;Pivotel;https://www.pivotel.com.au;;
@@ -151,14 +151,14 @@ PLMN;countycode;carriername;url;bundlename
 27201_GID1-0A;IE;An Post;https://www.anpost.com/Mobile;27201_GID1-0A_GID2-FF;
 27201_GID1-0A_GID2-FF;IE;An Post;https://www.anpost.com/Mobile;27201_GID1-0A_GID2-FF;
 72451_GID1-65;BR;;;;
-311588_GID1-2273;US;Cape;https://www.cape.co;311588_GID1-2273/314560_GID1-2273;
+311588_GID1-2273;US;Cape;https://www.cape.co;Cape_US;
 311588_GID1-7911;US;Popcorn;https://www.popcorn.space;314970;
 313460_GID1-6624;US;Mobi;http://mobi.com;Mobi;
 24050_GID1-0E;SE;;;;
 302480_GID1-02;CA;;;;
 24006_GID1-0E;SE;;;;
 26226_GID1-53414C412D44453031;DE;
-314560_GID1-2273;US;Cape;https://www.cape.co;311588_GID1-2273/314560_GID1-2273;
+314560_GID1-2273;US;Cape;https://www.cape.co;Cape_US;
 72451_GID1-42;BR;;;;
 44024_GID1-9424;JP;BlueMobile;bluemobile.blue;;
 311588_GID1-6624;US;Mobi;http://mobi.com;Mobi;

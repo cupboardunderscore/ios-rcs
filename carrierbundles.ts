@@ -389,12 +389,12 @@ async function doOnline() {
 
 export function manualversion()
 {
-    return "27.2";
+    return "27.2 and 27.3 beta 1";
 }
 
 doLocal('27.2-RaveB24B119.V63V64OS')
 await doOnline();
-//doLocal('')
+doLocal('27.3b1-RaveCSeed24C5037i.V63V64DeveloperOS')
 
 fs.writeFileSync(Path.join(__dirname, 'version.txt'), manualversion());
 fs.writeFileSync(Path.join(__dirname, 'processed.json'), JSON.stringify(networks, null, 2));

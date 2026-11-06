@@ -114,7 +114,7 @@ PLMN;countycode;carriername;url;bundlename
 302340;CA;Execulink;https://www.execulink.ca/;;
 302620;CA;ICE Wireless;https://www.icewireless.com;;
 310040;US;Mobi;http://mobi.com;Mobi;
-310290;US;minute;http://minute.net;310290;
+310290;US;minute;https://minute.com;310290;
 310320;US;Cellular One;https://mycellularone.com;;
 310340;US;Limitless Mobile;https://limitlessmobile.com;310340/310690/311600/312180;
 310420;US;World Mobile;https://worldmobile.io;;
@@ -174,10 +174,10 @@ PLMN;countycode;carriername;url;bundlename
 302480_GID1-01;CA;SSi Canada;https://www.ssicanada.com/;;
 302480_GID1-02;CA;Eeyou Mobile;https://www.eeyoumobile.com/en/home/;;
 310040_GID1-6624;US;Mobi;http://mobi.com;Mobi;
-310040_GID1-4D494E55544531333337;US;minute;http://minute.net;310290;
-310290_GID1-4D494E55544531333337;US;minute;http://minute.net;310290;
+310040_GID1-4D494E55544531333337;US;minute;https://minute.com;310290;
+310290_GID1-4D494E55544531333337;US;minute;https://minute.com;310290;
 311500_GID1-6624;US;Mobi;http://mobi.com;Mobi;
-311500_GID1-4D494E55544531333337;US;minute;http://minute.net;310290;
+311500_GID1-4D494E55544531333337;US;minute;https://minute.com;310290;
 311588_GID1-2273;US;Cape;https://www.cape.co;Cape_US;
 311588_GID1-6624;US;Mobi;http://mobi.com;Mobi;
 311588_GID1-7911;US;Popcorn;https://www.popcorn.space;314970;

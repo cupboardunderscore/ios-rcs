@@ -13,7 +13,7 @@ carrier-bundles/*/country/*/*/*
 !gsma_1.plist
 bun.lock
 run.command
-lib*
+libcarrierdedupe.*
 html/debug.csv
 host.py
 templates
